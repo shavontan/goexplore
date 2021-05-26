@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "458970426529",
+    "project_id": "goexplore-af61c",
+    "storage_bucket": "goexplore-af61c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458970426529:android:173a5731be2f51912154e0",
+        "android_client_info": {
+          "package_name": "com.example.goexplore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458970426529-6rh2i7shqitjak4er9gliaon09tvvafn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjMH3oZQ287LPalqvnfJb0FlHqOiWMVBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458970426529-6rh2i7shqitjak4er9gliaon09tvvafn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
