@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import './flutterfire.dart';
 import './homepage.dart';
+import './SignUpPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,11 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Container(
                       child: TextButton(
                           onPressed: () async {
-                            bool shouldNavigate = await register(_email.text, _password.text);
-                            if (shouldNavigate) {
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Homepage(),),);
-                            }
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SignUpPage(),),);
                             },
                           child: Text('Sign up now', style: TextStyle(fontSize: 15)),
                       style: ButtonStyle()),
