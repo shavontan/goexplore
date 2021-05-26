@@ -13,7 +13,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: LoginScreen(),
+      ),
     );
   }
 }
+
+class LoginScreen extends StatefulWidget {
+  //const LoginScreen({Key key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Image.assets('assets/images/Logo.png');
+  }
+}
+
