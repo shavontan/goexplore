@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+import './flutterfire.dart';
+import './homepage.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -29,6 +35,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,7 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
                 Container(height: 40),
                 Container(
-                  child: TextField(
+                  child: TextFormField(
+                      controller: _email,
                       decoration: InputDecoration(
                           icon: Icon(Icons.person, color: Colors.blueGrey),
                           hintText: 'Username/email'),
@@ -58,9 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       )),
                   alignment: Alignment.center,
                   width: 300,
+
                 ),
                 Container(
-                  child: TextField(
+                  child: TextFormField(
+                    controller: _password,
                     obscureText: true,
                     decoration: InputDecoration(
                         icon: Icon(Icons.lock, color: Colors.blueGrey),
@@ -69,12 +81,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   alignment: Alignment.center,
                   width: 300,
+
                 ),
                 Container(height: 20),
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: TextButton(
-                        onPressed: (){}, // GO TO HOME PAGE
+                        onPressed: () async {
+                          bool shouldNavigate = await signIn(_email.text, _password.text);
+                          if (shouldNavigate) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Homepage(),),);
+                          }
+                        }, // GO TO HOME PAGE
                         child: Text('Login', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 20)),
                         style: ButtonStyle()
                     )
@@ -83,7 +102,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Container(
-                      child: Text('Sign up now', style: TextStyle(fontSize: 15)),
+                      child: TextButton(
+                          onPressed: () async {
+                            bool shouldNavigate = await register(_email.text, _password.text);
+                            if (shouldNavigate) {
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Homepage(),),);
+                            }
+                            },
+                          child: Text('Sign up now', style: TextStyle(fontSize: 15)),
+                      style: ButtonStyle()),
                       width: 130,
                       height: 25,
                       alignment: Alignment.center,
