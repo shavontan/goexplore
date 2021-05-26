@@ -65,10 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                         icon: Icon(Icons.lock, color: Colors.blueGrey),
                         hintText: 'Password',
-                        suffixIcon: Icon(
-                          Icons.visibility,
-                          color: Colors.blueGrey,
-                        )),
+                        ),
                   ),
                   alignment: Alignment.center,
                   width: 300,
