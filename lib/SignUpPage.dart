@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import './flutterfire.dart';
-import '/main.dart';
+import './main.dart';
 
 
 class SignUpPage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           if (shouldRegister) {
                             Navigator.push(context,
                                 MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),)
+                                  builder: (context) => MyApp(),)
                             );
                             // else: pop-up – account alr registered under this email
                           }
