@@ -98,18 +98,39 @@ class _LoginScreenState extends State<LoginScreen> {
                           } else if (!shouldNavigate) {
                             // incorrect password
                             print("incorrect pw/email");
-                            createAlertDialog(context, "Incorrect email or password");
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                  title: Text("Incorrect email or password"),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"),)
+                                  ]
+                              );
+                            });
                           } else if (!verified) {
                             // unverified email
                             print("unverified email");
-                            createAlertDialog(context, "Please verify your email");
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                  title: Text("Please verify your email"),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"),)
+                                  ]
+                              );
+                            });
                           }
                         }, // GO TO HOME PAGE
                         child: Text('Login', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 20)),
                         style: ButtonStyle()
                     )
                 ),
-                Container(height: 50),
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Container(
@@ -121,27 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text('Sign up now', style: TextStyle(fontSize: 15)),
                       style: ButtonStyle()),
                       width: 130,
-                      height: 25,
+                      height: 50,
                       alignment: Alignment.center,
                     )),
-                Container(height: 20),
               ],
             )));
   }
-}
-
-createAlertDialog(BuildContext context, String message) {
-  return showDialog(context: context, builder: (context) {
-    return AlertDialog(
-        title: Text(message),
-        actions: <Widget>[
-          MaterialButton(
-            onPressed: () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyApp(),),);
-            },
-            child: Text("OK"),)
-        ]
-    );
-  });
 }
