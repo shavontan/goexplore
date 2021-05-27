@@ -4,7 +4,6 @@ import './flutterfire.dart';
 import './main.dart';
 
 class SignUpPage extends StatefulWidget {
-  //const SignUpPage({Key key}) : super(key: key);
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -39,15 +38,39 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextButton(
                     onPressed: () async {
                       if (_password.text == _confirmPassword.text) {
-                          bool shouldRegister = await register(_email.text, _password.text);
+                          bool shouldRegister = await register(_email.text, _password.text, context);
                           if (shouldRegister) {
-                            createAlertDialog(context, "Please verify the email address for " + _email.text);
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                  title: Text("Please verify the email address for " + _email.text),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => MyApp(),),);
+                                      },
+                                      child: Text("OK"),)
+                                  ]
+                              );
+                            });
                             // else: pop-up – account alr registered under this email
                           }
                       }
                       // else : pop-up screen: confirm password does not match password
                        else {
                          print("Error");
+                         showDialog(context: context, builder: (context) {
+                           return AlertDialog(
+                               title: Text("Passwords do not match"),
+                               actions: <Widget>[
+                                 MaterialButton(
+                                   onPressed: () {
+                                     Navigator.pop(context);
+                                   },
+                                   child: Text("OK"),)
+                               ]
+                           );
+                         });
                        }
                     },
                     child: Text('Sign up'))
