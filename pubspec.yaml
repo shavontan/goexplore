@@ -32,6 +32,8 @@ dependencies:
   firebase_auth: "^1.2.0"
   cloud_firestore: "^2.2.0"
   google_fonts: ^2.1.0
+  flutter_barcode_scanner: ^2.0.0
+
 
 
 dev_dependencies:
