@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => Homepage(),),);
+                                MaterialPageRoute(builder: (context) => HomePage(),),);
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {
