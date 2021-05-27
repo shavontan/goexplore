@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+import './ProfilePage.dart';
+
+
 class HomePage extends StatefulWidget {
   //const HomePage({Key key}) : super(key: key);
 
@@ -31,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                       icon: Icon(Icons.account_circle, color: Colors.white),
                       onPressed: () {
-                        // Navigate to profile page ---------------------------------------------------------------------------
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
                       })
                 ]),
             body: SingleChildScrollView(
