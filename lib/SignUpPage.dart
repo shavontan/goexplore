@@ -45,7 +45,16 @@ class _SignUpPageState extends State<SignUpPage> {
                           if (shouldRegister) {
                             Navigator.push(context,
                                 MaterialPageRoute(
-                                  builder: (context) => MyApp(),)
+                                  builder: (context) => AlertDialog(
+                                      title: Text("Please verify the email address for " + _email.text),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => MyApp(),),);
+                                      },
+                                    child: Text("OK"),)
+                                  ]),)
                             );
                             // else: pop-up – account alr registered under this email
                           }

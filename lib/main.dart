@@ -90,9 +90,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                         onPressed: () async {
                           bool shouldNavigate = await signIn(_email.text, _password.text);
-                          if (shouldNavigate) {
+                          bool verified = isVerified();
+                          if (shouldNavigate && verified) {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Homepage(),),);
+                          } else if (!shouldNavigate) {
+                            // incorrect password
+                            print("incorrect pw/email");
+                          } else if (!verified) {
+                            // unverified email
+                            print("unverified email");
                           }
                         }, // GO TO HOME PAGE
                         child: Text('Login', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 20)),
