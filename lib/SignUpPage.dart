@@ -13,6 +13,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
+  TextEditingController _username = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   obscureText: true,
                   controller: _confirmPassword,),
                 Container(height: 20),
-                TextFormField(decoration: InputDecoration(labelText: "Username: ")),
+                TextFormField(
+                    decoration: InputDecoration(labelText: "Username: "),
+                    controller: _username,),
                 TextButton(
                     onPressed: () async {
                       if (_password.text == _confirmPassword.text) {
-                          bool shouldRegister = await register(_email.text, _password.text, context);
+                          bool shouldRegister = await register(_email.text, _password.text, _username.text, context);
                           if (shouldRegister) {
+
                             showDialog(context: context, builder: (context) {
                               return AlertDialog(
                                   title: Text("Please verify the email address for " + _email.text),
@@ -58,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       // else : pop-up screen: confirm password does not match password
                        else {
-                         print("Error");
+
                          showDialog(context: context, builder: (context) {
                            return AlertDialog(
                                title: Text("Passwords do not match"),

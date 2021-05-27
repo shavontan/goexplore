@@ -90,6 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(15.0),
                     child: TextButton(
                         onPressed: () async {
+
+
+
                           bool shouldNavigate = await signIn(_email.text, _password.text);
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {

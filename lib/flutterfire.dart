@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:goexplore/firebase.dart';
 
 Future<bool> signIn(String email, String password) async {
   try {
@@ -17,19 +18,21 @@ bool isVerified() {
 
   if (user.emailVerified) {
     return true;
-  } else {
-    print ("unverified email!!!!!!");
-  }
-  return false;
+  } return false;
 }
 
-Future<bool> register(String email, String password, BuildContext context) async {
+Future<bool> register(String email, String password, String username, BuildContext context) async {
   try{
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     User user = firebaseAuth.currentUser as User;
     user.sendEmailVerification();
+
+    // firestore stuff
+    user.updateProfile(displayName: username);
+    userSetup(username, email);
+
     return true;
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
