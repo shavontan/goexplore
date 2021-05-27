@@ -96,8 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Homepage(),),);
                           } else if (!shouldNavigate) {
-                            // incorrect password
-                            print("incorrect pw/email");
+                            // incorrect password/email
                             showDialog(context: context, builder: (context) {
                               return AlertDialog(
                                   title: Text("Incorrect email or password"),
@@ -112,7 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           } else if (!verified) {
                             // unverified email
-                            print("unverified email");
                             showDialog(context: context, builder: (context) {
                               return AlertDialog(
                                   title: Text("Please verify your email"),
