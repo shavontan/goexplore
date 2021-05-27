@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import './flutterfire.dart';
 import './main.dart';
-
 
 class SignUpPage extends StatefulWidget {
   //const SignUpPage({Key key}) : super(key: key);
@@ -17,9 +15,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -43,19 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (_password.text == _confirmPassword.text) {
                           bool shouldRegister = await register(_email.text, _password.text);
                           if (shouldRegister) {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                  builder: (context) => AlertDialog(
-                                      title: Text("Please verify the email address for " + _email.text),
-                                  actions: <Widget>[
-                                    MaterialButton(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => MyApp(),),);
-                                      },
-                                    child: Text("OK"),)
-                                  ]),)
-                            );
+                            createAlertDialog(context, "Please verify the email address for " + _email.text);
                             // else: pop-up – account alr registered under this email
                           }
                       }

@@ -13,6 +13,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,9 +98,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           } else if (!shouldNavigate) {
                             // incorrect password
                             print("incorrect pw/email");
+                            createAlertDialog(context, "Incorrect email or password");
                           } else if (!verified) {
                             // unverified email
                             print("unverified email");
+                            createAlertDialog(context, "Please verify your email");
                           }
                         }, // GO TO HOME PAGE
                         child: Text('Login', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 20)),
@@ -127,3 +130,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+createAlertDialog(BuildContext context, String message) {
+  return showDialog(context: context, builder: (context) {
+    return AlertDialog(
+        title: Text(message),
+        actions: <Widget>[
+          MaterialButton(
+            onPressed: () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyApp(),),);
+            },
+            child: Text("OK"),)
+        ]
+    );
+  });
+}
