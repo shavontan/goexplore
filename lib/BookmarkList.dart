@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'Bookmark.dart';
+
 
 
 class BookmarkList extends StatefulWidget {
@@ -34,7 +36,8 @@ class _BookmarkListState extends State<BookmarkList> {
                     child: TextButton(
                       child: Text("Bookmark 1", style: GoogleFonts.quicksand(fontSize: 30, color: Colors.black54)),
                       onPressed: () {
-                        // NAVIGATE TO BOOKMARK 1
+                        Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Bookmark()));
                       },
                     ),
                     color: Color(0xFFCCC3E8),
