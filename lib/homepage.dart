@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'ProfilePage.dart';
 import 'AdventurePage.dart';
+import 'CustomWidgets/UserPoints.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -105,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ]),
 
-                  Container(height: 120),
+                  Container(height: 100),
 
                   TextButton(
                     child: Text(
@@ -127,7 +129,8 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
 
-                  Container(height: 30),
+
+                  UserPoints(points: 1500,)
 
                   // ADD POINTS WIDGET ---------------------------------------------------------------------------------------------------------
                 ],
