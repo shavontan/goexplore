@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import './history.dart';
+import 'BookmarkList.dart';
 
 class ProfilePage extends StatefulWidget {
   //const ProfilePage({Key key}) : super(key: key);
@@ -72,7 +73,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Text('Your bookmarks',
                                 style:
                                 GoogleFonts.scada(fontSize: 15, color: Colors.black)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => BookmarkList())
+                              );
+                            },
                           )),
                     ),
                   ),
