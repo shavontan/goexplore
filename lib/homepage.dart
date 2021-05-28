@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import './ProfilePage.dart';
+import 'ProfilePage.dart';
+import 'AdventurePage.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -97,7 +98,9 @@ class _HomePageState extends State<HomePage> {
                             constraints: BoxConstraints(maxWidth: 130),
                           ),
                           onPressed: () {
-                            // Go to Adventure page -------------------------------------------------------------------------------------------
+                            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Adventure())
+                            );
                           },
                         )
                       ]),
