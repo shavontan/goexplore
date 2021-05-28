@@ -91,8 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                         onPressed: () async {
 
-
-
                           bool shouldNavigate = await signIn(_email.text, _password.text);
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {
