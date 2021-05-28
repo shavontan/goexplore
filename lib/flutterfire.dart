@@ -83,3 +83,7 @@ Future<bool> register(String email, String password, String username, BuildConte
     return false;
   }
 }
+
+Future<String> getCurrentUID() async {
+  return await FirebaseAuth.instance.currentUser!.uid;
+}
