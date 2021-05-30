@@ -8,6 +8,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'ProfilePage.dart';
 import 'AdventurePage.dart';
 import 'CustomWidgets/UserPoints.dart';
+import 'Categories.dart';
 
 import './swipe.dart';
 
@@ -93,8 +94,9 @@ class _HomePageState extends State<HomePage> {
                             constraints: BoxConstraints(maxWidth: 130),
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Swipe('recreation', 2, []))); // temp path, to delete
-                            // Go to Categories page -----------------------------------------------------------------------------------------
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Categories()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Swipe('recreation', 2, []))); // temp path, to delete
                           },
                         ),
                         TextButton(
