@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './flutterfire.dart';
 
 class History extends StatelessWidget {
-  final List<String> list = ["test1", "test2", "test3"];
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +11,7 @@ class History extends StatelessWidget {
             stream: getUsersHistoryStreamSnapshots(context),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Text("Loading...");
+                return CircularProgressIndicator();
               }
               return new Scaffold(
                   appBar: AppBar(
@@ -63,24 +62,34 @@ class History extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                        child: Row(children: <Widget>[
-                          Text("image"),
-                          Spacer(),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                          Image.network(location['imageURL'],
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              alignment: Alignment.center,
+                              ),
                         ]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                        child: Row(children: <Widget>[
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
                           Text(location['name'],
                             style: new TextStyle(fontSize: 30.0),),
-                          Spacer(),
                         ]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                        child: Row(children: <Widget>[
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
                           Text(result),
-                          Spacer(),
                         ]),
                       )
                     ]

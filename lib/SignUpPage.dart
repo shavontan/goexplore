@@ -54,6 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (_password.text == _confirmPassword.text) {
                               bool shouldRegister = await register(_email.text,
                                   _password.text, _username.text, context);
+
                               if (shouldRegister) {
                                 showDialog(
                                     context: context,

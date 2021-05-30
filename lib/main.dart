@@ -5,6 +5,8 @@ import './flutterfire.dart';
 import './homepage.dart';
 import './SignUpPage.dart';
 
+import './swipe.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -64,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _email,
                       decoration: InputDecoration(
                           icon: Icon(Icons.person, color: Colors.blueGrey),
-                          hintText: 'Username/email'),
+                          hintText: 'Email'),
                       style: TextStyle(
                         color: Colors.grey,
                       )),
@@ -95,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => HomePage(),),);
+                                MaterialPageRoute(builder: (context) => HomePage()),);
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {
