@@ -60,6 +60,8 @@ flutter:
     - assets/images/SGbackground.png
     - assets/images/Cedele.png
     - assets/images/Starbucks.png
+    - assets/images/F&B.png
+    - assets/images/Recreation.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
