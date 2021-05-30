@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './history.dart';
 import 'BookmarkList.dart';
@@ -18,7 +20,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder(
+        future: getUsername(),
+        builder: (context, snapshot) {
+          return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(children: [
@@ -45,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ]),
                   Container(height: 70),
-                  Text('$username', style: GoogleFonts.cabinSketch(fontSize: 30)),
+                  Text(snapshot.data as String, style: GoogleFonts.cabinSketch(fontSize: 30)),
                   Container(height: 25),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
@@ -138,6 +143,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ])
               //)
-            )));
+            )
+        )
+    );});
+  }
+
+  Future<String> getUsername() async {
+    String uid = await getCurrentUID();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((value) {return value['username'];});
   }
 }
