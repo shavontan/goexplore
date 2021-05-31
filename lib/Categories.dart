@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Categories extends StatefulWidget {
-  @override
-  _CategoriesState createState() => _CategoriesState();
-}
+import 'swipe.dart';
 
-class _CategoriesState extends State<Categories> {
+// class Categories extends StatefulWidget {
+//   @override
+//   _CategoriesState createState() => _CategoriesState();
+// }
+
+class Categories extends StatelessWidget {
+// class _CategoriesState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +33,9 @@ class _CategoriesState extends State<Categories> {
                     child: InkWell(
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
-                          print("tapped");
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
+                          // print("tapped");
                         },
                         child: Card(
                             child: Stack(children: [
