@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './profilepage.dart';
 
 import 'package:random_color/random_color.dart';
-import './bookmarksbar.dart';
+import './bookmarksbar2.dart';
 
 // Link to DB
 
@@ -47,7 +47,7 @@ bool check(List<dynamic> doc, List<String> tag) {
 
 
 class _SwipeState extends State<Swipe> {
-  // Dynamically load cards from database
+  // Dynamically load _Cards from database
 
   final String category;
   final int price;
@@ -55,17 +55,17 @@ class _SwipeState extends State<Swipe> {
 
   _SwipeState(this.category, this.price, this.tags);
 
-  List<Card> cards = [];
+  List<_Card> _Cards = [];
 
   @override
   Widget build(BuildContext context) {
-    // Stack of cards that can be swiped. Set width, height, etc here.
+    // Stack of _Cards that can be swiped. Set width, height, etc here.
 
     return Container(
 
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.7,
-      // Important to keep as a stack to have overlay of cards.
+      // Important to keep as a stack to have overlay of _Cards.
 
         child: StreamBuilder<QuerySnapshot>(
             stream: getLocationStreamSnapshots(context, this.category, this.price, this.tags),
@@ -87,8 +87,8 @@ class _SwipeState extends State<Swipe> {
               final length = randomDocs.length;
 
               for (int i = 0; i < length; i++) {
-                cards.add(
-                  Card(randomDocs[i])
+                _Cards.add(
+                  _Card(randomDocs[i])
                 );
               }
 
@@ -111,23 +111,23 @@ class _SwipeState extends State<Swipe> {
                             })
                       ],
                   ),
-                  body: Stack(children: cards),
-                  bottomNavigationBar: BookmarksBar(),
+                  body: Stack(children: _Cards),
+                  bottomNavigationBar: BookmarksBar2(),
               );
             }
         )
       // child: Stack(
-      //   children: cards,
+      //   children: _Cards,
       // ),
     );
   }
 }
 
-class Card extends StatelessWidget {
-  // Made to distinguish cards
+class _Card extends StatelessWidget {
+  // Made to distinguish _Cards
   // Add your own applicable data here
   final DocumentSnapshot doc;
-  Card(this.doc);
+  _Card(this.doc);
 
   @override
   Widget build(BuildContext context) {

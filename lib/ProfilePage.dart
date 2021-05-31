@@ -7,22 +7,25 @@ import './history.dart';
 import 'BookmarkList.dart';
 import 'PointsRedemptionPage.dart';
 
-class ProfilePage extends StatefulWidget {
-  //const ProfilePage({Key key}) : super(key: key);
+// class ProfilePage extends StatefulWidget {
+//   //const ProfilePage({Key key}) : super(key: key);
+//
+//   @override
+//   _ProfilePageState createState() => _ProfilePageState();
+// }
 
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePage extends StatelessWidget {
+// class _ProfilePageState extends State<ProfilePage> {
   // GET DATA FROM STORAGE
-  String username = "Karen";
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: getUsername(),
         builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
           return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(

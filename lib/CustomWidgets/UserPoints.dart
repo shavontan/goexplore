@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class UserPoints extends StatefulWidget {
+// class UserPoints extends StatefulWidget {
+//   final int points;
+//
+//   const UserPoints({required this.points});
+//
+//   @override
+//   _UserPointsState createState() => _UserPointsState();
+// }
+
+class UserPoints extends StatelessWidget {
+// class _UserPointsState extends State<UserPoints> {
+
   final int points;
 
   const UserPoints({required this.points});
 
   @override
-  _UserPointsState createState() => _UserPointsState();
-}
-
-class _UserPointsState extends State<UserPoints> {
-  @override
   Widget build(BuildContext context) {
-    int pts = widget.points;
+    // int pts = widget.points;
 
     return SizedBox(
         height: 150,
@@ -36,7 +42,7 @@ class _UserPointsState extends State<UserPoints> {
             ),
             Positioned(
               child: Text(
-                '$pts Points',
+                '$points Points',
                 style: GoogleFonts.delius(
                   fontSize: 45,
                 ),
