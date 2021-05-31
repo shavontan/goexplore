@@ -5,8 +5,6 @@ import './flutterfire.dart';
 import './homepage.dart';
 import './SignUpPage.dart';
 
-import './swipe.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -31,14 +29,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginScreen extends StatefulWidget {
-  //const LoginScreen({Key key}) : super(key: key);
+// class LoginScreen extends StatefulWidget {
+//   //const LoginScreen({Key key}) : super(key: key);
+//
+//   @override
+//   _LoginScreenState createState() => _LoginScreenState();
+// }
 
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
+// class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -97,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => HomePage()),);
+                                MaterialPageRoute(builder: (context) => HomePage()));
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {

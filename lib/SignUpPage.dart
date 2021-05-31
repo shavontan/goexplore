@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import './flutterfire.dart';
 import './main.dart';
 
-class SignUpPage extends StatefulWidget {
-  @override
-  _SignUpPageState createState() => _SignUpPageState();
-}
+// class SignUpPage extends StatefulWidget {
+//   @override
+//   _SignUpPageState createState() => _SignUpPageState();
+// }
 
-class _SignUpPageState extends State<SignUpPage> {
+class SignUpPage extends StatelessWidget {
+// class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
