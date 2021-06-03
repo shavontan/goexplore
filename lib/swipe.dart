@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './profilepage.dart';
 
 import 'package:random_color/random_color.dart';
-import './bookmarksbar2.dart';
+import './bookmarksbar.dart';
 
 // Link to DB
 
@@ -25,26 +25,8 @@ class Swipe extends StatefulWidget {
   _SwipeState createState() => _SwipeState(this.category, this.price, this.tags);
 }
 
-Stream<QuerySnapshot> getLocationStreamSnapshots(
-    BuildContext context, String category, int price, List<String> tags) async* {
-  final uid = await getCurrentUID();
 
-  yield* FirebaseFirestore.instance
-      .collection(category)
-      .where('price', isLessThanOrEqualTo: price)
-      .snapshots();
-
-}
-
-bool check(List<dynamic> doc, List<String> tag) {
-
-  if (tag.every((item) => doc.contains(item)) && doc.length > 0 || tag.length == 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
+final globalKey = GlobalKey<BookmarksBarState>();
 
 class _SwipeState extends State<Swipe> {
   // Dynamically load _Cards from database
@@ -112,7 +94,7 @@ class _SwipeState extends State<Swipe> {
                       ],
                   ),
                   body: Stack(children: _Cards),
-                  bottomNavigationBar: BookmarksBar2(),
+                  bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
               );
             }
         )
@@ -189,8 +171,53 @@ class _Card extends StatelessWidget {
           ),
         ),
       ),
+      onSwipeDown: (finalPosition) async {
+        List<dynamic> bookmarks = await getBookmarks();
+        String uid = await getCurrentUID();
+        final List<bool> isSelected = globalKey.currentState!.isSelected;
+        for (int i = 0; i < isSelected.length; i++) {
+          if (isSelected[i]) {
+            String bookmarkName = bookmarks[i] as String;
+            FirebaseFirestore.instance.collection('users')
+            .doc(uid)
+            .collection(bookmarkName)
+            .doc(doc['name'])
+            .set({
+    'name' : doc['name'],
+    'description' : doc['description'],
+    'price' : doc['price'],
+    'tags' : doc['tags'],
+    'imageURL' : doc['imageURL'],
+    });
+            }
+          //globalIndex[i] = false;
+
+          }
+        globalKey.currentState!.resetSelection();
+
+        }
 
       // onSwipeRight, left, up, down, cancel, etc...
     );
   }
 }
+
+Stream<QuerySnapshot> getLocationStreamSnapshots(
+    BuildContext context, String category, int price, List<String> tags) async* {
+
+  yield* FirebaseFirestore.instance
+      .collection(category)
+      .where('price', isLessThanOrEqualTo: price)
+      .snapshots();
+
+}
+
+bool check(List<dynamic> doc, List<String> tag) {
+
+  if (tag.every((item) => doc.contains(item)) && doc.length > 0 || tag.length == 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+

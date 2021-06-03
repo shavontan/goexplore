@@ -84,7 +84,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   width: 300,
-
                 ),
                 Container(height: 20),
                 ClipRRect(
