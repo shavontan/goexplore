@@ -6,7 +6,6 @@ import 'CustomWidgets/BookmarkTile.dart';
 
 
 class Bookmark extends StatefulWidget {
-  //const Bookmark({Key key}) : super(key: key);
 
   @override
   _BookmarkState createState() => _BookmarkState();

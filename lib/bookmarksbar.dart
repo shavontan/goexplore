@@ -2,40 +2,41 @@ import 'package:flutter/material.dart';
 import './flutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'bookmarksbar2.dart';
-
 class BookmarksBar extends StatefulWidget {
+  const BookmarksBar({Key? key}) : super(key: key);
 
-  final int length;
-  BookmarksBar(this.length);
+  // final int length;
+  //
+  // BookmarksBar(this.length);
+
+ // BookmarksBar();
+
   @override
-  _BookmarksBarState createState() => _BookmarksBarState(this.length);
+  BookmarksBarState createState() => BookmarksBarState();
 }
 
-class _BookmarksBarState extends State<BookmarksBar> {
+class BookmarksBarState extends State<BookmarksBar> {
 
-  final int length;
-  _BookmarksBarState(this.length);
   final List<bool> isSelected = [];
+  TextEditingController _newBookmark = TextEditingController();
 
-  @override
-  void initState() {
-
-    for (int i = 0; i < this.length; i++) {
-      isSelected.add(false);
+  void reset() {
+    for (int i = 0; i < isSelected.length; i++) {
+      isSelected[i] = false;
     }
-
-   super.initState();
   }
+
+  void resetSelection() => setState(() => reset());
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: generateToggleButtons(isSelected),
         builder: (context, snapshot) {
 
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Text("");
           }
 
           return Row(children: [ToggleButtons(
@@ -54,18 +55,41 @@ class _BookmarksBarState extends State<BookmarksBar> {
           MaterialButton(child: Icon(Icons.add_box),
             onPressed: () async {
               String uid = await getCurrentUID();
-             // FirebaseFirestore.instance.collection('users').doc(uid).update({'bookmarks': FieldValue.arrayUnion(['TEST'])});
 
-              setState (() {
+              showDialog(context: context, builder: (context) {
+                return AlertDialog(
+                  actions: <Widget>[
+                    TextFormField(
+                        controller: _newBookmark,
+                        decoration: InputDecoration(
+                          hintText: "Enter bookmark name",
+                        ),
+                    ),
+                    MaterialButton(onPressed: () {
+                      if (_newBookmark.text.trim().isNotEmpty) {
+                        Navigator.pop(context);
+                        if (_newBookmark.text.trim().isNotEmpty) {
+                          FirebaseFirestore.instance.collection('users').doc(uid).update({'bookmarks': FieldValue.arrayUnion([_newBookmark.text.trim()])});
+                          setState (() {
+                          });
+                        }
+                        _newBookmark.clear();
+                     }
 
+                    },
+                    child: Text("Done"),
+                    ),
+                  ]
+                );
               });
+
             },)]);
         }
         );
   }
 }
 
- Future<List<dynamic>> getBookmarks() async {
+Future<List<dynamic>> getBookmarks() async {
   final uid = await getCurrentUID();
 
   return await FirebaseFirestore.instance
@@ -73,18 +97,20 @@ class _BookmarksBarState extends State<BookmarksBar> {
       .doc(uid)
       .get()
       .then((value) {
-        return ((value.data() as Map)['bookmarks']);
-      });
+    return ((value.data() as Map)['bookmarks']);
+  });
 }
 
 Future<List<dynamic>> generateToggleButtons(List<bool> list) async {
 
   List<dynamic> bookmarks = await getBookmarks();
-  final List<Widget> children = [];
+  int diff = bookmarks.length - list.length;
 
-  if (list.length < bookmarks.length) {
+  for (int i = 0; i < diff; i++) {
     list.add(false);
   }
+
+  final List<Widget> children = [];
 
   for (int i = 0; i < bookmarks.length; i++) {
     children.add(
@@ -98,6 +124,8 @@ Future<List<dynamic>> generateToggleButtons(List<bool> list) async {
   }
   return children;
 }
+
+
 
 
 

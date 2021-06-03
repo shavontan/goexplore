@@ -85,5 +85,5 @@ Future<bool> register(String email, String password, String username, BuildConte
 }
 
 Future<String> getCurrentUID() async {
-  return await FirebaseAuth.instance.currentUser!.uid;
+  return FirebaseAuth.instance.currentUser!.uid;
 }
