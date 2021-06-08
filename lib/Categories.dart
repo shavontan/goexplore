@@ -67,8 +67,8 @@ class Categories extends StatelessWidget {
                     child: InkWell(
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
                           print("tapped");
                         },
                         child: Card(

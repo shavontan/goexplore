@@ -1,14 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../flutterfire.dart';
+import '../Bookmark.dart';
+
 
 class BookmarkTile extends StatefulWidget {
   final Widget image;
   final String title;
   final String shortDescription;
   final int estimatedPrice;
+  final String bookmarkName;
 
   const BookmarkTile(
-      {required this.image,
+      {required this.bookmarkName,
+        required this.image,
         required this.title,
         required this.shortDescription,
         required this.estimatedPrice});
@@ -16,6 +23,8 @@ class BookmarkTile extends StatefulWidget {
   @override
   _BookmarkTileState createState() => _BookmarkTileState();
 }
+
+
 
 class _BookmarkTileState extends State<BookmarkTile> {
   String getPriceRange(int i) {
@@ -81,6 +90,18 @@ class _BookmarkTileState extends State<BookmarkTile> {
                   ],
                 )
               ],
-            )));
+            )
+        ),
+    );
   }
 }
+
+// void removeItem(String bookmarkName, String locationName) async {
+//   String uid = await getCurrentUID();
+//   FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(uid)
+//       .collection(bookmarkName)
+//       .doc(locationName)
+//       .delete();
+// }
