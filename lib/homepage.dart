@@ -12,6 +12,8 @@ import 'Categories.dart';
 
 import './swipe.dart';
 
+import 'AdventureStack.dart';
+
 
 class HomePage extends StatefulWidget {
   //const HomePage({Key key}) : super(key: key);
@@ -111,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Adventure())
+                            MaterialPageRoute(builder: (context) => AdventureStack())
                             );
                           },
                         )

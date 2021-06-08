@@ -37,7 +37,9 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   flutter_swipable: ^0.1.1
   random_color: ^1.0.5
-  # swipable_stack: ^0.5.0 to delete
+  flutter_animated_dialog: ^2.0.0
+  screenshot: ^0.3.0
+
 
 
 

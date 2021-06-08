@@ -15,10 +15,13 @@ class BookmarksBar extends StatefulWidget {
   BookmarksBarState createState() => BookmarksBarState();
 }
 
+final TextEditingController _newBookmark = TextEditingController();
+final _formKey = GlobalKey<FormState>();
+
 class BookmarksBarState extends State<BookmarksBar> {
 
   final List<bool> isSelected = [];
-  TextEditingController _newBookmark = TextEditingController();
+
 
   void reset() {
     for (int i = 0; i < isSelected.length; i++) {
@@ -30,6 +33,7 @@ class BookmarksBarState extends State<BookmarksBar> {
 
   @override
   Widget build(BuildContext context) {
+    print("bookmarksbar");
 
     return FutureBuilder(
         future: generateToggleButtons(isSelected),
@@ -60,11 +64,13 @@ class BookmarksBarState extends State<BookmarksBar> {
                 return AlertDialog(
                   actions: <Widget>[
                     TextFormField(
-                        controller: _newBookmark,
-                        decoration: InputDecoration(
-                          hintText: "Enter bookmark name",
+                      key: _formKey,
+                      controller: _newBookmark,
+                      decoration: InputDecoration(
+                        hintText: "Enter bookmark name",
                         ),
-                    ),
+
+                      ),
                     MaterialButton(onPressed: () {
                       if (_newBookmark.text.trim().isNotEmpty) {
                         Navigator.pop(context);
@@ -124,8 +130,6 @@ Future<List<dynamic>> generateToggleButtons(List<bool> list) async {
   }
   return children;
 }
-
-
 
 
 
