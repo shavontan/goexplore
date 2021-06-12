@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:goexplore/flutterfire.dart';
+
 
 
 class PointRedemptionTile extends StatefulWidget {
@@ -18,11 +21,32 @@ class PointRedemptionTile extends StatefulWidget {
 
 class _PointRedemptionTileState extends State<PointRedemptionTile> {
 
+  Future<int> getPoints() async {
+    String uid = await getCurrentUID();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((value) {return value['points'];});
+  }
+
+  void updatePoints(int toChange) async {
+    String uid = await getCurrentUID();
+    int currPoints = await getPoints();
+    int newPts = currPoints + toChange;
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'points':newPts});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     int cost = widget.cost;
 
-    return SizedBox(
+    return InkWell(
+        child: SizedBox(
         height: 200,
         width: 200,
         child: Card(
@@ -75,6 +99,48 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                 ]
             )
         )
-    );
+    ),
+      onTap: () async {
+        int p = await getPoints();
+        if (p >= widget.cost) {
+          showDialog(context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                      "Confirm redemption of " + widget.promotion + " with " +
+                          widget.cost.toString() + " points?"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("Confirm"),
+                      onPressed: () {
+                        updatePoints(-widget.cost);
+                        Navigator.pop(context);
+                      },),
+                    TextButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              });
+        } else {
+          showDialog(context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Insufficient points to redeem this promotion"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              });
+        }
+      });
   }
 }

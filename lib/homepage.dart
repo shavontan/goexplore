@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   return SingleChildScrollView(
                     child: Column(
                     children: [
-                      Container(height: 60),
+                      Container(height: 30),
 
                       Stack(alignment: AlignmentDirectional.center, children: [
                       Opacity(
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ]),
 
-                    Container(height: 40),
+                    Container(height: 10),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

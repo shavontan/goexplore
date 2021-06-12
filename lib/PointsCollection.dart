@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'flutterfire.dart';
+import 'flutterfire.dart';
 
 
 class Collection extends StatefulWidget {
@@ -14,7 +15,26 @@ class Collection extends StatefulWidget {
 
 class _CollectionState extends State<Collection> {
   final bool onAdventure = false; // EDIT THIS — get from data base
-  final int pointsEarned = 200; // arbitrary number
+  final int pointsEarned = 1000; // arbitrary number
+
+  Future<int> getPoints() async {
+    String uid = await getCurrentUID();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((value) {return value['points'];});
+  }
+
+  void updatePoints(int toChange) async {
+    String uid = await getCurrentUID();
+    int currPoints = await getPoints();
+    int newPts = currPoints + toChange;
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'points':newPts});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +77,10 @@ class _CollectionState extends State<Collection> {
                         top: 100,
                       ),
                       Positioned(
-                        child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () {
-                          print("GAIN POINTS");
+                        child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), 
+                          onPressed: () {
+                            onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
+                            Navigator.pop(context);
                         },),
                         left: 105,
                         top: 230,
