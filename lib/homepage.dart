@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 import 'ProfilePage.dart';
 import 'AdventurePage.dart';
 import 'CustomWidgets/UserPoints.dart';
 import 'Categories.dart';
+import 'PointsCollection.dart';
 
 import './swipe.dart';
 
@@ -24,6 +26,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String qrCode = 'Unknown';
+  bool hasData = false;
+
+  Future<void> _scan() async {
+    var codeScanner = await BarcodeScanner.scan();
+    setState(() {
+      qrCode = codeScanner;
+      hasData = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,26 +132,49 @@ class _HomePageState extends State<HomePage> {
 
                     Container(height: 100),
 
-                    TextButton(
-                      child: Text(
-                      'Scan for points',
-                      style: GoogleFonts.raviPrakash(
-                          fontSize: 20, color: Colors.amber),
+                      TextButton(
+                        child: Text('Scan for points',
+                          style: GoogleFonts.raviPrakash(fontSize: 20, color: Colors.amber),),
+
+                        // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
+
+                        onPressed: () {
+                          // if (anonymous user) {
+                          //   POPUP MESSAGE OR GO TO SIGNUP/LOGIN
+                          // } else {
+                          _scan();
+                        },
                       ),
-                      onPressed: () async {
-                        try {
-                          final qrCode = await FlutterBarcodeScanner.scanBarcode(
-                            '#ff6666', 'Cancel', true, ScanMode.QR);
 
-                        setState(() {
-                          this.qrCode = qrCode;
-                        });
-                      } catch (PlatformException) {
+                      //Container(height: 10),
 
-                        qrCode = "Failed to scan QR code";
-                      }
-                    },
-                  ),
+                      Visibility(
+                        child: TextButton(
+                          child: Text('Redeem Points now',
+                            style: GoogleFonts.raviPrakash(fontSize: 20, color: Colors.amber),),
+
+                          // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
+
+                          onPressed: () {
+                            if (qrCode.runtimeType != String || !qrCode.contains("G0ExPl0rE_")) {
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                  MaterialButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("OK"),)
+                                ]);
+                              }
+                              );
+                            } else {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => Collection(qrResult: qrCode)));
+                            }
+                          },
+                        ),
+                        visible: hasData,
+                      ),
 
 
                   UserPoints(points: snapshot.data as int,)
