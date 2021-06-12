@@ -13,6 +13,10 @@ Future<bool> signIn(String email, String password) async {
   }
 }
 
+Future<void> anonymousSignIn() async {
+  UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+}
+
 bool isVerified() {
   User user = FirebaseAuth.instance.currentUser as User;
 
@@ -87,3 +91,4 @@ Future<bool> register(String email, String password, String username, BuildConte
 Future<String> getCurrentUID() async {
   return FirebaseAuth.instance.currentUser!.uid;
 }
+

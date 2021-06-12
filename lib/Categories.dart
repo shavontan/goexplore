@@ -68,7 +68,7 @@ class Categories extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
+                              MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [], double.infinity)));
                           print("tapped");
                         },
                         child: Card(

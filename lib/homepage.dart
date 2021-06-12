@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return MaterialApp(home: SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -136,6 +136,7 @@ class _HomePageState extends State<HomePage> {
                           this.qrCode = qrCode;
                         });
                       } catch (PlatformException) {
+
                         qrCode = "Failed to scan QR code";
                       }
                     },
@@ -150,15 +151,15 @@ class _HomePageState extends State<HomePage> {
             );}
         )
         )
-    );
+    ));
   }
+}
 
-  Future<int> getPoints() async {
-    String uid = await getCurrentUID();
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((value) {return value['points'];});
-  }
+Future<int> getPoints() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {return value['points'];});
 }

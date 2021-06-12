@@ -5,9 +5,14 @@ import './flutterfire.dart';
 import './homepage.dart';
 import './SignUpPage.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await anonymousSignIn();
+
   runApp(MyApp());
 }
 
