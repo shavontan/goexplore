@@ -38,6 +38,16 @@ Future<bool> register(String email, String password, String username, BuildConte
     userSetup(username, email);
 
     return true;
+
+    // final currentUser = FirebaseAuth.instance.currentUser as User;
+    // final credential = EmailAuthProvider.credential(email: email, password: password);
+    // await currentUser.linkWithCredential(credential);
+    //
+    // currentUser.updateProfile(displayName: username);
+    // userSetup(username, email);
+
+
+
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       print('The password provided is too weak.');

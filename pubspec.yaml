@@ -31,7 +31,7 @@ dependencies:
   firebase_auth: "^1.2.0"
   cloud_firestore: "^2.2.0"
   google_fonts: ^2.1.0
-  flutter_barcode_scanner: ^2.0.0
+  #flutter_barcode_scanner: ^2.0.0
   intl: 0.17.0
   flutter_countdown_timer: ^4.1.0
   flutter_swipable: ^0.1.1
@@ -45,7 +45,7 @@ dependencies:
   #geolocation: ^1.1.2
   #location: ^4.2.3
   #flutter_beautiful_popup: ^1.5.0
-  barcode_scan: any
+  barcode_scan: ^2.0.0
 
 
 #dependency_overrides:

@@ -29,9 +29,9 @@ class _HomePageState extends State<HomePage> {
   bool hasData = false;
 
   Future<void> _scan() async {
-    ScanResult codeScanner = await BarcodeScanner.scan();
+    var codeScanner = await BarcodeScanner.scan();
     setState(() {
-      qrCode = codeScanner.rawContent;
+      qrCode = codeScanner;
       hasData = true;
     });
   }
