@@ -45,6 +45,7 @@ dependencies:
   #geolocation: ^1.1.2
   #location: ^4.2.3
   #flutter_beautiful_popup: ^1.5.0
+  barcode_scan: any
 
 
 #dependency_overrides:
