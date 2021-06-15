@@ -33,7 +33,6 @@ class BookmarksBarState extends State<BookmarksBar> {
 
   @override
   Widget build(BuildContext context) {
-    print("bookmarksbar");
 
     return FutureBuilder(
         future: generateToggleButtons(isSelected),
