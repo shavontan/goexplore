@@ -109,8 +109,8 @@ class _HomePageState extends State<HomePage> {
                             constraints: BoxConstraints(maxWidth: 130),
                           ),
                           onPressed: () {
-                            //resetVisitedToday();
-                            updateVisitedToday("HI");
+
+
 
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Categories()));
@@ -404,15 +404,11 @@ void updateVisitedToday(String locationName) async {
 // }
 
 void resetVisitedToday() async {
-  await FirebaseFirestore.instance
+  QuerySnapshot qs = await FirebaseFirestore.instance
       .collection('users')
-      .snapshots()
-      .forEach((snapshot) {
-        print("1111111111111111");
-        for (var d in snapshot.docs) {
-          print(d.reference);
-          // d.reference.update({'visitedToday':[]});
-        }
+      .get();
+  qs.docs.forEach((doc) async {
+    doc.reference.update({'visitedToday':[]});
   });
 }
 
