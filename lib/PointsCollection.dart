@@ -7,35 +7,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Collection extends StatefulWidget {
   final String location;
   final String URL;
+  final bool onAdventure;
 
-  const Collection({required this.location, required this.URL});
+  const Collection({required this.location, required this.URL, required this.onAdventure});
 
   @override
   _CollectionState createState() => _CollectionState();
 }
 
 class _CollectionState extends State<Collection> {
-  final bool onAdventure = false; // EDIT THIS — get from data base
+  // final bool onAdventure = false; // EDIT THIS — get from data base
   final int pointsEarned = 1000; // arbitrary number
-
-  Future<int> getPoints() async {
-    String uid = await getCurrentUID();
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((value) {return value['points'];});
-  }
-
-  void updatePoints(int toChange) async {
-    String uid = await getCurrentUID();
-    int currPoints = await getPoints();
-    int newPts = currPoints + toChange;
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .update({'points':newPts});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +69,9 @@ class _CollectionState extends State<Collection> {
                         top: 120,
                       ),
                       Positioned(
-                        child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () {
-                          onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
+                        child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () async {
+                          widget.onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
+
                           Navigator.pop(context);
                         },),
                         left: 105,
@@ -103,3 +86,44 @@ class _CollectionState extends State<Collection> {
     );
   }
 }
+
+
+Future<int> getPoints() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {return value['points'];});
+}
+
+void updatePoints(int toChange) async {
+  String uid = await getCurrentUID();
+  int currPoints = await getPoints();
+  int newPts = currPoints + toChange;
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({'points':newPts});
+}
+
+Future<List<dynamic>> getAdvLocations() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc['adventureLocations'];});
+}
+
+// after "let's go!"
+void addAdventureLocation(String locationName) async {
+  String uid = await getCurrentUID();
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({'adventureLocations': FieldValue.arrayUnion([locationName])});
+}
+
+
+
