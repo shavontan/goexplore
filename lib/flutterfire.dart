@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/firebase.dart';
 
@@ -25,9 +26,23 @@ bool isVerified() {
   } return false;
 }
 
+bool isLoggedIn() {
+  User user = FirebaseAuth.instance.currentUser as User;
+  if (!user.isAnonymous) {
+    return user.emailVerified;
+  }
+  return false;
+}
+
 Future<bool> register(String email, String password, String username, BuildContext context) async {
   try{
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    User currentUser = firebaseAuth.currentUser as User;
+    if (currentUser.isAnonymous) {
+      firebaseAuth.currentUser!.delete();
+    }
+
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     User user = firebaseAuth.currentUser as User;
@@ -42,9 +57,12 @@ Future<bool> register(String email, String password, String username, BuildConte
     // final currentUser = FirebaseAuth.instance.currentUser as User;
     // final credential = EmailAuthProvider.credential(email: email, password: password);
     // await currentUser.linkWithCredential(credential);
+    // currentUser.sendEmailVerification();
     //
     // currentUser.updateProfile(displayName: username);
     // userSetup(username, email);
+
+    return true;
 
 
 
