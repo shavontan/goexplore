@@ -139,3 +139,16 @@ void updateHistory(String locationName, String imageURL) async {
     docRef.set({'name':locationName, 'imageURL':imageURL, 'dates':[Timestamp.now()]});
   }
 }
+
+// Future<bool> isValidLocation(String category, String locationName) async {
+//   bool valid = false;
+//   String uid = await getCurrentUID();
+//   await FirebaseFirestore.instance
+//       .collection(category)
+//       .doc(locationName)
+//       .get()
+//       .then((doc) {if (doc.exists) {
+//         valid = true;
+//   }});
+//   return valid;
+// }
