@@ -11,6 +11,9 @@ import 'AdventurePage.dart';
 import 'CustomWidgets/UserPoints.dart';
 import 'Categories.dart';
 import 'PointsCollection.dart';
+import 'package:provider/provider.dart';
+import 'CustomWidgets/PointTracker.dart';
+
 
 import './swipe.dart';
 
@@ -39,8 +42,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final userPoints = context.watch<TrackPoints>();
 
-    return MaterialApp(home: SafeArea(
+    return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -160,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                             }
                             );
                           } else {
-                            List<String> substrings = qrCode.split("_");
+                            List<String> substrings = qrCode.split("(_)");
                             bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
 
                             if (substrings.length != 4) {
@@ -302,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                       // ),
 
 
-                  UserPoints(points: snapshot.data as int,)
+                  UserPoints(points: userPoints.points,)
 
                   // ADD POINTS WIDGET ---------------------------------------------------------------------------------------------------------
                 ],
@@ -310,7 +314,7 @@ class _HomePageState extends State<HomePage> {
             );}
         )
         )
-    ));
+    );
   }
 }
 

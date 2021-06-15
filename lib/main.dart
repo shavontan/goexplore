@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 import './flutterfire.dart';
 import './homepage.dart';
@@ -9,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:panorama/panorama.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+import 'CustomWidgets/PointTracker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +28,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
+    return ChangeNotifierProvider(
+        create: (context) => TrackPoints(),
+        child: MaterialApp(
       title: 'Testing GoExplore',
       theme: ThemeData(
         primarySwatch: Colors.pink,
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
         body: LoginScreen(),
       ),
-    );
+    ));
   }
 }
 

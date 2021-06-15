@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:goexplore/flutterfire.dart';
+import 'package:provider/provider.dart';
+import 'PointTracker.dart';
 
 
 
@@ -44,6 +46,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
   @override
   Widget build(BuildContext context) {
     int cost = widget.cost;
+    final userPoints = context.watch<TrackPoints>();
 
     return InkWell(
         child: SizedBox(
@@ -114,6 +117,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                       child: Text("Confirm"),
                       onPressed: () {
                         updatePoints(-widget.cost);
+                        userPoints.changePoints(-cost);
                         Navigator.pop(context);
                       },),
                     TextButton(
