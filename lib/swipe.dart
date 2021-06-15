@@ -276,7 +276,6 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
     }
   }
 
-
   return docsList;
 
 }
