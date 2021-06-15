@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:goexplore/flutterfire.dart';
 
 class TrackPoints extends ChangeNotifier {
   int points = -1;
@@ -8,14 +10,12 @@ class TrackPoints extends ChangeNotifier {
   }
 
   Future<int> getPoints() async {
-    // String uid = await getCurrentUID();
-    // return await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(uid)
-    //     .get()
-    //     .then((value) {return value['points'];});
-
-    return Future.value(5);
+    String uid = await getCurrentUID();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((value) {return value['points'];});
   }
 
   Future<void> _loadPoints() async {
