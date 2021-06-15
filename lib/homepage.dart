@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       qrCode = codeScanner;
       hasData = true;
     });
+
   }
 
   @override
@@ -107,7 +108,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                             constraints: BoxConstraints(maxWidth: 130),
                           ),
-                          onPressed: () async {
+                          onPressed: () {
+                            //resetVisitedToday();
+                            updateVisitedToday("HI");
 
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Categories()));
@@ -140,27 +143,29 @@ class _HomePageState extends State<HomePage> {
 
                         // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
 
-                        onPressed: () {
+                        onPressed: () async {
                           // if (anonymous user) {
                           //   POPUP MESSAGE OR GO TO SIGNUP/LOGIN
                           // } else {
                           _scan();
-                        },
-                      ),
+                          if (!qrCode.contains("G0ExPl0rE")) {
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("OK"),)
+                              ]);
+                            }
+                            );
+                          } else {
+                            List<String> substrings = qrCode.split("_");
+                            bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
 
-                      //Container(height: 10),
-
-                      Visibility(
-                        child: TextButton(
-                          child: Text('Redeem Points now',
-                            style: GoogleFonts.raviPrakash(fontSize: 20, color: Colors.amber),),
-
-                          // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
-
-                          onPressed: () async {
-                            if (!qrCode.contains("G0ExPl0rE")) {
+                            if (substrings.length != 4) {
                               showDialog(context: context, builder: (context) {
-                                return AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
+                                return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
                                   MaterialButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -169,55 +174,132 @@ class _HomePageState extends State<HomePage> {
                                 ]);
                               }
                               );
-                            } else {
-                              List<String> substrings = qrCode.split("(_)");
+                            } else if (await alreadyVisitedToday(substrings.elementAt(2))) {
+                          showDialog(context: context, builder: (context) {
+                            return AlertDialog(title: Text("Already scanned QR code"), actions: <Widget>[
+                              MaterialButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("OK"),)
+                              ]);
+                            }
+                          );
+                          } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
+                          bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
+                          updateHistory(substrings.elementAt(2), substrings.elementAt(3));
+                          removeAdventureLocation(substrings.elementAt(2));
+                          updateVisitedToday(substrings.elementAt(2));
 
-                              if (substrings.length != 4) {
-                                showDialog(context: context, builder: (context) {
-                                  return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
-                                    MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"),)
-                                  ]);
-                                }
-                                );
-                              } else if (await alreadyVisitedToday(substrings.elementAt(2))) {
-                                showDialog(context: context, builder: (context) {
-                                  return AlertDialog(title: Text("Already scanned QR code"), actions: <Widget>[
-                                    MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"),)
-                                  ]);
-                                }
-                                );
-                              } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
-                                bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
-                                updateHistory(substrings.elementAt(2), substrings.elementAt(3));
-                                removeAdventureLocation(substrings.elementAt(2));
-                                updateVisitedToday(substrings.elementAt(2));
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) =>
+                                  Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3), onAdventure: onAdventure)));
 
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3), onAdventure: onAdventure)));
-                              } else {
-                                showDialog(context: context, builder: (context) {
-                                  return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
-                                    MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"),)
-                                  ]);
-                                }
-                                );
-                              }}
-                          },
-                        ),
-                        visible: hasData,
+
+                          } else {
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                MaterialButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                child: Text("OK"),)
+                                ]);
+                            });
+                          }
+                        }
+                        },
                       ),
+
+                      //Container(height: 10),
+
+                      // Visibility(
+                      //   child: TextButton(
+                      //     child: Text('Redeem Points now',
+                      //       style: GoogleFonts.raviPrakash(fontSize: 20, color: Colors.amber),),
+                      //
+                      //     // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
+                      //
+                      //     onPressed: () async {
+                      //       if (!qrCode.contains("G0ExPl0rE")) {
+                      //         showDialog(context: context, builder: (context) {
+                      //           return AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
+                      //             MaterialButton(
+                      //               onPressed: () {
+                      //                 Navigator.pop(context);
+                      //               },
+                      //               child: Text("OK"),)
+                      //           ]);
+                      //         }
+                      //         );
+                      //       } else {
+                      //         List<String> substrings = qrCode.split("_");
+                      //
+                      //         if (substrings.length != 4) {
+                      //           showDialog(context: context, builder: (context) {
+                      //             return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                      //               MaterialButton(
+                      //                 onPressed: () {
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //                 child: Text("OK"),)
+                      //             ]);
+                      //           }
+                      //           );
+                      //         } else if (await alreadyVisitedToday(substrings.elementAt(2))) {
+                      //           showDialog(context: context, builder: (context) {
+                      //             return AlertDialog(title: Text("Already scanned QR code"), actions: <Widget>[
+                      //               MaterialButton(
+                      //                 onPressed: () {
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //                 child: Text("OK"),)
+                      //             ]);
+                      //           }
+                      //           );
+                      //         } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
+                      //           bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
+                      //           updateHistory(substrings.elementAt(2), substrings.elementAt(3));
+                      //           removeAdventureLocation(substrings.elementAt(2));
+                      //           updateVisitedToday(substrings.elementAt(2));
+                      //
+                      //           // Navigator.push(context, MaterialPageRoute(
+                      //           //     builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3), onAdventure: onAdventure)))
+                      //           // .then((value) {
+                      //           //   updatePoints(1000);
+                      //           //   setState(() {
+                      //           //   });
+                      //
+                      //           Navigator.push(context, MaterialPageRoute(
+                      //               builder: (context) => AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
+                      //                 MaterialButton(
+                      //                   onPressed: () {
+                      //                     Navigator.pop(context);
+                      //                   },
+                      //                   child: Text("OK"),)
+                      //               ])))
+                      //               .then((value) {
+                      //             updatePoints(1000);
+                      //             setState(() {
+                      //             });
+                      //           });
+                      //
+                      //         } else {
+                      //           showDialog(context: context, builder: (context) {
+                      //             return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                      //               MaterialButton(
+                      //                 onPressed: () {
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //                 child: Text("OK"),)
+                      //             ]);
+                      //           }
+                      //           );
+                      //         }}
+                      //     },
+                      //   ),
+                      //   visible: hasData,
+                      // ),
 
 
                   UserPoints(points: snapshot.data as int,)
@@ -321,6 +403,19 @@ void updateVisitedToday(String locationName) async {
 //   });
 // }
 
+void resetVisitedToday() async {
+  await FirebaseFirestore.instance
+      .collection('users')
+      .snapshots()
+      .forEach((snapshot) {
+        print("1111111111111111");
+        for (var d in snapshot.docs) {
+          print(d.reference);
+          // d.reference.update({'visitedToday':[]});
+        }
+  });
+}
+
 Future<List<dynamic>> locationsVisitedToday() async {
   String uid = await getCurrentUID();
   return await FirebaseFirestore.instance
@@ -334,3 +429,8 @@ Future<bool> alreadyVisitedToday(String locationName) async {
   List<dynamic> visitedToday = await locationsVisitedToday();
   return visitedToday.contains(locationName);
 }
+
+
+
+
+

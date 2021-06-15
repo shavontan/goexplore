@@ -71,8 +71,9 @@ class _CollectionState extends State<Collection> {
                       Positioned(
                         child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () async {
                           widget.onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
-
                           Navigator.pop(context);
+
+
                         },),
                         left: 105,
                         top: 230,
