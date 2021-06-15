@@ -170,9 +170,9 @@ class _HomePageState extends State<HomePage> {
                           // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
 
                           onPressed: () async {
-                            if (!qrCode.contains("G0ExPl0rE_")) {
+                            if (!qrCode.contains("G0ExPl0rE")) {
                               showDialog(context: context, builder: (context) {
-                                return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                return AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
                                   MaterialButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                               }
                               );
                             } else {
-                              List<String> substrings = qrCode.split("_");
+                              List<String> substrings = qrCode.split("(_)");
 
                               if (substrings.length != 4) {
                                 showDialog(context: context, builder: (context) {
