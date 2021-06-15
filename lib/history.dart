@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './flutterfire.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class History extends StatelessWidget {
 
@@ -50,7 +52,7 @@ class History extends StatelessWidget {
     List<dynamic> arr = location['dates'];
     String result = "";
     for (int i = 0; i < arr.length; i++) {
-      result = result + arr[i].toDate().toString() + "\n";
+      result = result + new DateFormat("yyyy-MM-dd  hh:mm").format(arr[i].toDate()) + "\n";
     }
 
     return new Container(

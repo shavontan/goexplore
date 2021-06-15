@@ -36,21 +36,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<bool> isValidLocation(String category, String locationName) async {
-    bool valid = false;
-    await FirebaseFirestore.instance
-        .collection(category)
-        .doc(locationName)
-        .get()
-        .then((doc) {if (doc.exists) {
-      valid = true;
-    }});
-    return valid;
-  }
-
   @override
   Widget build(BuildContext context) {
-    updateHistory("LALA");
 
     return MaterialApp(home: SafeArea(
         child: Scaffold(
@@ -120,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             constraints: BoxConstraints(maxWidth: 130),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Categories()));
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Swipe('recreation', 2, []))); // temp path, to delete
@@ -195,9 +183,25 @@ class _HomePageState extends State<HomePage> {
                                   ]);
                                 }
                                 );
+                              } else if (await alreadyVisitedToday(substrings.elementAt(2))) {
+                                showDialog(context: context, builder: (context) {
+                                  return AlertDialog(title: Text("Already scanned QR code"), actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"),)
+                                  ]);
+                                }
+                                );
                               } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
+                                bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
+                                updateHistory(substrings.elementAt(2), substrings.elementAt(3));
+                                removeAdventureLocation(substrings.elementAt(2));
+                                updateVisitedToday(substrings.elementAt(2));
+
                                 Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3))));
+                                    builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3), onAdventure: onAdventure)));
                               } else {
                                 showDialog(context: context, builder: (context) {
                                   return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
@@ -237,16 +241,96 @@ Future<int> getPoints() async {
       .then((value) {return value['points'];});
 }
 
-void updateHistory(String locationName) async {
-  print("!!!!!!!!!!!!!!!!!!!!!");
+
+Future<bool> isValidLocation(String category, String locationName) async {
+  bool valid = false;
+  await FirebaseFirestore.instance
+      .collection(category)
+      .doc(locationName)
+      .get()
+      .then((doc) {if (doc.exists) {
+    valid = true;
+  }});
+  return valid;
+}
+
+// after scanning (1)
+Future<bool> validAdventureLocation(String locationName) async {
+  List<dynamic> advLocations = await getAdvLocations();
+  bool valid = advLocations.contains(locationName);
+  return valid;
+}
+// (2)
+void removeAdventureLocation(String locationName) async {
   String uid = await getCurrentUID();
-  List<Timestamp> list = await FirebaseFirestore.instance
+  List<dynamic> advLocations = await getAdvLocations();
+  if (advLocations.contains(locationName)) {
+    advLocations.remove(locationName);
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'adventureLocations': advLocations});
+  }
+}
+
+void updateHistory(String locationName, String imageURL) async {
+  String uid = await getCurrentUID();
+  DocumentReference docRef = FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
       .collection('history')
-      .doc(locationName)
+      .doc(locationName);
+
+  bool visited = await docRef
       .get()
-      .then((value) {return value['dates'];});
-  print(list);
-  //.update({'name':locationName, 'date':DateTime.now()});
+      .then((doc) {
+    if (doc.exists) {
+      return true;
+    } return false;
+  });
+
+  if (visited) {
+    List<dynamic> times = await docRef.get().then((doc) {return doc['dates'];});
+    times.add(Timestamp.now());
+    docRef.update({'dates':times});
+  } else {
+    docRef.set({'name':locationName, 'imageURL':imageURL, 'dates':[Timestamp.now()]});
+  }
+}
+
+// update visitedToday after scanning
+void updateVisitedToday(String locationName) async {
+  String uid = await getCurrentUID();
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({'visitedToday': FieldValue.arrayUnion([locationName])});
+}
+
+// void resetVisitedToday() async {
+//   await FirebaseFirestore.instance
+//   .collection('users')
+//   .snapshots()
+//   .forEach((snapshot) {
+//
+//     snapshot.docs.forEach((doc) {
+//
+//       print(doc['email']);
+//       // doc.reference.update({'visitedToday':[]});
+//     });
+//   });
+// }
+
+Future<List<dynamic>> locationsVisitedToday() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc['visitedToday'];});
+}
+
+Future<bool> alreadyVisitedToday(String locationName) async {
+  List<dynamic> visitedToday = await locationsVisitedToday();
+  return visitedToday.contains(locationName);
 }
