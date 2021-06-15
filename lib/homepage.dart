@@ -36,6 +36,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<bool> isValidLocation(String category, String locationName) async {
+    bool valid = false;
+    await FirebaseFirestore.instance
+        .collection(category)
+        .doc(locationName)
+        .get()
+        .then((doc) {if (doc.exists) {
+      valid = true;
+    }});
+    return valid;
+  }
+
   @override
   Widget build(BuildContext context) {
     updateHistory("LALA");
@@ -157,8 +169,8 @@ class _HomePageState extends State<HomePage> {
 
                           // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
 
-                          onPressed: () {
-                            if (qrCode.runtimeType != String || !qrCode.contains("G0ExPl0rE_")) {
+                          onPressed: () async {
+                            if (!qrCode.contains("G0ExPl0rE_")) {
                               showDialog(context: context, builder: (context) {
                                 return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
                                   MaterialButton(
@@ -170,9 +182,34 @@ class _HomePageState extends State<HomePage> {
                               }
                               );
                             } else {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => Collection(qrResult: qrCode)));
-                            }
+                              List<String> substrings = qrCode.split("_");
+
+                              if (substrings.length != 4) {
+                                showDialog(context: context, builder: (context) {
+                                  return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"),)
+                                  ]);
+                                }
+                                );
+                              } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3))));
+                              } else {
+                                showDialog(context: context, builder: (context) {
+                                  return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"),)
+                                  ]);
+                                }
+                                );
+                              }}
                           },
                         ),
                         visible: hasData,
