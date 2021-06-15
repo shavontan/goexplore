@@ -12,6 +12,7 @@ Future<void> userSetup(String username, String email) async {
     'email': email,
     'points': 0,
     'onAdventure': false,
+    'adventureLocation': null,
   });
   return;
 }

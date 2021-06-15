@@ -38,6 +38,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    updateHistory("LALA");
+
     return MaterialApp(home: SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
@@ -196,4 +198,18 @@ Future<int> getPoints() async {
       .doc(uid)
       .get()
       .then((value) {return value['points'];});
+}
+
+void updateHistory(String locationName) async {
+  print("!!!!!!!!!!!!!!!!!!!!!");
+  String uid = await getCurrentUID();
+  List<Timestamp> list = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('history')
+      .doc(locationName)
+      .get()
+      .then((value) {return value['dates'];});
+  print(list);
+  //.update({'name':locationName, 'date':DateTime.now()});
 }

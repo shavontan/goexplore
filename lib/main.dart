@@ -7,6 +7,9 @@ import './SignUpPage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:panorama/panorama.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Testing GoExplore',
       theme: ThemeData(
@@ -48,6 +52,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: SingleChildScrollView(
             child: Column(
