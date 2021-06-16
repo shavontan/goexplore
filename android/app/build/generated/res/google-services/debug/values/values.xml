@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">458970426529-6rh2i7shqitjak4er9gliaon09tvvafn.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">458970426529</string>
+    <string name="google_api_key" translatable="false">AIzaSyCjMH3oZQ287LPalqvnfJb0FlHqOiWMVBM</string>
+    <string name="google_app_id" translatable="false">1:458970426529:android:173a5731be2f51912154e0</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCjMH3oZQ287LPalqvnfJb0FlHqOiWMVBM</string>
+    <string name="google_storage_bucket" translatable="false">goexplore-af61c.appspot.com</string>
+    <string name="project_id" translatable="false">goexplore-af61c</string>
+</resources>
