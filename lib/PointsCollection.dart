@@ -50,7 +50,7 @@ class _CollectionState extends State<Collection> {
                             height: 300,
                             width: 300,
                             child: Opacity(
-                              child: Image.network(widget.URL),
+                              child: FittedBox(child: Image.network(widget.URL),fit: BoxFit.cover),
                               opacity: 0.25,
                             )
                         ),
@@ -58,14 +58,14 @@ class _CollectionState extends State<Collection> {
                       ),
                       Positioned(
                         child: ConstrainedBox(child: Text(widget.location, style: GoogleFonts.neucha(fontSize: 20), textAlign: TextAlign.center,),
-                          constraints: BoxConstraints(maxWidth: 250),),
-                        left: 90,
-                        top: 80,
+                          constraints: BoxConstraints(maxWidth: 250, maxHeight: 35),),
+                        top: 10,
+                        left: 10,
                       ),
                       Positioned(
                         child:Text("Congratulations!", style: GoogleFonts.kalam(fontSize: 40)),
                         left: 15,
-                        top: 20,
+                        top: 40,
                       ),
                       Positioned(
                         child: ConstrainedBox(child: Text("You have earned $pointsEarned points", style: GoogleFonts.kalam(fontSize: 30), textAlign: TextAlign.center,),

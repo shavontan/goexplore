@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'swipe.dart';
+import 'RecreationFilterPage.dart';
 
 // class Categories extends StatefulWidget {
 //   @override
@@ -68,8 +69,9 @@ class Categories extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [], double.infinity)));
-                          print("tapped");
+                              MaterialPageRoute(builder: (context) => RecreationFilter()));
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [], double.infinity)));
                         },
                         child: Card(
                             child: Stack(children: [
