@@ -21,7 +21,7 @@ class BookmarkState extends State<Bookmark> {
   String bookmarkName;
   BookmarkState(this.bookmarkName);
 
-  void refresh() => setState(() => {print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")});
+  void refresh() => setState(() => {});
 
   @override
   Widget build(BuildContext context) {

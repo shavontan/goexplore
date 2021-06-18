@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../bookmarksbar.dart';
 import 'ExtraInfo.dart';
 import 'package:panorama/panorama.dart';
 
@@ -87,6 +88,7 @@ class _SwipingTileState extends State<SwipingTile> {
                       left: 20),
                   visible: !activateExtraInfo),
             ]
-        ));
+        )
+    );
   }
 }

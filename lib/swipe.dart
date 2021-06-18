@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'CustomWidgets/SwipingTile.dart';
 import 'flutterfire.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import './bookmarksbar.dart';
 
 import 'package:geocoding/geocoding.dart' as gc;
 import 'package:geolocator/geolocator.dart';
+
 // // import 'package:geolocation/geolocation.dart';
 // // import 'package:location/location.dart';
 //
@@ -96,26 +98,26 @@ class _SwipeState extends State<Swipe> {
               }
 
               return Scaffold(
-                appBar: AppBar(
-                  title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
-                  backgroundColor: Color(0xB6C4CAE8),
-                  elevation: 0.0,
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                  ),
-                  // actions: [
-                  //   IconButton(
-                  //       icon: Icon(Icons.account_circle, color: Colors.white),
-                  //       onPressed: () {
-                  //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
-                  //       })
-                  // ],
-                ),
+                // appBar: AppBar(
+                //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
+                //   backgroundColor: Color(0xB6C4CAE8),
+                //   elevation: 0.0,
+                //   leading: IconButton(
+                //     icon: Icon(Icons.arrow_back, color: Colors.white),
+                //     onPressed: () {
+                //       Navigator.pop(context, false);
+                //     },
+                //   ),
+                //   // actions: [
+                //   //   IconButton(
+                //   //       icon: Icon(Icons.account_circle, color: Colors.white),
+                //   //       onPressed: () {
+                //   //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+                //   //       })
+                //   // ],
+                // ),
                 body: Stack(children: _Cards),
-                bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
               );
             }
         )
@@ -135,63 +137,16 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    RandomColor _randomColor = RandomColor();
-    Color _color = _randomColor.randomColor(
-      colorBrightness: ColorBrightness.light,
-      colorSaturation: ColorSaturation.lowSaturation,
-    );
+    List<String> images = [];
+    doc['imageList'].forEach((item) {
+      images.add(item as String);
+    });
 
-    return Swipable(
+    return Stack(
+        children: [Swipable(
       // Set the swipable widget
-        child: Center(
-          child: Container(
-            child: Column(children: [
-              Container(height: 10),
-              ConstrainedBox(
-                child: Image.network(doc['imageURL']), //'assets/images/SGbackground.png',    // Change to location image – database
-                constraints: BoxConstraints(maxWidth: 275, maxHeight: 170),
-              ),
-              Container(height: 5),
-              ConstrainedBox(
-                child: Text(
-                  doc['name'],
-                  style: GoogleFonts.kalam(fontSize: 27, color: Colors.black),
-                  textAlign: TextAlign.center,
-                ),
-                constraints: BoxConstraints(maxWidth: 275, maxHeight: 100),
-              ),
-              Container(height: 5),
-              ConstrainedBox(
-                child: Text(
-                  doc['description'],
-                  style: GoogleFonts.patrickHand(
-                    fontSize: 19,
-                    color: Colors.black45,
-                  ),
-                ),
-                constraints: BoxConstraints(maxWidth: 250, maxHeight: 270),
-              ),
-              Container(height: 13),
-              ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 250, maxHeight: 50),
-                  child: Text(
-                    "Price range: " + doc['price'].toString(),
-                    style: GoogleFonts.patrickHand(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                    textAlign: TextAlign.start,
-                  ))
-            ]),
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.7,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: _color,
-            ),
-          ),
-        ),
+        child: SwipingTile(address: doc['address'], description: doc['description'],
+          imageURL_360: doc['360image'], imageURLs: images, name: doc['name'],),
         onSwipeDown: (finalPosition) async {
 
           List<dynamic> bookmarks = await getBookmarks();
@@ -208,8 +163,10 @@ class _Card extends StatelessWidget {
                 'name' : doc['name'],
                 'description' : doc['description'],
                 'price' : doc['price'],
+                'address' : doc['address'],
                 'tags' : doc['tags'],
-                'imageURL' : doc['imageURL'],
+                'imageList' : doc['imageList'],
+                '360image' : doc['360image'],
               });
             }
 
@@ -219,6 +176,18 @@ class _Card extends StatelessWidget {
         }
 
       // onSwipeRight, left, up, down, cancel, etc...
+    ),
+        Positioned(child: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+        left: 2, top: 725),
+        Positioned(child: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+          )
+
+        ]
     );
   }
 }
