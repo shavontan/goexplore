@@ -46,7 +46,7 @@ class _BookMarkTileState extends State<BookMarkTile> {
                 Positioned.fill(
                   child: Align(
                     child: ConstrainedBox(
-                      child: Text(widget.name, style: GoogleFonts.neucha(fontSize: 50, fontWeight: FontWeight.bold)),
+                      child: Text(widget.name, style: GoogleFonts.neucha(fontSize: 50, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                       constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 30, maxHeight: 200),),
                     alignment: Alignment.center,),
                 ),]),

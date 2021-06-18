@@ -38,19 +38,21 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
           ),),
         body: Stack(
             children: [
+              Container(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width),
               ExtraInfo(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address,),
               Visibility(child: Panorama(
                 child: Image.network(widget.imageURL_360),
               ),
                   visible: activate360),
-              IconButton(
+              Positioned(
+                  child: IconButton(
                 icon: Icon(Icons.threed_rotation, size: 40, color: Colors.black),
                 onPressed: () {
                   setState(() {
                     activate360 = !activate360;
                   });
                 },
-              )
+              ), right: 10, bottom: 10),
             ]));
   }
 }

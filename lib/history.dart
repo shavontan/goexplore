@@ -81,8 +81,9 @@ class History extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                          Text(location['name'],
-                            style: new TextStyle(fontSize: 30.0),),
+                          ConstrainedBox(child: Text(location['name'],
+                            style: new TextStyle(fontSize: 30.0), textAlign: TextAlign.center,),
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width -50,),),
                         ]),
                       ),
                       Padding(

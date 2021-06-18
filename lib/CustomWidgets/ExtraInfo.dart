@@ -30,9 +30,10 @@ class _ExtraInfoState extends State<ExtraInfo> {
       }
     }
 
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
         children: [
-          Text(widget.name, style: GoogleFonts.badScript(fontSize: 40, fontWeight: FontWeight.bold),),
+          Text(widget.name, style: GoogleFonts.badScript(fontSize: 40, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: images)
@@ -63,9 +64,10 @@ class _ExtraInfoState extends State<ExtraInfo> {
             child: Text(widget.description, style: GoogleFonts.delius(fontSize: 15,),
             ),
             constraints: BoxConstraints(maxWidth: w - 40),
-          )
+          ),
+          Container(height: 40),
 
         ]
-    );
+    ));
   }
 }

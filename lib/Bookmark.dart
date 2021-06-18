@@ -51,7 +51,7 @@ class BookmarkState extends State<Bookmark> {
                       Dismissible(
                         key: UniqueKey(),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(28, 0, 0, 0),
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child:
                                 BookMarkTile(name: snapshot.data!.docs[index]['name'],
                                   imageURL_360: snapshot.data!.docs[index]['360image'],

@@ -221,33 +221,35 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
       .where((d) => checkTags(d['tags'], tags));
 
   // Init PermissionHandler
-  bool status;
-  PermissionHandler permissionHandler = PermissionHandler();
-  // Request location permissions
-  status = await permissionHandler.requestLocationPermission();
+  // bool status;
+  // PermissionHandler permissionHandler = PermissionHandler();
+  // // Request location permissions
+  // status = await permissionHandler.requestLocationPermission();
+  //
+  // if (!status) {
+  //   return docsStream.toList();
+  // }
+  //
+  // FusedLocationProviderClient locationService = FusedLocationProviderClient();
+  // LocationRequest locationRequest = new LocationRequest();
+  // locationRequest.numUpdates = 1;
+  //
+  // await locationService.requestLocationUpdates(locationRequest);
+  // Location curr = await locationService.getLastLocation();
+  // double lat = curr.latitude;
+  // double long = curr.longitude;
+  //
+  //
+  // List<QueryDocumentSnapshot> docsList = [];
+  // for (QueryDocumentSnapshot d in docsStream) {
+  //   if(await checkDist(d, dist, status, lat, long)) {
+  //     docsList.add(d);
+  //   }
+  // }
+  //
+  // return docsList;
 
-  if (!status) {
-    return docsStream.toList();
-  }
-
-  FusedLocationProviderClient locationService = FusedLocationProviderClient();
-  LocationRequest locationRequest = new LocationRequest();
-  locationRequest.numUpdates = 1;
-
-  await locationService.requestLocationUpdates(locationRequest);
-  Location curr = await locationService.getLastLocation();
-  double lat = curr.latitude;
-  double long = curr.longitude;
-
-
-  List<QueryDocumentSnapshot> docsList = [];
-  for (QueryDocumentSnapshot d in docsStream) {
-    if(await checkDist(d, dist, status, lat, long)) {
-      docsList.add(d);
-    }
-  }
-
-  return docsList;
+  return docsStream.toList();
 
 }
 

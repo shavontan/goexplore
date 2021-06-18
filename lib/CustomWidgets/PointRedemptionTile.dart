@@ -61,7 +61,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                         child: Opacity(
                           child: widget.picture,
                           opacity: 0.25,
-                        )
+                        ),
                     ),
                     borderRadius: BorderRadius.circular(15.0),
                   ),
