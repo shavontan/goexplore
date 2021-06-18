@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:goexplore/swipe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CustomWidgets/SwipingTile.dart';
 
@@ -247,7 +248,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
-                      SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
+                      Swipe('recreation', 100, [], 500)));
+                      //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
               // pass data to database + go to next page
             },
           )
