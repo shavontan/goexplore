@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'swipe.dart';
 import 'RecreationFilterPage.dart';
+import 'ListPage.dart';
 
 // class Categories extends StatefulWidget {
 //   @override
@@ -34,6 +35,8 @@ class Categories extends StatelessWidget {
                     child: InkWell(
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => ListPage()));
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
                           // print("tapped");
