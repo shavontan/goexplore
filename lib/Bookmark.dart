@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'CustomWidgets/BookmarkTile.dart';
+import 'CustomWidgets/newBookmarkTile.dart';
 
 class Bookmark extends StatefulWidget {
 
@@ -33,8 +33,6 @@ class BookmarkState extends State<Bookmark> {
             return Center(child: CircularProgressIndicator());
           }
 
-          print(snapshot.data!.docs.length);
-
           return Scaffold(
               appBar: AppBar(
                 title: Text(this.bookmarkName, style: TextStyle(color: Colors.black)),
@@ -55,13 +53,18 @@ class BookmarkState extends State<Bookmark> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(28, 0, 0, 0),
                             child:
-                              BookmarkTile(
-                                bookmarkName: this.bookmarkName,
-                                image: Image.network(snapshot.data!.docs[index]['imageURL']),
-                                title: snapshot.data!.docs[index]['name'],
-                                shortDescription: snapshot.data!.docs[index]['description'],
-                                estimatedPrice: snapshot.data!.docs[index]['price'],
-                              )
+                                BookMarkTile(name: snapshot.data!.docs[index]['name'],
+                                  imageURL_360: snapshot.data!.docs[index]['360image'],
+                                  description: snapshot.data!.docs[index]['description'],
+                                  address: snapshot.data!.docs[index]['address'],
+                                  imgURLs: snapshot.data!.docs[index]['imageList'],)
+                              // BookmarkTile(
+                              //   bookmarkName: this.bookmarkName,
+                              //   image: Image.network(snapshot.data!.docs[index]['imageURL']),
+                              //   title: snapshot.data!.docs[index]['name'],
+                              //   shortDescription: snapshot.data!.docs[index]['description'],
+                              //   estimatedPrice: snapshot.data!.docs[index]['price'],
+                              // )
                           ),
                         onDismissed: (direction) async {
                           String locationName = snapshot.data!.docs[index]['name'];

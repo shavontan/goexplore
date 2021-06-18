@@ -246,9 +246,16 @@ class _RecreationFilterState extends State<RecreationFilter> {
           TextButton(
             child: Text("Ready To Go!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
             onPressed: () {
+              List<String> selectedTags = [];
+              for (int i = 0; i < selected.length; i++) {
+                if (selected[i] == 1) {
+                  selectedTags.add(widget.recreationTags[i]);
+                }
+              }
+              print(selectedTags);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
-                      Swipe('recreation', 100, [], 500)));
+                      Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
                       //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
               // pass data to database + go to next page
             },

@@ -74,7 +74,6 @@ class _SwipeState extends State<Swipe> {
   @override
   Widget build(BuildContext context) {
     // Stack of _Cards that can be swiped. Set width, height, etc here.
-    print("swipe");
 
     return Container(
 
@@ -95,6 +94,9 @@ class _SwipeState extends State<Swipe> {
                 _Cards.add(
                     _Card(randomDocs[i])
                 );
+
+                // print(randomDocs.length);
+                // print(randomDocs[i]['name']);
               }
 
               return Scaffold(
@@ -251,7 +253,17 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
 
 bool checkTags(List<dynamic> doc, List<String> tag) {
 
-  if (tag.every((item) => doc.contains(item)) && doc.length > 0 || tag.length == 0) {
+  if (tag.contains('Indoor') && tag.contains('Outdoor')) {
+    tag.remove('Indoor');
+    tag.remove('Outdoor');
+  }
+
+  if (tag.contains('Physical') && tag.contains('Leisure')) {
+    tag.remove('Physical');
+    tag.remove('Leisure');
+  }
+
+  if (tag.any((item) => doc.contains(item)) && doc.length > 0 || tag.length == 0) {
     return true;
   } else {
     return false;

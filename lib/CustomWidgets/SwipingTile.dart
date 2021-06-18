@@ -28,6 +28,7 @@ class _SwipingTileState extends State<SwipingTile> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Stack(
             alignment: Alignment.center,
