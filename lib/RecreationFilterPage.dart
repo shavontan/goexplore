@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'CustomWidgets/SwipingTile.dart';
 
 class RecreationFilter extends StatefulWidget {
   // const RecreationFilter({Key key}) : super(key: key);
@@ -20,6 +21,19 @@ class RecreationFilter extends StatefulWidget {
 }
 
 class _RecreationFilterState extends State<RecreationFilter> {
+  List<String> testerURLs = [
+    'https://1.bp.blogspot.com/-iUYjW8TuqtE/UkWmCkx_Z1I/AAAAAAAAdAA/Z08tUps8-yM/s1600/01+Cafe+Colbar+-+A+Journey+Back+In+Time+to+the+Colonial+Bar+@+9A+Whitchurch+Road+%5BNext+to+the+Upcoming+Mediapolis%5D+(Large).JPG',
+    'https://live.staticflickr.com/3387/5713143243_3ee59eacbf_b.jpg',
+    'https://untouristsingapore.files.wordpress.com/2015/03/kp6081607.jpg',
+    'https://thelionraw.files.wordpress.com/2013/02/img_7853.jpg'];
+
+  String name = "Cafe Colbar";
+  String address = "9A Whitchurch Road, Singapore 138839";
+  String description = "An old-school kopitiam from the 1950s that is untouched by time.";
+  String image_360 = "https://firebasestorage.googleapis.com/v0/b/goexplore-af61c.appspot.com/o/Adventure%20Cove%20Waterpark.jpg?alt=media&token=9c9f0129-480f-4473-b78c-f8f67955da99";
+
+
+
   var selected = new List.filled(8, 0, growable: false); // 8 = recreationTags.length
 
   double currentPriceLimit = 20;
@@ -231,6 +245,9 @@ class _RecreationFilterState extends State<RecreationFilter> {
           TextButton(
             child: Text("Ready To Go!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
             onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>
+                      SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
               // pass data to database + go to next page
             },
           )
