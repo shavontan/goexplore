@@ -60,12 +60,14 @@ class _ExtraInfoState extends State<ExtraInfo> {
             constraints: BoxConstraints(maxWidth: w - 40),
           ),
           Container(height: 5),
-          ConstrainedBox(
-            child: Text(widget.description, style: GoogleFonts.delius(fontSize: 15,),
-            ),
-            constraints: BoxConstraints(maxWidth: w - 40),
-          ),
-          Container(height: 40),
+          Container(
+            width: w - 40,
+            height: 130,
+            child: SingleChildScrollView(
+              child: Text(widget.description, style: GoogleFonts.delius(fontSize: 15,),
+              ),
+            ),),
+          Container(height: 10),
 
         ]
     ));
