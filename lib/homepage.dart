@@ -19,6 +19,7 @@ import './swipe.dart';
 
 import 'AdventureStack.dart';
 
+GlobalKey<AdventureStackState> advKey = GlobalKey<AdventureStackState>();
 
 class HomePage extends StatefulWidget {
   //const HomePage({Key key}) : super(key: key);
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AdventureStack())
+                            MaterialPageRoute(builder: (context) => AdventureStack(key: advKey))
                             );
                           },
                         )
@@ -394,27 +395,13 @@ void updateVisitedToday(String locationName) async {
 }
 
 // void resetVisitedToday() async {
-//   await FirebaseFirestore.instance
-//   .collection('users')
-//   .snapshots()
-//   .forEach((snapshot) {
-//
-//     snapshot.docs.forEach((doc) {
-//
-//       print(doc['email']);
-//       // doc.reference.update({'visitedToday':[]});
-//     });
+//   QuerySnapshot qs = await FirebaseFirestore.instance
+//       .collection('users')
+//       .get();
+//   qs.docs.forEach((doc) async {
+//     doc.reference.update({'visitedToday':[]});
 //   });
 // }
-
-void resetVisitedToday() async {
-  QuerySnapshot qs = await FirebaseFirestore.instance
-      .collection('users')
-      .get();
-  qs.docs.forEach((doc) async {
-    doc.reference.update({'visitedToday':[]});
-  });
-}
 
 Future<List<dynamic>> locationsVisitedToday() async {
   String uid = await getCurrentUID();

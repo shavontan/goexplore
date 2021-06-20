@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../bookmarksbar.dart';
@@ -35,7 +36,8 @@ class _SwipingTileState extends State<SwipingTile> {
             children: [
               AbsorbPointer(child:
               InkWell(child: Panorama(
-                child: Image.network(widget.imageURL_360),
+                child:
+                Image.network(widget.imageURL_360),
               ),
                 onDoubleTap: () {
                   setState(() {

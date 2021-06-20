@@ -57,7 +57,13 @@ class _MyListTileState extends State<MyListTile> {
     return Center(
         child: Column(
             children: [
-              BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360,),
+              InkWell(
+                child: BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360,),
+                onLongPress: () {
+                  // Add to bookmarks
+                },
+              ),
+              // BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360,),
               Row(
                 children: [
                   Container(width: 20),
