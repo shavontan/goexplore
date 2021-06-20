@@ -280,5 +280,10 @@ Future<bool> checkDist(QueryDocumentSnapshot doc, double requiredDist, bool stat
 
 }
 
+// Future<String> getImageURL(String locationName) async {
+//   String fileName = locationName + ".jpg";
+//   final ref = FirebaseStorage.instance.ref().child()
+// }
+
 
 

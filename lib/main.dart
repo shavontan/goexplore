@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,38 @@ void main() async {
   await anonymousSignIn();
 
   runApp(MyApp());
+}
+
+void resetVisitedToday() async {
+  QuerySnapshot qs = await FirebaseFirestore.instance
+      .collection('users')
+      .get();
+  qs.docs.forEach((doc) async {
+    doc.reference.update({'visitedToday':[]});
+  });
+}
+
+Future<bool> shouldUpdateVisitedToday() async {
+  String uid = await getCurrentUID();
+  DateTime lastLoggedIn = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {
+        return doc['lastLoggedIn'].toDate();
+      });
+  if (lastLoggedIn.day != DateTime.now().day) {
+    return true;
+  }
+  return false;
+}
+
+void updateLastLoggedIn() async {
+  String uid = await getCurrentUID();
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({'lastLoggedIn': Timestamp.now()});
 }
 
 class MyApp extends StatelessWidget {
@@ -109,6 +142,12 @@ class LoginScreen extends StatelessWidget {
                           bool shouldNavigate = await signIn(_email.text, _password.text);
                           bool verified = isVerified();
                           if (shouldNavigate && verified) {
+
+                            if (await shouldUpdateVisitedToday()) {
+                              resetVisitedToday();
+                            }
+                            updateLastLoggedIn();
+
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => HomePage()));
                           } else if (!shouldNavigate) {
