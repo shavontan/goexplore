@@ -1,6 +1,11 @@
+import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../PopupBookmark.dart';
+import '../flutterfire.dart';
 import 'newBookMarkTile.dart';
 
 
@@ -13,7 +18,8 @@ class MyListTile extends StatefulWidget {
   final List<String> tags;
   final int price;
 
-  const MyListTile({required this.imgURLs, required this.name, required this.description, required this.address, required this.imageURL_360, required this.tags, required this.price});
+  const MyListTile({required this.imgURLs, required this.name, required this.description,
+    required this.address, required this.imageURL_360, required this.tags, required this.price});
 
   @override
   _MyListTileState createState() => _MyListTileState();
@@ -41,10 +47,12 @@ class _MyListTileState extends State<MyListTile> {
 
   String toStringOfTags(List<String> tags) {
     String StringOfTags = "";
+    print(tags);
 
     for (String tag in tags) {
       StringOfTags = StringOfTags + "# $tag   ";
     }
+
     return StringOfTags;
   }
 
@@ -59,8 +67,46 @@ class _MyListTileState extends State<MyListTile> {
             children: [
               InkWell(
                 child: BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360,),
-                onLongPress: () {
+                onLongPress: () async {
                   // Add to bookmarks
+
+                  // var values = await showDialogGroupedCheckbox(
+                  //     context: context,
+                  //     cancelDialogText: "cancel",
+                  //     isMultiSelection: true,
+                  //     itemsTitle: await getBookmarks(), // List.generate(15, (index) => "$index"),
+                  //     submitDialogText: "select",
+                  //     dialogTitle: Text("Add " + widget.name + " to bookmarks:"),
+                  //     values:  await getBookmarks()); // List.generate(15, (index) => index));
+                  // if (values != null) {
+                  //   print(values);
+                  // }
+
+                  showAnimatedDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      // return ClassicGeneralDialogWidget(
+                      //   titleText: 'Title',
+                      //   contentText: 'content',
+                      //   onPositiveClick: () {
+                      //     Navigator.of(context).pop();
+                      //   },
+                      //   onNegativeClick: () {
+                      //     Navigator.of(context).pop();
+                      //   },
+                      // );
+
+
+                      return PopupBookmark(imgURLs: widget.imgURLs, name: widget.name,
+                          description: widget.description, address: widget.address,
+                          imageURL_360: widget.imageURL_360, tags: widget.tags, price: widget.price);
+                    },
+                    animationType: DialogTransitionType.size,
+                    curve: Curves.fastOutSlowIn,
+                    duration: Duration(seconds: 1),
+                  );
+
                 },
               ),
               // BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360,),
@@ -91,4 +137,20 @@ class _MyListTileState extends State<MyListTile> {
         )
     );
   }
+}
+
+Future<List<String>> getBookmarks() async {
+  final uid = await getCurrentUID();
+
+  List<dynamic> list = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {
+    return ((value.data() as Map)['bookmarks']);
+  });
+
+  List<String> bm = [];
+  list.forEach((item) {bm.add(item as String);});
+  return bm;
 }

@@ -179,8 +179,13 @@ class _Card extends StatelessWidget {
 
       // onSwipeRight, left, up, down, cancel, etc...
     ),
-        Positioned(child: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-        left: 2, top: 725),
+        Container(child:
+          Column(
+            children: [
+              Container(height: MediaQuery.of(context).size.height / 1.08),
+              SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+            ])
+        ),
         Positioned(child: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
