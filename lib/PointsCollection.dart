@@ -19,12 +19,15 @@ class Collection extends StatefulWidget {
 
 class _CollectionState extends State<Collection> {
   // final bool onAdventure = false; // EDIT THIS — get from data base
-  final int pointsEarned = 1000; // arbitrary number
-
+  int pointsEarned = 1000; // arbitrary number
 
   @override
   Widget build(BuildContext context) {
     final userPoints = context.watch<TrackPoints>();
+
+    if (widget.onAdventure) {
+      pointsEarned *= 2;
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -75,8 +78,11 @@ class _CollectionState extends State<Collection> {
                       ),
                       Positioned(
                         child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () async {
-                          widget.onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
-                          userPoints.changePoints(widget.onAdventure? 2*pointsEarned : pointsEarned);
+                          // widget.onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
+                          // userPoints.changePoints(widget.onAdventure? 2*pointsEarned : pointsEarned);
+
+                          updatePoints(pointsEarned);
+                          userPoints.changePoints(pointsEarned);
                           Navigator.pop(context);
 
 
