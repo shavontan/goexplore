@@ -23,7 +23,6 @@ class _ListPageState extends State<ListPage> {
   List<QueryDocumentSnapshot> _locationList;
   _ListPageState(this._locationList);
 
-
   bool confused = false;
 
   // // testing:
@@ -112,8 +111,8 @@ class _ListPageState extends State<ListPage> {
           ListView.builder(
             controller: _controller,
             itemCount:
-            // _isLoading ? _locationList.length + 1 : _locationList.length,
-            _locationList.length,
+                // _isLoading ? _locationList.length + 1 : _locationList.length,
+                _locationList.length,
             itemBuilder: (context, index) {
               if (_locationList.length == index) {
                 return Center(
@@ -122,41 +121,126 @@ class _ListPageState extends State<ListPage> {
                 // Change ALL the arguments to actual data from locations
 
                 List<String> images = [];
-                _locationList[index]['imageList'].forEach((item) {images.add(item as String);});
+                _locationList[index]['imageList'].forEach((item) {
+                  images.add(item as String);
+                });
                 List<String> tags = [];
-                _locationList[index]['tags'].forEach((item) {tags.add(item as String);});
+                _locationList[index]['tags'].forEach((item) {
+                  tags.add(item as String);
+                });
 
                 return MyListTile(
                     imgURLs: images,
                     name: _locationList[index]['name'],
-                    description:  _locationList[index]['description'],
-                    address:  _locationList[index]['address'],
-                    imageURL_360:  _locationList[index]['360image'],
-                    tags:  tags,
-                    price:  _locationList[index]['price']);
+                    description: _locationList[index]['description'],
+                    address: _locationList[index]['address'],
+                    imageURL_360: _locationList[index]['360image'],
+                    tags: tags,
+                    price: _locationList[index]['price']);
               }
             },
           ),
           Visibility(
             child: Center(
-              child: Container(
-                color: Colors.red,
-                height: 500,
-                width: 275,
-                child: Column(
-                  children: [
-                    SizedBox(child: SingleChildScrollView(child: Text("SAVE ME"), ), height: 450, width: 250),
-                    TextButton(
-                      child: Text("Close"),
-                      onPressed: () {
-                        setState(() {
-                          confused = false;
-                        });
-                      },
-                    ),
-                  ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  color: Colors.white,
+                  height: 500,
+                  width: 275,
+                  child: Column(
+                    children: [
+                      Container(height: 10),
+                      SizedBox(
+                          child: SingleChildScrollView(
+                              child: Column(
+                            children: [
+                              Container(height: 10),
+                              Text.rich(
+                                TextSpan(
+                                  text: "Features about this page",
+                                  style: GoogleFonts.delius(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                    text: "",
+                                    style: GoogleFonts.delius(
+                                      fontSize: 15,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text:
+                                              "This page provides a list of locations catered to your preferences, as indicated in your filters."),
+                                    ]),
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                    text: "",
+                                    style: GoogleFonts.delius(
+                                      fontSize: 15,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text:
+                                              "Each location has tags that provide more insight to a location's features and a price range to meet budgeting needs."),
+                                    ]),
+                              ),
+                              Container(height: 50),
+                              Text.rich(
+                                TextSpan(
+                                  text: "Tap (List Tile):",
+                                  style: GoogleFonts.delius(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                    text: "",
+                                    style: GoogleFonts.delius(
+                                      fontSize: 15,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text:
+                                              "This will bring you to a new page that provides"),
+                                      TextSpan(
+                                          text: " extra information ",
+                                          style: GoogleFonts.delius(
+                                              color: Colors.pinkAccent)),
+                                      TextSpan(
+                                          text:
+                                              "about this particular location"),
+                                    ]),
+                              ),
+                            ],
+                          )),
+                          height: 420,
+                          width: 250),
+                      Container(height: 10),
+                      TextButton(
+                        child: Text(
+                          "Close",
+                          style: GoogleFonts.itim(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            confused = false;
+                          });
+                        },
+                      ),
+                      Container(height: 10),
+                    ],
+                  ),
                 ),
-              ),),
+              ),
+            ),
             visible: confused,
           )
         ]));

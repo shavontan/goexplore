@@ -22,6 +22,7 @@ class ExtraInfoPage extends StatefulWidget {
 
 class _ExtraInfoPageState extends State<ExtraInfoPage> {
   bool activate360 = false;
+  bool confused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,17 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
             onPressed: () {
               Navigator.pop(context, false);
             },
-          ),),
+          ),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.help_outline, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      confused = true;
+                    });
+                  })
+            ]
+        ),
         body: Stack(
             children: [
               Container(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width),
@@ -53,6 +64,105 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
                   });
                 },
               ), right: 10, bottom: 10),
+              Visibility(
+child: Center(
+child: ClipRRect(
+borderRadius: BorderRadius.circular(15.0),
+child: Container(
+color: Colors.white,
+height: 500,
+width: 275,
+child: Column(
+children: [
+Container(height: 10),
+SizedBox(
+child: SingleChildScrollView(
+child: Column(
+children: [
+Container(height: 10),
+Text.rich(
+TextSpan(
+text: "Features about this page",
+style: GoogleFonts.delius(fontSize: 18, fontWeight: FontWeight.bold),
+),
+),
+Text.rich(
+TextSpan(
+text: "",
+style: GoogleFonts.delius(fontSize: 15,),
+children: <TextSpan>[
+TextSpan(text: "This page provides additional information about this location. "),
+]
+),
+),
+Container(height: 5),
+Text.rich(
+TextSpan(
+text: "",
+style: GoogleFonts.delius(fontSize: 15,),
+children: <TextSpan>[
+TextSpan(text: "We provide multiple images for the user to look through, the address of the location and more details about this location"),
+]
+),
+),
+Container(height: 50),
+Text.rich(
+TextSpan(
+text: "Horizontally Scroll (Images):",
+style: GoogleFonts.delius(fontSize: 18, fontWeight: FontWeight.bold),
+),
+),
+Text.rich(
+TextSpan(
+text: "",
+style: GoogleFonts.delius(fontSize: 15,),
+children: <TextSpan>[
+TextSpan(text: "Allows user to look at the many images we provide."),
+TextSpan(text: " Pinch to Zoom", style: GoogleFonts.delius(color: Colors.pinkAccent)),
+TextSpan(text: " in to get a better view. ")
+]
+),
+),
+
+Container(height: 20),
+Text.rich(
+TextSpan(
+text: "3D icon",
+style: GoogleFonts.delius(fontSize: 18, fontWeight: FontWeight.bold),
+),
+),
+Text.rich(
+TextSpan(
+text: "",
+style: GoogleFonts.delius(fontSize: 15,),
+children: <TextSpan>[
+TextSpan(text: "Click on this button to get a "),
+TextSpan(text: "360 view", style: GoogleFonts.delius(color: Colors.pinkAccent)),
+TextSpan(text: " of this location (where you can scroll around on)"),
+]
+),
+),
+
+],
+)),
+height: 420,
+width: 250
+),
+Container(height: 10),
+TextButton(
+child: Text("Close", style: GoogleFonts.itim(color: Colors.black, fontSize: 20,),),
+onPressed: () {
+setState(() {
+confused = false;
+});
+},
+),
+Container(height: 10),
+],
+),
+),),),
+visible: confused,
+)
             ]));
   }
 }
