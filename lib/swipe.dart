@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'CustomWidgets/SwipingTile.dart';
+import 'Return.dart';
 import 'flutterfire.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -69,7 +70,7 @@ class _SwipeState extends State<Swipe> {
 
   _SwipeState(this.category, this.price, this.tags, this.dist);
 
-  List<_Card> _Cards = [];
+  List<Widget> _Cards = [];
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +95,6 @@ class _SwipeState extends State<Swipe> {
                 _Cards.add(
                     _Card(randomDocs[i])
                 );
-
-                // print(randomDocs.length);
-                // print(randomDocs[i]['name']);
               }
 
               return Scaffold(
@@ -118,7 +116,7 @@ class _SwipeState extends State<Swipe> {
                 //   //       })
                 //   // ],
                 // ),
-                body: Stack(children: _Cards),
+                body: Stack(children: [Return(), ..._Cards]),
                 //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
               );
             }

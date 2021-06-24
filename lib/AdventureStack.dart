@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'CustomWidgets/AdventureTile.dart';
 import './AdventurePage.dart';
+import 'Return.dart';
 import 'homepage.dart';
 
 // GlobalKey<AdventureState> advKey = GlobalKey<AdventureState>();
@@ -38,7 +39,7 @@ class AdventureStackState extends State<AdventureStack> {
             _stack.add(AdventureTile(imageURLs: imagelist, name: doc['name'], address: doc['address'],
                 description: doc['description'], imageURL_360: doc['360image']));
           }
-          _stack.add(reloadPage());
+          _stack.add(Return());
 
           return Scaffold(body: Stack(
               children: [
@@ -115,30 +116,3 @@ Stream<QuerySnapshot> getAdventureLocationStreamSnapshots() async* {
       .snapshots();
 }
 
-class reloadPage extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(50),
-        child: Column(
-        children: [
-          Text("Oh no, we ran out of places! :("),
-          TextButton(
-            child: Row(
-              children: [
-                // Icon(Icons.refresh_outlined),
-                // Text("Refresh"),
-                Center(child: Text("Go back")),
-              ]
-            ),
-            onPressed: () {
-              // advKey.currentState!.reset();
-              Navigator.pop(context);
-            }
-          ),
-        ]
-    )
-    );
-  }
-}

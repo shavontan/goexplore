@@ -137,10 +137,13 @@ class ProfilePage extends StatelessWidget {
                       child: ColoredBox(
                           color: Color(0x33542357),
                           child: TextButton(
-                            child: Text('Settings',
+                            child: Text('Log out',
                                 style:
                                 GoogleFonts.scada(fontSize: 15, color: Colors.black)),
-                            onPressed: () {},
+                            onPressed: () {
+                              signOut();
+                              anonymousSignIn();
+                            },
                           )),
                     ),
                   ),

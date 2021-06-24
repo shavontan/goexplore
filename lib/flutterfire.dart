@@ -18,6 +18,10 @@ Future<void> anonymousSignIn() async {
   UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
 }
 
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
+}
+
 bool isVerified() {
   User user = FirebaseAuth.instance.currentUser as User;
 
