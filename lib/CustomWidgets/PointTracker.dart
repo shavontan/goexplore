@@ -10,9 +10,10 @@ class TrackPoints extends ChangeNotifier {
   }
 
   Future<int> getPoints() async {
+    if (!isLoggedIn()) {
+      return -1;
+    }
     String uid = await getCurrentUID();
-    print("!!!!!!!!!!!");
-    print(uid);
     return await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)

@@ -38,6 +38,7 @@ class _PopupBookmarkState extends State<PopupBookmark> {
         FutureBuilder<List<String>>(
           future: getBookmarks(),
             builder: (context, snapshot) {
+
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
@@ -311,7 +312,7 @@ class _PopupBookmarkState extends State<PopupBookmark> {
 }
 
 Future<List<String>> getBookmarks() async {
-  final uid = await getCurrentUID();
+  final String uid = await getCurrentUID();
 
   List<dynamic> list = await FirebaseFirestore.instance
       .collection('users')

@@ -169,8 +169,12 @@ class LoginScreen extends StatelessWidget {
                             }
                             updateLastLoggedIn();
 
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => MyApp2()));
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => MyApp2()),
+                                    (Route<dynamic> route) => false);
+
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) => MyApp2()));
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {

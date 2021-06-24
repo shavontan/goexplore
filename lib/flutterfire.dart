@@ -5,10 +5,16 @@ import 'package:goexplore/firebase.dart';
 
 Future<bool> signIn(String email, String password) async {
   try {
+    User currentUser = FirebaseAuth.instance.currentUser as User;
+    if (currentUser.isAnonymous) {
+      FirebaseAuth.instance.currentUser!.delete();
+    }
+
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     return true;
   } catch (e) {
+    await anonymousSignIn();
     print(e);
     return false;
   }
@@ -32,6 +38,11 @@ bool isVerified() {
 
 bool isLoggedIn() {
   User user = FirebaseAuth.instance.currentUser as User;
+
+  if (user == null) {
+    return false;
+  }
+
   if (!user.isAnonymous) {
     return user.emailVerified;
   }

@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './history.dart';
 import 'BookmarkList.dart';
 import 'PointsRedemptionPage.dart';
+import 'main.dart';
 
 // class ProfilePage extends StatefulWidget {
 //   //const ProfilePage({Key key}) : super(key: key);
@@ -140,9 +141,15 @@ class ProfilePage extends StatelessWidget {
                             child: Text('Log out',
                                 style:
                                 GoogleFonts.scada(fontSize: 15, color: Colors.black)),
-                            onPressed: () {
-                              signOut();
-                              anonymousSignIn();
+                            onPressed: () async {
+
+                              await signOut();
+                              await anonymousSignIn();
+
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MyApp2()),
+                                      (Route<dynamic> route) => false);
                             },
                           )),
                     ),

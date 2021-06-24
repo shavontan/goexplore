@@ -13,6 +13,8 @@ Future<void> userSetup(String username, String email) async {
     'points': 0,
     'adventureLocations': [],
     'visitedToday': [],
+    'bookmarks': [],
+    'lastLoggedIn': Timestamp.now(),
   });
   return;
 }

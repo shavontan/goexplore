@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -158,7 +159,31 @@ class _HomePageState extends State<HomePage> {
                           // if (anonymous user) {
                           //   POPUP MESSAGE OR GO TO SIGNUP/LOGIN
                           // } else {
-                          _scan();
+                          if (!isLoggedIn()) {
+                            showAnimatedDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Uh Oh!"),
+                                  content: Text("You currently don't have an account. \n\nLog in or sign up now to start earning points!"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                      Navigator.pop(context);
+                                      },
+                                      child: Text("Cancel", style: TextStyle(color: Colors.grey)),),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => MyApp()));
+                                      },
+                                    child: Text("Proceed"),)
+                              ]);
+                          });}
+
+                          else {
+                          await _scan();
                           if (!qrCode.contains("G0ExPl0rE")) {
                             showDialog(context: context, builder: (context) {
                               return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
@@ -218,107 +243,17 @@ class _HomePageState extends State<HomePage> {
                                 ]);
                             });
                           }
-                        }
+                        }}
                         },
                       ),
 
-                      //Container(height: 10),
-
-                      // Visibility(
-                      //   child: TextButton(
-                      //     child: Text('Redeem Points now',
-                      //       style: GoogleFonts.raviPrakash(fontSize: 20, color: Colors.amber),),
-                      //
-                      //     // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***
-                      //
-                      //     onPressed: () async {
-                      //       if (!qrCode.contains("G0ExPl0rE")) {
-                      //         showDialog(context: context, builder: (context) {
-                      //           return AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
-                      //             MaterialButton(
-                      //               onPressed: () {
-                      //                 Navigator.pop(context);
-                      //               },
-                      //               child: Text("OK"),)
-                      //           ]);
-                      //         }
-                      //         );
-                      //       } else {
-                      //         List<String> substrings = qrCode.split("_");
-                      //
-                      //         if (substrings.length != 4) {
-                      //           showDialog(context: context, builder: (context) {
-                      //             return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
-                      //               MaterialButton(
-                      //                 onPressed: () {
-                      //                   Navigator.pop(context);
-                      //                 },
-                      //                 child: Text("OK"),)
-                      //             ]);
-                      //           }
-                      //           );
-                      //         } else if (await alreadyVisitedToday(substrings.elementAt(2))) {
-                      //           showDialog(context: context, builder: (context) {
-                      //             return AlertDialog(title: Text("Already scanned QR code"), actions: <Widget>[
-                      //               MaterialButton(
-                      //                 onPressed: () {
-                      //                   Navigator.pop(context);
-                      //                 },
-                      //                 child: Text("OK"),)
-                      //             ]);
-                      //           }
-                      //           );
-                      //         } else if (await isValidLocation(substrings.elementAt(1), substrings.elementAt(2))) {
-                      //           bool onAdventure = await validAdventureLocation(substrings.elementAt(2));
-                      //           updateHistory(substrings.elementAt(2), substrings.elementAt(3));
-                      //           removeAdventureLocation(substrings.elementAt(2));
-                      //           updateVisitedToday(substrings.elementAt(2));
-                      //
-                      //           // Navigator.push(context, MaterialPageRoute(
-                      //           //     builder: (context) => Collection(location: substrings.elementAt(2), URL: substrings.elementAt(3), onAdventure: onAdventure)))
-                      //           // .then((value) {
-                      //           //   updatePoints(1000);
-                      //           //   setState(() {
-                      //           //   });
-                      //
-                      //           Navigator.push(context, MaterialPageRoute(
-                      //               builder: (context) => AlertDialog(title: Text("Invalid QR code: 1"), actions: <Widget>[
-                      //                 MaterialButton(
-                      //                   onPressed: () {
-                      //                     Navigator.pop(context);
-                      //                   },
-                      //                   child: Text("OK"),)
-                      //               ])))
-                      //               .then((value) {
-                      //             updatePoints(1000);
-                      //             setState(() {
-                      //             });
-                      //           });
-                      //
-                      //         } else {
-                      //           showDialog(context: context, builder: (context) {
-                      //             return AlertDialog(title: Text("Invalid QR code"), actions: <Widget>[
-                      //               MaterialButton(
-                      //                 onPressed: () {
-                      //                   Navigator.pop(context);
-                      //                 },
-                      //                 child: Text("OK"),)
-                      //             ]);
-                      //           }
-                      //           );
-                      //         }}
-                      //     },
-                      //   ),
-                      //   visible: hasData,
-                      // ),
-
-
-                  UserPoints(points: userPoints.points,)
+                      UserPoints(points: userPoints.points,)
 
                   // ADD POINTS WIDGET ---------------------------------------------------------------------------------------------------------
                 ],
               ),
-            );}
+            );
+                }
         )
         )
     );
