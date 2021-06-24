@@ -11,6 +11,8 @@ class TrackPoints extends ChangeNotifier {
 
   Future<int> getPoints() async {
     String uid = await getCurrentUID();
+    print("!!!!!!!!!!!");
+    print(uid);
     return await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)

@@ -20,7 +20,7 @@ void main() async {
 
   await anonymousSignIn();
 
-  runApp(MyApp());
+  runApp(MyApp2());
 }
 
 void resetVisitedToday() async {
@@ -76,6 +76,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class MyApp2 extends StatelessWidget {
+  // This widget is the root of your application.
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ChangeNotifierProvider(
+        create: (context) => TrackPoints(),
+        child: MaterialApp(
+          title: 'Testing GoExplore',
+          theme: ThemeData(
+            primarySwatch: Colors.pink,
+          ),
+          home: Scaffold(
+            backgroundColor: Colors.white,
+            body: HomePage(),
+          ),
+        ));
+  }
+}
+
 // class LoginScreen extends StatefulWidget {
 //   //const LoginScreen({Key key}) : super(key: key);
 //
@@ -91,7 +112,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
+    return Scaffold(body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -149,7 +170,7 @@ class LoginScreen extends StatelessWidget {
                             updateLastLoggedIn();
 
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => HomePage()));
+                                MaterialPageRoute(builder: (context) => MyApp2()));
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {
@@ -199,6 +220,6 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.center,
                     )),
               ],
-            )));
+            ))));
   }
 }

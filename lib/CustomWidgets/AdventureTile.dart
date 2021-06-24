@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../AdventureStack.dart';
 import '../flutterfire.dart';
 import '../homepage.dart';
+import '../main.dart';
 import 'ExtraInfo.dart';
 import 'package:panorama/panorama.dart';
 
@@ -106,6 +107,23 @@ class AdventureTileState extends State<AdventureTile> {
                                 barrierDismissible: true,
                                 builder: (BuildContext context) {
                                   updateAdventureLocation(widget.name);
+
+                                  if (!isLoggedIn()) {
+                                    return AlertDialog(
+                                        title: Text("Uh Oh!"),
+                                        content: Text("You currently don't have an account. \n\nLog in or sign up now to start collecting points!"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            }, child: Text("Cancel", style: TextStyle(color: Colors.grey)),),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) => MyApp()));
+                                            }, child: Text("Proceed"),)
+                                        ]);
+                                  }
 
                                   return ClassicGeneralDialogWidget(
                                     titleText: "You're all set!",

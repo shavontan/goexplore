@@ -18,6 +18,7 @@ import 'CustomWidgets/PointTracker.dart';
 import './swipe.dart';
 
 import 'AdventureStack.dart';
+import 'main.dart';
 
 GlobalKey<AdventureStackState> advKey = GlobalKey<AdventureStackState>();
 
@@ -52,17 +53,22 @@ class _HomePageState extends State<HomePage> {
                 title: Text('HomePage', style: TextStyle(color: Colors.black)),
                 backgroundColor: Color(0xB6C4CAE8),
                 elevation: 0.0,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                ),
+                // leading: IconButton(
+                //   icon: Icon(Icons.arrow_back, color: Colors.white),
+                //   onPressed: () {
+                //     Navigator.pop(context, false);
+                //   },
+                // ),
                 actions: [
                   IconButton(
                       icon: Icon(Icons.account_circle, color: Colors.white),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+                        if (isLoggedIn()) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(),),);
+                        }
+                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
                       })
                 ]),
             body: FutureBuilder(

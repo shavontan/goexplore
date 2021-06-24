@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../PopupBookmark.dart';
 import '../flutterfire.dart';
+import '../main.dart';
 import 'newBookMarkTile.dart';
 
 
@@ -96,6 +97,23 @@ class _MyListTileState extends State<MyListTile> {
                       //     Navigator.of(context).pop();
                       //   },
                       // );
+
+                      if (!isLoggedIn()) {
+                        return AlertDialog(
+                            title: Text("Uh Oh!"),
+                            content: Text("You currently don't have an account. \n\nLog in or sign up now to start adding to bookmarks!"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }, child: Text("Cancel", style: TextStyle(color: Colors.grey)),),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => MyApp()));
+                              }, child: Text("Proceed"),)
+                        ]);
+                      }
 
 
                       return PopupBookmark(imgURLs: widget.imgURLs, name: widget.name,
