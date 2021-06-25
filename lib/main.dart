@@ -112,12 +112,33 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(body: SafeArea(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Login page', style: TextStyle(color: Colors.black)),
+          backgroundColor: Color(0xB6C4CAE8),
+          elevation: 0.0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+            onPressed: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+              Navigator.pop(context);
+            },
+          ),),
+        backgroundColor: Colors.white,
+        body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(height: 10),
+
+                // IconButton(
+                //     icon: Icon(Icons.arrow_back, color: Colors.white),
+                //     onPressed: () {
+                //       Navigator.pop(context, false);
+                //     },
+                //   ),
+
                 Container(
                   child: Image.asset('assets/images/Logo.png'),
                   alignment: Alignment.center,
@@ -169,12 +190,12 @@ class LoginScreen extends StatelessWidget {
                             }
                             updateLastLoggedIn();
 
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => MyApp2()),
-                                    (Route<dynamic> route) => false);
+                            // Navigator.of(context).pushAndRemoveUntil(
+                            //     MaterialPageRoute(builder: (context) => MyApp2()),
+                            //         (Route<dynamic> route) => false);
 
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) => MyApp2()));
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => MyApp2()));
                           } else if (!shouldNavigate) {
                             // incorrect password/email
                             showDialog(context: context, builder: (context) {

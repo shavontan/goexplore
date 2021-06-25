@@ -18,6 +18,29 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+           leadingWidth: 30,
+           // centerTitle: false,
+           titleSpacing: 0,
+          title: Text('Login', style: TextStyle(color: Colors.black, fontSize: 15)),
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.chevron_left_outlined, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+    )),
+          // leading: SingleChildScrollView(scrollDirection: Axis.horizontal,
+          //     child:
+          //   FlatButton.icon(
+          //   label: Text("Login"),
+          //   icon: Icon(Icons.chevron_left_outlined, color: Colors.black),
+          //   onPressed: () {
+          //     print("pressed");
+          //     Navigator.pop(context);
+          //   },
+          // )),),
         backgroundColor: Colors.white,
         body: SafeArea(
             child: SingleChildScrollView(
