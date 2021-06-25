@@ -146,10 +146,13 @@ class ProfilePage extends StatelessWidget {
                               await signOut();
                               await anonymousSignIn();
 
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => MyApp2()),
-                                      (Route<dynamic> route) => false);
+                              // Navigator.pushAndRemoveUntil(
+                              //     context,
+                              //     MaterialPageRoute(builder: (context) => MyApp2()),
+                              //         (Route<dynamic> route) => false);
+
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MyApp2()));
                             },
                           )),
                     ),

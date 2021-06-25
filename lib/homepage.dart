@@ -20,6 +20,8 @@ import './swipe.dart';
 import 'AdventureStack.dart';
 import 'main.dart';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
+
 GlobalKey<AdventureStackState> advKey = GlobalKey<AdventureStackState>();
 
 class HomePage extends StatefulWidget {
@@ -30,6 +32,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+   BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    print("BACK BUTTON!"); // Do some stuff.
+    print(info.routeWhenAdded);
+
+    return true;
+  }
+
   String qrCode = 'Unknown';
   bool hasData = false;
   bool confused = false;
@@ -81,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyApp(),
+                              builder: (context) => LoginScreen(),
                             ),
                           );
                         }

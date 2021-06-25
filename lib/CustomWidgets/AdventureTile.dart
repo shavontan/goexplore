@@ -120,7 +120,7 @@ class AdventureTileState extends State<AdventureTile> {
                                           TextButton(
                                             onPressed: () {
                                               Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) => MyApp()));
+                                                  MaterialPageRoute(builder: (context) => LoginScreen()));
                                             }, child: Text("Proceed"),)
                                         ]);
                                   }

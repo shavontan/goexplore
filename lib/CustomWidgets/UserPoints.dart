@@ -54,7 +54,7 @@ class UserPoints extends StatelessWidget {
               // )
             ]),
           )), onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(),),);},
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),),);},
       );
     }
     return SizedBox(
