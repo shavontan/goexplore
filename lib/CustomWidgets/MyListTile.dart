@@ -101,7 +101,7 @@ class _MyListTileState extends State<MyListTile> {
                       if (!isLoggedIn()) {
                         return AlertDialog(
                             title: Text("Uh Oh!"),
-                            content: Text("You currently don't have an account. \n\nLog in or sign up now to start adding to bookmarks!"),
+                            content: Text("You currently do not have an account. \n\nLog in or sign up now to start adding to bookmarks!"),
                         actions: [
                           TextButton(
                             onPressed: () {

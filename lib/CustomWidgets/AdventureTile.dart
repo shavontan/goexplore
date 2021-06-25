@@ -111,7 +111,7 @@ class AdventureTileState extends State<AdventureTile> {
                                   if (!isLoggedIn()) {
                                     return AlertDialog(
                                         title: Text("Uh Oh!"),
-                                        content: Text("You currently don't have an account. \n\nLog in or sign up now to start collecting points!"),
+                                        content: Text("You currently do not have an account. \n\nLog in or sign up now to start collecting points!"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
