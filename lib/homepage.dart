@@ -46,8 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     print("BACK BUTTON!"); // Do some stuff.
-    print(info.routeWhenAdded);
-
     return true;
   }
 
@@ -213,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                       return AlertDialog(
                                           title: Text("Uh Oh!"),
                                           content: Text(
-                                              "You currently don't have an account. \n\nLog in or sign up now to start earning points!"),
+                                              "You currently do not have an account. \n\nLog in or sign up now to start earning points!"),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -229,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            MyApp()));
+                                                            LoginScreen()));
                                               },
                                               child: Text("Proceed"),
                                             )

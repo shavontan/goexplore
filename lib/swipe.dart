@@ -16,30 +16,11 @@ import 'package:geolocator/geolocator.dart';
 
 // // import 'package:geolocation/geolocation.dart';
 // // import 'package:location/location.dart';
-//
-// // beautiful popup imports
-// import 'package:flutter_beautiful_popup/main.dart';
-// import 'package:flutter_beautiful_popup/templates/Authentication.dart';
-// import 'package:flutter_beautiful_popup/templates/BlueRocket.dart';
-// import 'package:flutter_beautiful_popup/templates/Camera.dart';
-// import 'package:flutter_beautiful_popup/templates/Coin.dart';
-// import 'package:flutter_beautiful_popup/templates/Common.dart';
-// import 'package:flutter_beautiful_popup/templates/Fail.dart';
-// import 'package:flutter_beautiful_popup/templates/Geolocation.dart';
-// import 'package:flutter_beautiful_popup/templates/Gift.dart';
-// import 'package:flutter_beautiful_popup/templates/GreenRocket.dart';
-// import 'package:flutter_beautiful_popup/templates/Notification.dart';
-// import 'package:flutter_beautiful_popup/templates/OrangeRocket.dart';
-// import 'package:flutter_beautiful_popup/templates/OrangeRocket2.dart';
-// import 'package:flutter_beautiful_popup/templates/RedPacket.dart';
-// import 'package:flutter_beautiful_popup/templates/Success.dart';
-// import 'package:flutter_beautiful_popup/templates/Term.dart';
-// import 'package:flutter_beautiful_popup/templates/Thumb.dart';
 
-import 'package:huawei_location/location/fused_location_provider_client.dart';
-import 'package:huawei_location/location/location.dart';
-import 'package:huawei_location/location/location_request.dart';
-import 'package:huawei_location/permission/permission_handler.dart';
+// import 'package:huawei_location/location/fused_location_provider_client.dart';
+// import 'package:huawei_location/location/location.dart';
+// import 'package:huawei_location/location/location_request.dart';
+// import 'package:huawei_location/permission/permission_handler.dart';
 
 // Link to DB
 
@@ -56,7 +37,7 @@ class Swipe extends StatefulWidget {
       _SwipeState(this.category, this.price, this.tags, this.dist);
 }
 
-final globalKey = GlobalKey<BookmarksBarState>();
+// final globalKey = GlobalKey<BookmarksBarState>();
 
 class _SwipeState extends State<Swipe> {
   // Dynamically load _Cards from database
@@ -536,6 +517,7 @@ class _newCard extends StatefulWidget {
 
 class __newCardState extends State<_newCard> {
   bool confused = false;
+  final globalKey = GlobalKey<BookmarksBarState>();
 
   @override
   Widget build(BuildContext context) {

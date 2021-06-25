@@ -38,7 +38,7 @@ dependencies:
   random_color: ^1.0.5
   flutter_animated_dialog: ^2.0.0
   screenshot: ^0.3.0
-  huawei_location: ^5.1.0+301
+  #huawei_location: ^5.1.0+301
   geocoding: ^2.0.0
   geolocator: ^7.0.3
   panorama: ^0.4.1
