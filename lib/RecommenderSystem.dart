@@ -1,17 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ml_linalg/matrix.dart';
 
 
 // How to use:
 // calling new Recommender(num_rec: ???).getRecommendations()      =>  returns a List<String> of TOP 'num_rec' recommendations of location names
 
+// remember check for fnb / recreation
 class Recommender {
+
   int num_rec = 0;
   List<String> user = ['USER'];
   List<String> locations = ['Kong Cafe', 'Green Dot', 'Steak House',
     'Macdonald', 'Koi Cafe', 'The Boneless Kitchen',
     'Takagi Ramen', 'Super Amazing Kitchen', 'Hotel Food'];
 
-  List<String> tags = ['Ambience', 'Affordable', 'Western', 'Asian'];
+  List<String> tags = ['Ambience', 'Affordable', 'Western', 'Asian']; //* bits
 
   List<List<double>> tags_in_bits = [ [1, 0, 0, 1],
     [0, 0, 0, 1],   // Green Dot
@@ -31,14 +34,16 @@ class Recommender {
   int num_users = 1;
   int num_locations = 0;
   int num_tags = 0;
+  String category = "";
 
 
 
-  Recommender({required int num_rec}) {
+  Recommender({required int num_rec, required String category, required List<double> userTimes}) {
     this.num_rec = num_rec;
     this.num_locations = this.locations.length;
     this.num_tags = this.tags.length;
-
+    this.category = category;
+    this.userTimes = userTimes;
   }
 
   List<String> getRecommendations() {
@@ -131,3 +136,4 @@ class Recommender {
   }
 
 }
+

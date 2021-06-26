@@ -94,7 +94,7 @@ class SignUpPage extends StatelessWidget {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MyApp(),
+                                                    MyApp2(),
                                                   ),
                                                 );
                                               },
