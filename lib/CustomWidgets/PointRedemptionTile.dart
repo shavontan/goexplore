@@ -52,19 +52,16 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
         child: SizedBox(
         height: 200,
         width: 200,
-        child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-            child: Stack(
-                children: [
-                  ClipRRect(
-                    child: FittedBox(
-                        child: Opacity(
-                          child: widget.picture,
-                          opacity: 0.25,
-                        ),
-                    ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
+        child: Stack(
+            children: [
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: ClipRRect(
+                  child: Opacity(
+                    child: widget.picture, opacity: 0.25,),
+                  borderRadius: BorderRadius.circular(15.0),),
+              ),
                   Positioned(
                     child: ConstrainedBox(
                       child: Text(widget.promotion,      // BUY 1 GET 1 FREE
@@ -101,8 +98,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                   ),
                 ]
             )
-        )
-    ),
+        ),
       onTap: () async {
         int p = await getPoints();
         if (p >= widget.cost) {
