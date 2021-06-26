@@ -24,6 +24,8 @@ import 'package:geolocator/geolocator.dart';
 
 // Link to DB
 
+Stopwatch stopwatch = new Stopwatch();
+
 class Swipe extends StatefulWidget {
   final String category;
   final int price;
@@ -74,9 +76,11 @@ class _SwipeState extends State<Swipe> {
               final length = randomDocs.length;
 
               for (int i = 0; i < length; i++) {
-                _Cards.add(_newCard(doc: randomDocs[i]));
+                _Cards.add(_newCard(doc: randomDocs[i], category: category));
               }
 
+              stopwatch.reset();
+              stopwatch.start();
               return Scaffold(
                 // appBar: AppBar(
                 //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
@@ -507,8 +511,9 @@ class _SwipeState extends State<Swipe> {
 
 class _newCard extends StatefulWidget {
   final DocumentSnapshot doc;
+  final String category;
 
-  const _newCard({required this.doc});
+  const _newCard({required this.doc, required this.category});
 
 
   @override
@@ -538,6 +543,12 @@ class __newCardState extends State<_newCard> {
                 name: widget.doc['name'],
               ),
               onSwipeDown: (finalPosition) async {
+                stopwatch.stop();
+                double time = stopwatch.elapsedMilliseconds / 1000;
+                updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+                stopwatch.reset();
+                stopwatch.start();
+
                 List<dynamic> bookmarks = await getBookmarks();
                 String uid = await getCurrentUID();
                 final List<bool> isSelected = globalKey.currentState!.isSelected;
@@ -561,7 +572,29 @@ class __newCardState extends State<_newCard> {
                   }
                 }
                 globalKey.currentState!.resetSelection();
-              }
+              },
+            onSwipeLeft: (finalPosition) async {
+              stopwatch.stop();
+              double time = stopwatch.elapsedMilliseconds / 1000;
+              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+              stopwatch.reset();
+              stopwatch.start();
+            },
+            onSwipeRight: (finalPosition) async {
+              stopwatch.stop();
+              double time = stopwatch.elapsedMilliseconds / 1000;
+              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+              stopwatch.reset();
+              stopwatch.start();
+            },
+
+            onSwipeUp: (finalPosition) async {
+              stopwatch.stop();
+              double time = stopwatch.elapsedMilliseconds / 1000;
+              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+              stopwatch.reset();
+              stopwatch.start();
+            },
 
             // onSwipeRight, left, up, down, cancel, etc...
           ),
@@ -907,6 +940,44 @@ class __newCardState extends State<_newCard> {
   }
 }
 
+Future<void> updateAvgTimeSeen(String category, String locationName, double time) async {
+  String uid = await getCurrentUID();
+
+  String categoryAvgTime = category + "AvgTime";
+  String categorySeen = category + "Seen";
+
+  List<dynamic> avgList = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[categoryAvgTime];});
+  
+  int locationID = await FirebaseFirestore.instance
+    .collection(category)
+    .doc(locationName)
+    .get()
+    .then((doc) {return doc['id'];});
+  
+  List<dynamic> seenList = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[categorySeen];});
+
+  seenList[locationID] = seenList[locationID] + 1;
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({categorySeen: seenList});
+  
+  avgList[locationID] = (avgList[locationID] + time) / seenList[locationID];
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({categoryAvgTime: avgList});
+}
 
 // Stream<QuerySnapshot> getLocationStreamSnapshots(
 //     BuildContext context, String category, int price, List<String> tags) async* {

@@ -13,6 +13,7 @@ import 'package:panorama/panorama.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'CustomWidgets/PointTracker.dart';
+import 'RecommenderSystem.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,38 @@ void main() async {
   await anonymousSignIn();
 
   runApp(MyApp2());
+  // runApp(Temp());
 }
+
+// class Temp extends StatelessWidget {
+//   const Temp({Key? key}) : super(key: key);
+//
+//   Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots() async {
+//     var qs = await FirebaseFirestore.instance
+//         .collection('recreation')
+//         .get();
+//
+//     return qs.docs.toList();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(home:
+//     Scaffold(body:
+//     Center(child: TextButton(child: Text("press"),
+//       onPressed: () async {
+//       List<QueryDocumentSnapshot> list = await getLocationStreamSnapshots();
+//       print(list.length);
+//       int length = list.length;
+//         for (int i = 0; i < length; i++) {
+//           print(list[i]['name']);
+//         }
+//     },)),
+//     )
+//       ,);
+//   }
+// }
+
 
 void resetVisitedToday() async {
   QuerySnapshot qs = await FirebaseFirestore.instance
