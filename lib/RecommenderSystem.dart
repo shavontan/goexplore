@@ -1,81 +1,114 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ml_linalg/matrix.dart';
 
-
 // How to use:
-// calling new Recommender(num_rec: ???).getRecommendations()      =>  returns a List<String> of TOP 'num_rec' recommendations of location names
+// calling new Recommender(num_rec: ???, userTimes: ???, filters: ???, isFnB: ???).getRecommendations()      =>  returns a List<String> of TOP 'num_rec' recommendations of location names
 
-// remember check for fnb / recreation
 class Recommender {
-
   int num_rec = 0;
   List<String> user = ['USER'];
-  List<String> locations = ['Kong Cafe', 'Green Dot', 'Steak House',
+  List<String> fnbLocations = ['Kong Cafe', 'Green Dot', 'Steak House',
     'Macdonald', 'Koi Cafe', 'The Boneless Kitchen',
     'Takagi Ramen', 'Super Amazing Kitchen', 'Hotel Food'];
 
-  List<String> tags = ['Ambience', 'Affordable', 'Western', 'Asian']; //* bits
+  List<String> recLocations = ['WWW', 'Chinese Garden', 'ArtScience Museum', 'Chinese Garden1', 'PeachGarden', 'Orchid Garden']; // added
 
-  List<List<double>> tags_in_bits = [ [1, 0, 0, 1],
-    [0, 0, 0, 1],   // Green Dot
-    [1, 0, 1, 0],   // Steak House
+  List<String> fnbTags = ['Ambience', 'Affordable', 'Western', 'Asian'];
+  List<String> recTags = ['Indoor', 'Outdoor', 'Leisure', 'Physical']; // added
+
+  List<List<double>> fnbTagsInBits = [ [1, 0, 0, 1],
+    [0, 0, 0, 1],   // Green Dot -- seen
+    [1, 0, 1, 0],   // Steak House -- seen
     [0, 1, 1, 0],   // Macs
     [1, 0, 0, 0],    // Koi
-    [1, 0, 0, 1],  //Boneless
-    [1, 0, 0, 1],
+    [1, 0, 0, 1],  //Boneless -- seen
+    [1, 0, 0, 1], // seen
     [0, 1, 1, 0],
     [1, 0, 1, 1],
   ];
 
-  List<double> userTimes = [3, 10, 20,
-    5, 0, 7,
-    0, 0, 0];
+  List<List<double>> recTagsInBits = [[0,1,0,1],
+    [0,1,1,0],
+    [1,0,0,0],
+    [0,1,1,0],
+    [0,1,1,0],
+    [1,0,1,0]];
+
+  // remove this
+  // List<double> userTimes = [3, 10, 20,
+  //                           5, 0, 7,
+  //                           0, 0, 0];
+
+  List<double> userTimes = [0]; // added
+  List<String> filters = [];
+
 
   int num_users = 1;
   int num_locations = 0;
   int num_tags = 0;
-  String category = "";
 
 
+  bool isFnB = true;
 
-  Recommender({required int num_rec, required String category, required List<double> userTimes}) {
+
+  Recommender({required int num_rec, required List<double> userTimes, required List<String> filters, required bool isFnB}) {  // Take in List<double> userTimes from database and List<String> filters
     this.num_rec = num_rec;
-    this.num_locations = this.locations.length;
-    this.num_tags = this.tags.length;
-    this.category = category;
+
+    if (isFnB) {
+      this.num_locations = this.fnbLocations.length;
+      this.num_tags = this.fnbTags.length;
+    } else {
+      this.num_locations = this.recLocations.length;
+      this.num_tags = this.recTags.length;
+    }
+
     this.userTimes = userTimes;
+    this.filters = filters;
+    this.isFnB = isFnB;
   }
 
   List<String> getRecommendations() {
     var users_locations = Matrix.fromList([this.userTimes]);
-    var location_tags = Matrix.fromList(this.tags_in_bits);
 
-    // MatMul
+    var location_tags;
+
+    if (isFnB) {
+      location_tags = Matrix.fromList(this.fnbTagsInBits);
+    } else {
+      location_tags = Matrix.fromList(this.recTagsInBits);
+    }
+
+    // print(users_locations);
+    // print(location_tags);
+
     var user_tags = users_locations * location_tags;
-    // divide by Reduce-sum:
-    user_tags = user_tags / user_tags.reduceColumns((combine, vector) => combine + vector);
+    user_tags = user_tags /
+        user_tags.reduceColumns((combine, vector) => combine + vector);
+    // print(user_tags);
 
-    // MatMul
     var user_times = user_tags * location_tags.transpose();
+    // print(user_times);
 
-
+    // print("____________________________________________________________");
 
     List<double> tempList = List<double>.filled(num_locations, 0);
     for (int i = 0; i < tempList.length; i++) {
-      if (userTimes[i] == 0) {
+      // print(userTimes[i]);
+      if (userTimes[i] == 0.0) {
         tempList[i] = 1;
       }
     }
+    // print(tempList);
 
-    // 2d matrix of 0s (if seen) and 1s (if unseen) --- converted from tempList
     var temp = Matrix.fromList([tempList]);
+    // print("temp matrix: " + temp.toString());
 
-    // element-wise multiplication (replace tf.where stuff)
-    // removes locations that have already been seen by user
+    // print(user_times);
     var new_user_times = user_times.multiply(temp);
+    // print(new_user_times);
 
-    // convert all unseen location (%) and their indexes (in locations array) into a normal list, where each element = [%, index]
-    List<List<double>> xs = List<List<double>>.filled(num_locations, [0,0]);
+
+    List<List<double>> xs = List<List<double>>.filled(num_locations, [0, -1]);
 
     for (int i = 0; i < num_locations; i++) {
       if (new_user_times[0][i] != 0.0) {
@@ -83,23 +116,74 @@ class Recommender {
       }
     }
 
-    // loops through 'unseen locations' list (num_rec times) -- getting the largest % each time and removing it from the list
+    List<int> filterTags = [];
+
+    if (isFnB) {
+      filterTags = convert_FnB_tags_ToBits(locationTags: this.filters);
+    } else {
+      filterTags = convert_rec_tags_ToBits(locationTags: this.filters);
+    }
+
+    for (int i = 0; i < num_locations; i++) {
+      int indexOfLocation = xs[i][1].toInt();
+
+      if (xs[i][1] == -1) {
+        continue;
+      }
+
+      List<double> locationBits;
+
+      if (isFnB) {
+        locationBits = this.fnbTagsInBits[indexOfLocation];
+      } else {
+        locationBits = this.recTagsInBits[indexOfLocation];
+      }
+
+      for (int j = 0; j < filterTags.length; j++) {
+        if (filterTags[j] == 1 && locationBits[j] == 1.0) {
+          xs[i] = [0, -1];
+          break;
+        }
+      }
+    }
+
     var result = List<String>.filled(num_rec, "");
+
     for (int i = 0; i < num_rec; i++) {
       double maxValue = xs[0][0];
       double maxIndex = xs[0][1];
+      int count = (maxIndex == -1) ? 1 : 0;
+
       for (int j = 1; j < xs.length; j++) {
+        if (xs[j][1] == -1.0) {
+          count++;
+          continue;
+        }
+
         if (xs[j][0] > maxValue) {
+          count = 0;
           maxValue = xs[j][0];
           maxIndex = xs[j][1];
         }
       }
-      result[i] = locations[maxIndex.toInt()];
-      xs[maxIndex.toInt()] = [0.0, maxIndex];
+
+      if (count == xs.length) {
+        for (int k = i; k < num_rec; k++) {
+          result[k] = "";
+        }
+        break;
+      } else if (isFnB) {
+        result[i] = fnbLocations[maxIndex.toInt()];
+        xs[maxIndex.toInt()] = [0.0, -1];
+      } else {
+        result[i] = recLocations[maxIndex.toInt()];
+        xs[maxIndex.toInt()] = [0.0, -1];
+      }
     }
 
     return result;
   }
+
 
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_FnB_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
@@ -120,7 +204,7 @@ class Recommender {
 
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_rec_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
-    List<String> rec_tags = ['Ambience', 'Affordable', 'Western', 'Asian']; // extend this to be all the tags in RECREATION
+    List<String> rec_tags = ['Indoor', 'Outdoor', 'Leisure', 'Physical']; // extend this to be all the tags in RECREATION
     List<int> result = List<int>.filled(rec_tags.length, 0);
 
     int len = locationTags.length;
@@ -136,4 +220,3 @@ class Recommender {
   }
 
 }
-
