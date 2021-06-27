@@ -328,6 +328,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) =>
                   //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page
                 },

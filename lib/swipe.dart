@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ml_linalg/matrix.dart';
 import 'CustomWidgets/SwipingTile.dart';
 import 'RecommenderSystem.dart';
 import 'Return.dart';
@@ -54,6 +55,7 @@ class _SwipeState extends State<Swipe> {
   _SwipeState(this.category, this.price, this.tags, this.dist);
 
   List<Widget> _Cards = [];
+  List<String> locationNames = [];
 
   @override
   Widget build(BuildContext context) {
@@ -116,21 +118,97 @@ class _SwipeState extends State<Swipe> {
       future: getUserTimes(this.category),
       builder: (context, snapshot) {
 
+        if (!isLoggedIn()){
+          return Container(
+              child: FutureBuilder<List<QueryDocumentSnapshot>>(
+                  future: getLocationStreamSnapshots(
+                      context, this.category, this.price, this.tags, this.dist),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final randomDocs = snapshot.data!..shuffle();
+                    final length = randomDocs.length;
+
+                    for (int i = 0; i < length; i++) {
+                      _Cards.add(_newCard(doc: randomDocs[i], category: category));
+                    }
+
+                    stopwatch.reset();
+                    stopwatch.start();
+                    return Scaffold(
+                      body: Stack(children: [
+                        Return(),
+                        ..._Cards,
+                      ]),
+                      //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                    );
+                  })
+            // child: Stack(
+            //   children: _Cards,
+            // ),
+          );
+        }
+
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
         }
 
+
         List<double> userTimes = snapshot.data!;
-        List<String> locationNames = new Recommender(num_rec: 10, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+
+        if (Matrix.fromList([userTimes]).sum() == 0 || !isLoggedIn()) {
+          return Container(
+              child: FutureBuilder<List<QueryDocumentSnapshot>>(
+                  future: getLocationStreamSnapshots(
+                      context, this.category, this.price, this.tags, this.dist),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final randomDocs = snapshot.data!..shuffle();
+                    final length = randomDocs.length;
+
+                    for (int i = 0; i < length; i++) {
+                      _Cards.add(_newCard(doc: randomDocs[i], category: category));
+                    }
+
+                    stopwatch.reset();
+                    stopwatch.start();
+                    return Scaffold(
+                      body: Stack(children: [
+                        Return(),
+                        ..._Cards,
+                      ]),
+                      //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                    );
+                  })
+              // child: Stack(
+              //   children: _Cards,
+              // ),
+              );
+        }
+
+        locationNames = new Recommender(num_rec: 5, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
 
         return FutureBuilder<List<DocumentSnapshot>>(
           future: getLocations(this.category, locationNames),
           builder: (context, snapshot) {
+
+
+                      print(snapshot.data);
                       if (!snapshot.hasData) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
                       }
+
 
                       final randomDocs = snapshot.data!..shuffle();
                       final length = randomDocs.length;
@@ -142,12 +220,31 @@ class _SwipeState extends State<Swipe> {
                       stopwatch.reset();
                       stopwatch.start();
                       return Scaffold(
-                        body: Stack(children: [
-                          Return(),
-                          ..._Cards,
-                        ]),
-                        //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-                      );
+                              body: Stack(children: [
+                                Return(),
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                  Container(height: 300),
+                                  FutureBuilder<List<double>>(
+                                  future: getUserTimes(this.category),
+                                  builder: (context, snapshot) {
+
+
+                                  return TextButton(
+                                        child: Text("Get more locations"),
+                                        onPressed: () {
+                                          setState(() {
+                                  List<double> newUserTimes = snapshot.data!;
+                                  locationNames = new Recommender(num_rec: 5, userTimes: newUserTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+
+                                  print(locationNames);
+
+                                });});})]),
+                                ..._Cards,
+                              ]),
+                              //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                            );
           }
         );
       }

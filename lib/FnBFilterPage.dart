@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:goexplore/swipe.dart';
 // import 'package:goexplore/swipe.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'CustomWidgets/SwipingTile.dart';
@@ -458,9 +459,9 @@ class _FnBFilterState extends State<FnBFilter> {
                       }
                     }
                     print(selectedTags);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) =>
-                    //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            Swipe('fnb', currentPriceLimit.round(), selectedTags, distanceInKm)));
                     //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                     // pass data to database + go to next page
                   },
