@@ -7,14 +7,16 @@ import 'CustomWidgets/SwipingTile.dart';
 class RecreationFilter extends StatefulWidget {
   // const RecreationFilter({Key key}) : super(key: key);
   var recreationTags = [
-    "Indoor",
+    "Indoor",  // -- 0
     "Outdoor",
     "Physical",
-    "Leisure",
+    "Leisure",  // -- 3
     "Nature",
     "Cultural",
     "Educational",
-    "Service"
+    "Service",   // -- 7
+    "Kid-Friendly",
+    "Nightlife"
   ];
 
   @override
@@ -46,6 +48,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
   bool stateThree = false;
   bool stateFour = false;
   bool stateFive = false;
+  bool stateSix = false;
+  bool stateSeven = false;
 
   @override
   Widget build(BuildContext context) {
@@ -209,6 +213,55 @@ class _RecreationFilterState extends State<RecreationFilter> {
                       }
                     }),
               ]),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          InkWell(
+              child: Card(
+                child: Padding(
+                    child: Opacity(child: Text(widget.recreationTags[6], style: GoogleFonts.neucha(
+                        fontSize: 30),),
+                        opacity: stateSix ? 1.0 : 0.4),
+                    padding: EdgeInsets.all(7.0)),
+                color: stateSix ? Color(0xA9DBD0F6) : Colors.white,
+                elevation: stateSix ? 5.0 : 0.0,
+              ),
+              onTap: () {
+                if (selected.elementAt(6) == 0) {
+                  setState(() {
+                    selected[6] = 1;
+                    stateSix = true;
+                  });
+                } else {
+                  setState(() {
+                    selected[6] = 0;
+                    stateSix = false;
+                  });
+                }
+              }),
+          InkWell(
+              child: Card(
+                child: Padding(
+                    child: Opacity(child: Text(widget.recreationTags[7], style: GoogleFonts.neucha(
+                        fontSize: 30),),
+                        opacity: stateSeven ? 1.0 : 0.4),
+                    padding: EdgeInsets.all(7.0)),
+                color: stateSeven ? Color(0xA9DBD0F6) : Colors.white,
+                elevation: stateSeven ? 5.0 : 0.0,
+              ),
+              onTap: () {
+                if (selected.elementAt(7) == 0) {
+                  setState(() {
+                    selected[7] = 1;
+                    stateSeven = true;
+                  });
+                } else {
+                  setState(() {
+                    selected[7] = 0;
+                    stateSeven = false;
+                  });
+                }
+              }),
+        ]),
 
           Container(height: 80),
           Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),
@@ -227,39 +280,58 @@ class _RecreationFilterState extends State<RecreationFilter> {
           ),
 
           Container(height: 80),
-          Text("How far are you willing to travel: ${distanceInKm.floor()} km", style: TextStyle(fontSize: 18),),
-          Slider(
-            value: distanceInKm,
-            onChanged: (newValue) {
-              setState(() {
-                distanceInKm = newValue;
-                print(distanceInKm);
-              });
-            },
-            max: 1000,
-            min: 0,
-            activeColor: Colors.deepPurpleAccent,
-            inactiveColor: Colors.black12,
-          ),
-
-          Container(height: 80),
-          TextButton(
-            child: Text("Ready To Go!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
-            onPressed: () {
-              List<String> selectedTags = [];
-              for (int i = 0; i < selected.length; i++) {
-                if (selected[i] == 1) {
-                  selectedTags.add(widget.recreationTags[i]);
-                }
-              }
-              print(selectedTags);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>
-                      Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
-                      //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
-              // pass data to database + go to next page
-            },
-          )
+          // Text("How far are you willing to travel: ${distanceInKm.floor()} km", style: TextStyle(fontSize: 18),),
+          // Slider(
+          //   value: distanceInKm,
+          //   onChanged: (newValue) {
+          //     setState(() {
+          //       distanceInKm = newValue;
+          //       print(distanceInKm);
+          //     });
+          //   },
+          //   max: 1000,
+          //   min: 0,
+          //   activeColor: Colors.deepPurpleAccent,
+          //   inactiveColor: Colors.black12,
+          // ),
+          //
+          // Container(height: 80),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                child: Text("Simple List", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                onPressed: () {
+                  List<String> selectedTags = [];
+                  for (int i = 0; i < selected.length; i++) {
+                    if (selected[i] == 1) {
+                      selectedTags.add(widget.recreationTags[i]);
+                    }
+                  }
+                  print(selectedTags);
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) =>
+                  //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                  //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
+                  // pass data to database + go to next page
+                },
+              ),TextButton(
+                child: Text("Let's swipe!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                onPressed: () {
+                  List<String> selectedTags = [];
+                  for (int i = 0; i < selected.length; i++) {
+                    if (selected[i] == 1) {
+                      selectedTags.add(widget.recreationTags[i]);
+                    }
+                  }
+                  print(selectedTags);
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) =>
+                  //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                  //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
+                  // pass data to database + go to next page
+                },
+              ),],),
 
         ],
       ),

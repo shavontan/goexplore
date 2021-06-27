@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'ListPageBuilder.dart';
 import 'swipe.dart';
 import 'RecreationFilterPage.dart';
+import 'FnBFilterPage.dart';
 import 'ListPage.dart';
 
 // class Categories extends StatefulWidget {
@@ -37,7 +38,13 @@ class Categories extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => ListPageBuilder('recreation', 100, [], 100)));
+                              MaterialPageRoute(builder: (context) => FnBFilter()));
+
+
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => ListPageBuilder('recreation', 100, [], 100)));
+
+
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context) => Swipe('recreation', 2, [])));
                           // print("tapped");
