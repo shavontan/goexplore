@@ -35,7 +35,31 @@ class Recommender {
                                 'Whisk & Paddle',   // -- 25
                               ];
 
-  List<String> recLocations = ['WWW', 'Chinese Garden', 'ArtScience Museum', 'Chinese Garden1', 'PeachGarden', 'Orchid Garden' , '']; // added
+  List<String> recLocations = ['Adventure Cove Water Park',   // -- 0
+                                'ArtScience Museum',
+                                'Chinese Garden',
+                                'Civil Defence Heritage Gallery',
+                                'Dragon Playground',
+                                'Forest Adventure',   // -- 5
+                                'G-Max Reverse Bungy',
+                                'K Bowling Club',
+                                'MacRitchie Reservoir',
+                                'Madame Tussauds',
+                                'Merlion',   // -- 10
+                                'National Gallery Singapore',
+                                'Peranakan Museum',
+                                'Pororo Park',
+                                'Raffles Marina Lighthouse',
+                                'S.E.A. Aquarium',    // -- 15
+                                'Singapore Zoo',
+                                'Skyline Luge',
+                                'Snow City',
+                                'Sungei Buloh Wetland Reserve',
+                                'Thow Kwang Pottery Jungle',    // -- 20
+                                'Universal Studios Singapore',
+                                'Wild Wild Wet',
+                                'Xtreme SkatePark',
+                              ];
 
   List<String> fnbTags = ["Beverages", // --- 0
                           "Ambience",
@@ -51,6 +75,8 @@ class Recommender {
                           "Vegetarian",
                           "Dessert",     // --- 12
                         ];
+
+
   List<String> recTags = ["Indoor",
                           "Outdoor",
                           "Physical",
@@ -58,7 +84,9 @@ class Recommender {
                           "Nature",
                           "Cultural",
                           "Educational",
-                          "Service"
+                          "Service",
+                          "Nightlife",
+                          "Kid-Friendly",
                         ];
 
   List<List<double>> fnbTagsInBits = [ [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // 0 = Atlas Bar
@@ -89,12 +117,31 @@ class Recommender {
                                       [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
                                     ];
 
-  List<List<double>> recTagsInBits = [[0,1,0,1],
-    [0,1,1,0],
-    [1,0,0,0],
-    [0,1,1,0],
-    [0,1,1,0],
-    [1,0,1,0]];
+  List<List<double>> recTagsInBits = [[0, 1, 1, 0, 0, 0, 0, 0],  // 0 = Adventure Cove
+                                      [1, 0, 0, 1, 0, 0, 1, 0],
+                                      [0, 1, 0, 1, 1, 1, 0, 0],
+                                      [1, 0, 0, 1, 0, 0, 1, 0],
+                                      [0, 1, 0, 1, 0, 0, 0, 0],
+                                      [0, 1, 1, 0, 1, 0, 0, 0],   // 5 = Forest Adventure
+                                      [0, 1, 1, 0, 0, 0, 0, 0],
+                                      [1, 0, 1, 0, 0, 0, 0, 0],
+                                      [0, 1, 0, 1, 1, 0, 0, 0],
+                                      [1, 0, 0, 1, 0, 0, 0, 0],    // 9 = Madame Tussauds
+                                      [0, 1, 0, 1, 0, 0, 0, 0],
+                                      [1, 0, 0, 1, 0, 1, 1, 0],
+                                      [1, 0, 0, 0, 0, 1, 1, 0],
+                                      [1, 0, 0, 1, 0, 0, 0, 0],    // 13 = Pororo Park
+                                      [0, 1, 0, 1, 0, 0, 0, 0],
+                                      [1, 0, 0, 1, 0, 0, 1, 0],
+                                      [0, 1, 0, 1, 1, 0, 1, 0],
+                                      [0, 1, 1, 0, 0, 0, 0, 0],    // 17 = Skyline Luge
+                                      [1, 0, 1, 0, 0, 0, 0, 0],
+                                      [0, 1, 0, 1, 1, 0, 0, 0],
+                                      [1, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 1, 1, 1, 0, 0, 0, 0],   // 20 = Thow Kwung Pottery Jungle
+                                      [0, 1, 1, 0, 0, 0, 0, 0],
+                                      [0, 1, 1, 0, 0, 0, 0, 0]
+                                    ];
 
   // remove this
   // List<double> userTimes = [3, 10, 20,
@@ -243,7 +290,20 @@ class Recommender {
 
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_FnB_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
-    List<String> FnB_tags = ['Ambience', 'Affordable', 'Western', 'Asian']; // extend this to be all the tags in FnB
+    List<String> FnB_tags = ["Beverages", // --- 0
+                              "Ambience",
+                              "Chinese",
+                              "Korean",
+                              "Japanese",    // --- 4
+                              "Malay",
+                              "Indian",
+                              "Halal",
+                              "Western",    // --- 8
+                              "Fast Food",
+                              "Vegan",
+                              "Vegetarian",
+                              "Dessert",     // --- 12
+                            ];
     List<int> result = List<int>.filled(FnB_tags.length, 0);
 
     int len = locationTags.length;
@@ -260,7 +320,17 @@ class Recommender {
 
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_rec_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
-    List<String> rec_tags = ['Indoor', 'Outdoor', 'Leisure', 'Physical']; // extend this to be all the tags in RECREATION
+    List<String> rec_tags = ["Indoor",
+                              "Outdoor",
+                              "Physical",
+                              "Leisure",
+                              "Nature",
+                              "Cultural",
+                              "Educational",
+                              "Service",
+                              "Nightlife",
+                              "Kid-Friendly",
+                            ];
     List<int> result = List<int>.filled(rec_tags.length, 0);
 
     int len = locationTags.length;
