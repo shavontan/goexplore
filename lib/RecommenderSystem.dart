@@ -11,7 +11,7 @@ class Recommender {
     'Macdonald', 'Koi Cafe', 'The Boneless Kitchen',
     'Takagi Ramen', 'Super Amazing Kitchen', 'Hotel Food'];
 
-  List<String> recLocations = ['WWW', 'Chinese Garden', 'ArtScience Museum', 'Chinese Garden1', 'PeachGarden', 'Orchid Garden']; // added
+  List<String> recLocations = ['WWW', 'Chinese Garden', 'ArtScience Museum', 'Chinese Garden1', 'PeachGarden', 'Orchid Garden' , '']; // added
 
   List<String> fnbTags = ['Ambience', 'Affordable', 'Western', 'Asian'];
   List<String> recTags = ['Indoor', 'Outdoor', 'Leisure', 'Physical']; // added

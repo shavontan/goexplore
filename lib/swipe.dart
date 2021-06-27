@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'CustomWidgets/SwipingTile.dart';
+import 'RecommenderSystem.dart';
 import 'Return.dart';
 import 'flutterfire.dart';
 
@@ -58,59 +59,101 @@ class _SwipeState extends State<Swipe> {
   Widget build(BuildContext context) {
     // Stack of _Cards that can be swiped. Set width, height, etc here.
 
-    return Container(
+    // return Container(
+    //
+    //     // Important to keep as a stack to have overlay of _Cards.
+    //
+    //     child: FutureBuilder<List<QueryDocumentSnapshot>>(
+    //         future: getLocationStreamSnapshots(
+    //             context, this.category, this.price, this.tags, this.dist),
+    //         builder: (context, snapshot) {
+    //           if (!snapshot.hasData) {
+    //             return Center(
+    //               child: CircularProgressIndicator(),
+    //             );
+    //           }
+    //
+    //           final randomDocs = snapshot.data!..shuffle();
+    //           final length = randomDocs.length;
+    //
+    //           for (int i = 0; i < length; i++) {
+    //             _Cards.add(_newCard(doc: randomDocs[i], category: category));
+    //           }
+    //
+    //           stopwatch.reset();
+    //           stopwatch.start();
+    //           return Scaffold(
+    //             // appBar: AppBar(
+    //             //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
+    //             //   backgroundColor: Color(0xB6C4CAE8),
+    //             //   elevation: 0.0,
+    //             //   leading: IconButton(
+    //             //     icon: Icon(Icons.arrow_back, color: Colors.white),
+    //             //     onPressed: () {
+    //             //       Navigator.pop(context, false);
+    //             //     },
+    //             //   ),
+    //             //   // actions: [
+    //             //   //   IconButton(
+    //             //   //       icon: Icon(Icons.account_circle, color: Colors.white),
+    //             //   //       onPressed: () {
+    //             //   //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+    //             //   //       })
+    //             //   // ],
+    //             // ),
+    //             body: Stack(children: [
+    //               Return(),
+    //               ..._Cards,
+    //             ]),
+    //             //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+    //           );
+    //         })
+    //     // child: Stack(
+    //     //   children: _Cards,
+    //     // ),
+    //     );
+    return FutureBuilder<List<double>>(
+      future: getUserTimes(this.category),
+      builder: (context, snapshot) {
 
-        // Important to keep as a stack to have overlay of _Cards.
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-        child: FutureBuilder<List<QueryDocumentSnapshot>>(
-            future: getLocationStreamSnapshots(
-                context, this.category, this.price, this.tags, this.dist),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+        List<double> userTimes = snapshot.data!;
+        List<String> locationNames = new Recommender(num_rec: 10, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
 
-              final randomDocs = snapshot.data!..shuffle();
-              final length = randomDocs.length;
+        return FutureBuilder<List<DocumentSnapshot>>(
+          future: getLocations(this.category, locationNames),
+          builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-              for (int i = 0; i < length; i++) {
-                _Cards.add(_newCard(doc: randomDocs[i], category: category));
-              }
+                      final randomDocs = snapshot.data!..shuffle();
+                      final length = randomDocs.length;
 
-              stopwatch.reset();
-              stopwatch.start();
-              return Scaffold(
-                // appBar: AppBar(
-                //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
-                //   backgroundColor: Color(0xB6C4CAE8),
-                //   elevation: 0.0,
-                //   leading: IconButton(
-                //     icon: Icon(Icons.arrow_back, color: Colors.white),
-                //     onPressed: () {
-                //       Navigator.pop(context, false);
-                //     },
-                //   ),
-                //   // actions: [
-                //   //   IconButton(
-                //   //       icon: Icon(Icons.account_circle, color: Colors.white),
-                //   //       onPressed: () {
-                //   //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
-                //   //       })
-                //   // ],
-                // ),
-                body: Stack(children: [
-                  Return(),
-                  ..._Cards,
-                ]),
-                //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-              );
-            })
-        // child: Stack(
-        //   children: _Cards,
-        // ),
+                      for (int i = 0; i < length; i++) {
+                        _Cards.add(_newCard(doc: randomDocs[i], category: category));
+                      }
+
+                      stopwatch.reset();
+                      stopwatch.start();
+                      return Scaffold(
+                        body: Stack(children: [
+                          Return(),
+                          ..._Cards,
+                        ]),
+                        //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                      );
+          }
         );
+      }
+    );
+
+
   }
 }
 
@@ -938,6 +981,37 @@ class __newCardState extends State<_newCard> {
           )
         ]);
   }
+}
+
+Future<List<double>> getUserTimes(String category) async {
+  String uid = await getCurrentUID();
+  String field = category + "AvgTime";
+  List<dynamic> avgList = await FirebaseFirestore
+      .instance.collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[field];});
+  List<double> result = [];
+
+  for (int i = 0; i < avgList.length; i++) {
+    result.add(avgList[i] as double);
+  }
+
+  return result;
+}
+
+Future<List<DocumentSnapshot>> getLocations(String category, List<String> locationNames) async {
+  List<DocumentSnapshot> result = [];
+
+  for (int i = 0; i < locationNames.length; i++) {
+    await FirebaseFirestore.instance
+        .collection(category)
+        .doc(locationNames[i])
+        .get()
+        .then((d) {result.add(d);});
+  }
+
+  return result;
 }
 
 Future<void> updateAvgTimeSeen(String category, String locationName, double time) async {
