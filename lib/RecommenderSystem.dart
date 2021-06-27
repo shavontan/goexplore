@@ -108,11 +108,13 @@ class Recommender {
     // print(new_user_times);
 
 
-    List<List<double>> xs = List<List<double>>.filled(num_locations, [0, -1]);
+    List<List<double>> xs = List<List<double>>.filled(num_locations, [0,-1], growable: true);
 
-    for (int i = 0; i < num_locations; i++) {
+    for (int i = num_locations - 1; i >= 0; i--) {
       if (new_user_times[0][i] != 0.0) {
         xs[i] = [new_user_times[0][i], i.toDouble()];
+      } else {
+        xs.removeAt(i);
       }
     }
 
@@ -124,12 +126,8 @@ class Recommender {
       filterTags = convert_rec_tags_ToBits(locationTags: this.filters);
     }
 
-    for (int i = 0; i < num_locations; i++) {
+    for (int i = xs.length - 1; i >= 0; i--) {
       int indexOfLocation = xs[i][1].toInt();
-
-      if (xs[i][1] == -1) {
-        continue;
-      }
 
       List<double> locationBits;
 
@@ -141,46 +139,42 @@ class Recommender {
 
       for (int j = 0; j < filterTags.length; j++) {
         if (filterTags[j] == 1 && locationBits[j] == 1.0) {
-          xs[i] = [0, -1];
+          xs.removeAt(i);
           break;
         }
       }
     }
+    // print(xs);
 
     var result = List<String>.filled(num_rec, "");
 
     for (int i = 0; i < num_rec; i++) {
+      if (xs.isEmpty) {
+        break;
+      }
       double maxValue = xs[0][0];
       double maxIndex = xs[0][1];
-      int count = (maxIndex == -1) ? 1 : 0;
+      int elementToRemove = 0;
 
       for (int j = 1; j < xs.length; j++) {
-        if (xs[j][1] == -1.0) {
-          count++;
-          continue;
-        }
 
         if (xs[j][0] > maxValue) {
-          count = 0;
           maxValue = xs[j][0];
           maxIndex = xs[j][1];
+          elementToRemove = j;
         }
       }
 
-      if (count == xs.length) {
-        for (int k = i; k < num_rec; k++) {
-          result[k] = "";
-        }
-        break;
-      } else if (isFnB) {
+      if (isFnB) {
         result[i] = fnbLocations[maxIndex.toInt()];
-        xs[maxIndex.toInt()] = [0.0, -1];
+        xs.removeAt(elementToRemove);
       } else {
         result[i] = recLocations[maxIndex.toInt()];
-        xs[maxIndex.toInt()] = [0.0, -1];
+        xs.removeAt(elementToRemove);
       }
     }
 
+    // print(result);
     return result;
   }
 
