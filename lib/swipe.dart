@@ -118,7 +118,7 @@ class _SwipeState extends State<Swipe> {
       future: getUserTimes(this.category),
       builder: (context, snapshot) {
 
-        if (!isLoggedIn()){
+        if (!isLoggedIn()) {
           return Container(
               child: FutureBuilder<List<QueryDocumentSnapshot>>(
                   future: getLocationStreamSnapshots(
@@ -201,14 +201,12 @@ class _SwipeState extends State<Swipe> {
           future: getLocations(this.category, locationNames),
           builder: (context, snapshot) {
 
-
                       print(snapshot.data);
                       if (!snapshot.hasData) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-
 
                       final randomDocs = snapshot.data!..shuffle();
                       final length = randomDocs.length;
@@ -235,12 +233,13 @@ class _SwipeState extends State<Swipe> {
                                         child: Text("Get more locations"),
                                         onPressed: () {
                                           setState(() {
-                                  List<double> newUserTimes = snapshot.data!;
-                                  locationNames = new Recommender(num_rec: 5, userTimes: newUserTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
-
-                                  print(locationNames);
-
-                                });});})]),
+                                //   List<double> newUserTimes = snapshot.data!;
+                                //   locationNames = new Recommender(num_rec: 5, userTimes: newUserTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+                                //
+                                //   print(locationNames);
+                                //
+                                }
+                                );});})]),
                                 ..._Cards,
                               ]),
                               //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
@@ -1211,17 +1210,24 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
 }
 
 bool checkTags(List<dynamic> doc, List<String> tag) {
-  if (tag.contains('Indoor') && tag.contains('Outdoor')) {
-    tag.remove('Indoor');
-    tag.remove('Outdoor');
-  }
+  // if (tag.contains('Indoor') && tag.contains('Outdoor')) {
+  //   tag.remove('Indoor');
+  //   tag.remove('Outdoor');
+  // }
+  //
+  // if (tag.contains('Physical') && tag.contains('Leisure')) {
+  //   tag.remove('Physical');
+  //   tag.remove('Leisure');
+  // }
+  //
+  // if (tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+  //     tag.length == 0) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 
-  if (tag.contains('Physical') && tag.contains('Leisure')) {
-    tag.remove('Physical');
-    tag.remove('Leisure');
-  }
-
-  if (tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+  if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
       tag.length == 0) {
     return true;
   } else {

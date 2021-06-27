@@ -1,8 +1,12 @@
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/swipe.dart';
 // import 'package:goexplore/swipe.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'ListPageBuilder.dart';
+import 'flutterfire.dart';
 // import 'CustomWidgets/SwipingTile.dart';
 
 
@@ -73,7 +77,22 @@ class _FnBFilterState extends State<FnBFilter> {
             onPressed: () {
               Navigator.pop(context, false);
             },
-          ),),
+          ),
+          actions: [
+            IconButton(onPressed: () async {
+              List<double> recreationAvgTime = List.filled(24, 0, growable: true);
+              List<double> fnbAvgTime = List.filled(26, 0, growable: true);
+              List<int> recreationSeen = List.filled(24, 0, growable: true);
+              List<int> fnbSeen = List.filled(26, 0, growable: true);
+              String uid = await getCurrentUID();
+              await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .update({'recreationAvgTime':recreationAvgTime, 'fnbAvgTime':fnbAvgTime,
+                  'recreationSeen':recreationSeen, 'fnbSeen':fnbSeen});
+            }, icon: Icon(Icons.refresh))
+          ],
+        ),
         body: SingleChildScrollView(child: Column(
           children: [
             Container(height: 20),
@@ -127,26 +146,27 @@ class _FnBFilterState extends State<FnBFilter> {
                           });
                         }
                       }),
+
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[2], style: GoogleFonts.neucha(
+                            child: Opacity(child: Text(widget.fnbTags[7], style: GoogleFonts.neucha(
                                 fontSize: 30),),
-                                opacity: stateTwo ? 1.0 : 0.4),
+                                opacity: stateSeven ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
-                        color: stateTwo ? Color(0xA9DBD0F6) : Colors.white,
-                        elevation: stateTwo ? 5.0 : 0.0,
+                        color: stateSeven ? Color(0xA9DBD0F6) : Colors.white,
+                        elevation: stateSeven ? 5.0 : 0.0,
                       ),
                       onTap: () {
-                        if (selected.elementAt(2) == 0) {
+                        if (selected.elementAt(7) == 0) {
                           setState(() {
-                            selected[2] = 1;
-                            stateTwo = true;
+                            selected[7] = 1;
+                            stateSeven = true;
                           });
                         } else {
                           setState(() {
-                            selected[2] = 0;
-                            stateTwo = false;
+                            selected[7] = 0;
+                            stateSeven = false;
                           });
                         }
                       }),
@@ -248,29 +268,31 @@ class _FnBFilterState extends State<FnBFilter> {
                           });
                         }
                       }),
+
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[7], style: GoogleFonts.neucha(
+                            child: Opacity(child: Text(widget.fnbTags[2], style: GoogleFonts.neucha(
                                 fontSize: 30),),
-                                opacity: stateSeven ? 1.0 : 0.4),
+                                opacity: stateTwo ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
-                        color: stateSeven ? Color(0xA9DBD0F6) : Colors.white,
-                        elevation: stateSeven ? 5.0 : 0.0,
+                        color: stateTwo ? Color(0xA9DBD0F6) : Colors.white,
+                        elevation: stateTwo ? 5.0 : 0.0,
                       ),
                       onTap: () {
-                        if (selected.elementAt(7) == 0) {
+                        if (selected.elementAt(2) == 0) {
                           setState(() {
-                            selected[7] = 1;
-                            stateSeven = true;
+                            selected[2] = 1;
+                            stateTwo = true;
                           });
                         } else {
                           setState(() {
-                            selected[7] = 0;
-                            stateSeven = false;
+                            selected[2] = 0;
+                            stateTwo = false;
                           });
                         }
                       }),
+
                   InkWell(
                       child: Card(
                         child: Padding(
@@ -443,9 +465,9 @@ class _FnBFilterState extends State<FnBFilter> {
                       }
                     }
                     print(selectedTags);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) =>
-                    //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            ListPageBuilder('fnb', currentPriceLimit.round(), selectedTags, distanceInKm)));
                     //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                     // pass data to database + go to next page
                   },

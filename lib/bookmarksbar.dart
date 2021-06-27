@@ -34,6 +34,7 @@ class BookmarksBarState extends State<BookmarksBar> {
   @override
   Widget build(BuildContext context) {
     if (!isLoggedIn()) {
+
       return MaterialButton(
           child: Icon(Icons.add_box),
           onPressed: () async {
