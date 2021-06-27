@@ -5,9 +5,12 @@ import 'package:goexplore/firebase.dart';
 
 Future<bool> signIn(String email, String password) async {
   try {
-    User currentUser = FirebaseAuth.instance.currentUser as User;
-    if (currentUser.isAnonymous) {
-      FirebaseAuth.instance.currentUser!.delete();
+    var currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      if (currentUser.isAnonymous) {
+        FirebaseAuth.instance.currentUser!.delete();
+      }
     }
 
     await FirebaseAuth.instance
@@ -53,9 +56,12 @@ Future<bool> register(String email, String password, String username, BuildConte
   try{
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    User currentUser = firebaseAuth.currentUser as User;
-    if (currentUser.isAnonymous) {
-      firebaseAuth.currentUser!.delete();
+    var currentUser = firebaseAuth.currentUser;
+
+    if (currentUser != null) {
+      if (currentUser.isAnonymous) {
+        firebaseAuth.currentUser!.delete();
+      }
     }
 
     await FirebaseAuth.instance

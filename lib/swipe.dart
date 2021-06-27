@@ -41,7 +41,7 @@ class Swipe extends StatefulWidget {
       _SwipeState(this.category, this.price, this.tags, this.dist);
 }
 
-// final globalKey = GlobalKey<BookmarksBarState>();
+final globalKey = GlobalKey<BookmarksBarState>();
 
 class _SwipeState extends State<Swipe> {
   // Dynamically load _Cards from database
@@ -661,7 +661,7 @@ class _newCard extends StatefulWidget {
 
 class __newCardState extends State<_newCard> {
   bool confused = false;
-  final globalKey = GlobalKey<BookmarksBarState>();
+  // final globalKey = GlobalKey<BookmarksBarState>();
 
   @override
   Widget build(BuildContext context) {
