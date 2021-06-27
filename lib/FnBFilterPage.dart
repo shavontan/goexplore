@@ -146,7 +146,6 @@ class _FnBFilterState extends State<FnBFilter> {
                           });
                         }
                       }),
-
                   InkWell(
                       child: Card(
                         child: Padding(
@@ -418,6 +417,8 @@ class _FnBFilterState extends State<FnBFilter> {
                       }),
                 ]),
 
+            Container(height: 5),
+            Text("(select tags you DO NOT want)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
 
             Container(height: 80),
             Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),

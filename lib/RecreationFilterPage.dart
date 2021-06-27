@@ -40,7 +40,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
 
 
 
-  var selected = new List.filled(8, 0, growable: false); // 8 = recreationTags.length
+  var selected = new List.filled(10, 0, growable: false); // 8 = recreationTags.length
 
   double currentPriceLimit = 20;
   double distanceInKm = 100;
@@ -53,6 +53,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
   bool stateFive = false;
   bool stateSix = false;
   bool stateSeven = false;
+  bool stateEight = false;
+  bool stateNine = false;
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +282,58 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 }
               }),
         ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                    child: Card(
+                      child: Padding(
+                          child: Opacity(child: Text(widget.recreationTags[8], style: GoogleFonts.neucha(
+                              fontSize: 30),),
+                              opacity: stateEight ? 1.0 : 0.4),
+                          padding: EdgeInsets.all(7.0)),
+                      color: stateEight ? Color(0xA9DBD0F6) : Colors.white,
+                      elevation: stateEight ? 5.0 : 0.0,
+                    ),
+                    onTap: () {
+                      if (selected.elementAt(8) == 0) {
+                        setState(() {
+                          selected[8] = 1;
+                          stateEight = true;
+                        });
+                      } else {
+                        setState(() {
+                          selected[8] = 0;
+                          stateEight = false;
+                        });
+                      }
+                    }),
+                InkWell(
+                    child: Card(
+                      child: Padding(
+                          child: Opacity(child: Text(widget.recreationTags[9], style: GoogleFonts.neucha(
+                              fontSize: 30),),
+                              opacity: stateNine ? 1.0 : 0.4),
+                          padding: EdgeInsets.all(7.0)),
+                      color: stateNine ? Color(0xA9DBD0F6) : Colors.white,
+                      elevation: stateNine ? 5.0 : 0.0,
+                    ),
+                    onTap: () {
+                      if (selected.elementAt(9) == 0) {
+                        setState(() {
+                          selected[9] = 1;
+                          stateNine = true;
+                        });
+                      } else {
+                        setState(() {
+                          selected[9] = 0;
+                          stateNine = false;
+                        });
+                      }
+                    }),
+              ]),
+
+          Container(height: 5),
+          Text("(select tags you DO NOT want)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
 
           Container(height: 80),
           Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),

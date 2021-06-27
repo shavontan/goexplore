@@ -747,7 +747,7 @@ class __newCardState extends State<_newCard> {
               ])),
           Positioned(
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.arrow_back, color: Colors.lightBlueAccent),
               onPressed: () {
                 Navigator.pop(context, false);
               },
