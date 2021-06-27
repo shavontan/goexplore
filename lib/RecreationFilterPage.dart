@@ -1,8 +1,11 @@
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/swipe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CustomWidgets/SwipingTile.dart';
+import 'ListPageBuilder.dart';
+import 'flutterfire.dart';
 
 class RecreationFilter extends StatefulWidget {
   // const RecreationFilter({Key key}) : super(key: key);
@@ -63,7 +66,22 @@ class _RecreationFilterState extends State<RecreationFilter> {
           onPressed: () {
             Navigator.pop(context, false);
           },
-        ),),
+        ),
+        actions: [
+          IconButton(onPressed: () async {
+            List<double> recreationAvgTime = List.filled(24, 0, growable: true);
+            List<double> fnbAvgTime = List.filled(26, 0, growable: true);
+            List<int> recreationSeen = List.filled(24, 0, growable: true);
+            List<int> fnbSeen = List.filled(26, 0, growable: true);
+            String uid = await getCurrentUID();
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .update({'recreationAvgTime':recreationAvgTime, 'fnbAvgTime':fnbAvgTime,
+              'recreationSeen':recreationSeen, 'fnbSeen':fnbSeen});
+          }, icon: Icon(Icons.refresh))
+        ],
+      ),
       body: Column(
         children: [
           Container(height: 20),
@@ -309,9 +327,9 @@ class _RecreationFilterState extends State<RecreationFilter> {
                     }
                   }
                   print(selectedTags);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) =>
-                  //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>
+                          ListPageBuilder('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page
                 },
@@ -325,9 +343,9 @@ class _RecreationFilterState extends State<RecreationFilter> {
                     }
                   }
                   print(selectedTags);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) =>
-                  //         Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>
+                          Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
 
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page

@@ -26,48 +26,62 @@ class ListPageBuilder extends StatelessWidget {
 }
 
 Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
-    BuildContext context, String category, int price, List<String> tags, double dist) async {
-
+    BuildContext context,
+    String category,
+    int price,
+    List<String> tags,
+    double dist) async {
   QuerySnapshot qs = await FirebaseFirestore.instance
       .collection(category)
       .where('price', isLessThanOrEqualTo: price)
       .get();
-
-  Stream<QueryDocumentSnapshot> docsStream = Stream.fromIterable(qs
-      .docs
-      .where((d) => checkTags(d['tags'], tags)));
-
-  // Iterable<QueryDocumentSnapshot> docsStream = qs
+  //
+  // Stream<QueryDocumentSnapshot> docsStream = Stream.fromIterable(qs
   //     .docs
-  //     .where((d) => checkTags(d['tags'], tags));
+  //     .where((d) => checkTags(d['tags'], tags)));
+
+  Iterable<QueryDocumentSnapshot> docsStream =
+  qs.docs.where((d) => checkTags(d['tags'], tags));
+
+  // Init PermissionHandler
+  // bool status;
+  // PermissionHandler permissionHandler = PermissionHandler();
+  // // Request location permissions
+  // status = await permissionHandler.requestLocationPermission();
+  //
+  // if (!status) {
+  //   return docsStream.toList();
+  // }
+  //
+  // FusedLocationProviderClient locationService = FusedLocationProviderClient();
+  // LocationRequest locationRequest = new LocationRequest();
+  // locationRequest.numUpdates = 1;
+  //
+  // await locationService.requestLocationUpdates(locationRequest);
+  // Location curr = await locationService.getLastLocation();
+  // double lat = curr.latitude;
+  // double long = curr.longitude;
+  //
+  //
+  // List<QueryDocumentSnapshot> docsList = [];
+  // for (QueryDocumentSnapshot d in docsStream) {
+  //   if(await checkDist(d, dist, status, lat, long)) {
+  //     docsList.add(d);
+  //   }
+  // }
+  //
+  // return docsList;
 
   return docsStream.toList();
-
 }
 
 bool checkTags(List<dynamic> doc, List<String> tag) {
 
-  if (tag.contains('Indoor') && tag.contains('Outdoor')) {
-    tag.remove('Indoor');
-    tag.remove('Outdoor');
-  }
+  if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+      tag.length == 0) {
 
-  if (tag.contains('Physical') && tag.contains('Leisure')) {
-    tag.remove('Physical');
-    tag.remove('Leisure');
-  }
-
-  if (tag.any((item) => doc.contains(item)) && doc.length > 0 || tag.length == 0) {
     return true;
   } else {
     return false;
   }
 }
-
-// Future<bool> checkDist(QueryDocumentSnapshot doc, double requiredDist, bool status, double lat, double long) async {
-//
-//   List<gc.Location> locations = await gc.locationFromAddress(doc['address']);
-//   double distanceInKM = Geolocator.distanceBetween(lat, long, locations[0].latitude, locations[0].longitude) * 0.001;
-//   return distanceInKM < requiredDist;
-//
-// }
