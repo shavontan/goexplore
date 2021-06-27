@@ -7,25 +7,87 @@ import 'package:ml_linalg/matrix.dart';
 class Recommender {
   int num_rec = 0;
   List<String> user = ['USER'];
-  List<String> fnbLocations = ['Kong Cafe', 'Green Dot', 'Steak House',
-    'Macdonald', 'Koi Cafe', 'The Boneless Kitchen',
-    'Takagi Ramen', 'Super Amazing Kitchen', 'Hotel Food'];
+  List<String> fnbLocations = ['Atlas Bar',   // -- 0
+                                'Ayam Penyet Ria',
+                                'Beaulieu House',
+                                'Bistro Gardenasia',
+                                'Blu Jaz Cafe',
+                                'Bollywood Veggies', // -- 5
+                                'Cafe Colbar',
+                                'Daebak Korean Restaurant',
+                                'Druggists',
+                                'Fu Lin Bar & Kitchen',
+                                'Fu Lin Tofu Garden', // -- 10
+                                'GO Noodle House',
+                                'Gong Cha (Eunos)',
+                                'Knots Cafe and Living',
+                                'Maxwell Food Centre',
+                                "McDonald's (Queensway)",  // -- 15
+                                'Poke Theory (Cross Street Exchange)',
+                                'Saizeriya (Toa Payoh)',
+                                'Starbucks (Changi Airport)',
+                                'Stellar at 1-Altitude',
+                                'Super Loco Customs House',  // -- 20
+                                'Tendon Ginza Itsuki',
+                                'The Alkaff Mansion',
+                                'The Roti Prata House',
+                                'Thus Coffee',
+                                'Whisk & Paddle',   // -- 25
+                              ];
 
   List<String> recLocations = ['WWW', 'Chinese Garden', 'ArtScience Museum', 'Chinese Garden1', 'PeachGarden', 'Orchid Garden' , '']; // added
 
-  List<String> fnbTags = ['Ambience', 'Affordable', 'Western', 'Asian'];
-  List<String> recTags = ['Indoor', 'Outdoor', 'Leisure', 'Physical']; // added
+  List<String> fnbTags = ["Beverages", // --- 0
+                          "Ambience",
+                          "Chinese",
+                          "Korean",
+                          "Japanese",    // --- 4
+                          "Malay",
+                          "Indian",
+                          "Halal",
+                          "Western",    // --- 8
+                          "Fast Food",
+                          "Vegan",
+                          "Vegetarian",
+                          "Dessert",     // --- 12
+                        ];
+  List<String> recTags = ["Indoor",
+                          "Outdoor",
+                          "Physical",
+                          "Leisure",
+                          "Nature",
+                          "Cultural",
+                          "Educational",
+                          "Service"
+                        ];
 
-  List<List<double>> fnbTagsInBits = [ [1, 0, 0, 1],
-    [0, 0, 0, 1],   // Green Dot -- seen
-    [1, 0, 1, 0],   // Steak House -- seen
-    [0, 1, 1, 0],   // Macs
-    [1, 0, 0, 0],    // Koi
-    [1, 0, 0, 1],  //Boneless -- seen
-    [1, 0, 0, 1], // seen
-    [0, 1, 1, 0],
-    [1, 0, 1, 1],
-  ];
+  List<List<double>> fnbTagsInBits = [ [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // 0 = Atlas Bar
+                                      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],  // 5 = Bollywood Veggies
+                                      [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+                                      [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                                      [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  // 11 = GO Noodle House
+                                      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],   // 18 = Starbucks (Changi)
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],   // 22 = Alkaff Mansion
+                                      [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+                                      [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                                    ];
 
   List<List<double>> recTagsInBits = [[0,1,0,1],
     [0,1,1,0],
