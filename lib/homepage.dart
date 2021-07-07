@@ -18,6 +18,7 @@ import 'CustomWidgets/PointTracker.dart';
 import './swipe.dart';
 
 import 'AdventureStack.dart';
+import 'ProfileTracker.dart';
 import 'main.dart';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
@@ -93,7 +94,11 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ProfilePage(),
+                              builder: (context) =>
+                              ProfilePage()
+                                  // ChangeNotifierProvider(
+                                  //     create: (context) => ProfileTracker(),
+                                  //     child: ProfilePage()),
                             ),
                           );
                         } else {

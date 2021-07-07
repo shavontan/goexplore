@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:goexplore/ProfileTracker.dart';
 import 'package:provider/provider.dart';
 
 import './flutterfire.dart';
@@ -93,18 +94,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return ChangeNotifierProvider(
-        create: (context) => TrackPoints(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => TrackPoints()),
+          ChangeNotifierProvider(create: (context) => ProfileTracker()),
+        ],
         child: MaterialApp(
-      title: 'Testing GoExplore',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: LoginScreen(),
-      ),
-    ));
+          title: 'Testing GoExplore',
+          theme: ThemeData(
+            primarySwatch: Colors.pink,
+          ),
+          home: Scaffold(
+            backgroundColor: Colors.white,
+            body: LoginScreen(),
+          ),
+        )
+    );
+
+    // return ChangeNotifierProvider(
+    //     create: (context) => TrackPoints(),
+    //     child: MaterialApp(
+    //   title: 'Testing GoExplore',
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.pink,
+    //   ),
+    //   home: Scaffold(
+    //     backgroundColor: Colors.white,
+    //     body: LoginScreen(),
+    //   ),
+    // ));
   }
 }
 
@@ -114,18 +132,35 @@ class MyApp2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return ChangeNotifierProvider(
-        create: (context) => TrackPoints(),
-        child: MaterialApp(
-          title: 'Testing GoExplore',
-          theme: ThemeData(
-            primarySwatch: Colors.pink,
-          ),
-          home: Scaffold(
-            backgroundColor: Colors.white,
-            body: HomePage(),
-          ),
-        ));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TrackPoints()),
+        ChangeNotifierProvider(create: (context) => ProfileTracker()),
+      ],
+      child: MaterialApp(
+        title: 'Testing GoExplore',
+        theme: ThemeData(
+          primarySwatch: Colors.pink,
+        ),
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          body: HomePage(),
+        ),
+      )
+    );
+
+    // return ChangeNotifierProvider(
+    //     create: (context) => TrackPoints(),
+    //     child: MaterialApp(
+    //       title: 'Testing GoExplore',
+    //       theme: ThemeData(
+    //         primarySwatch: Colors.pink,
+    //       ),
+    //       home: Scaffold(
+    //         backgroundColor: Colors.white,
+    //         body: HomePage(),
+    //       ),
+    //     ));
   }
 }
 
