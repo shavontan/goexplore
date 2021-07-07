@@ -5,7 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './history.dart';
 import 'BookmarkList.dart';
+import 'EditProfile.dart';
 import 'PointsRedemptionPage.dart';
+import 'ProfileTracker.dart';
+import 'package:provider/provider.dart';
 import 'main.dart';
 
 // class ProfilePage extends StatefulWidget {
@@ -21,8 +24,10 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final trackProfile = context.watch<ProfileTracker>();
     return FutureBuilder(
-        future: getUsername(),
+        future: Future.wait([getUsername(), getProfilePic(), getBackground()]),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -32,13 +37,18 @@ class ProfilePage extends StatelessWidget {
             child: SingleChildScrollView(
                 child: Column(children: [
                   Stack(overflow: Overflow.visible, children: [
-                    Image.asset('assets/images/SGbackground.png', // Custom backdrop picture
+                    Image.network(trackProfile.backgroundPic,
                         height: MediaQuery.of(context).size.height / 3,
-                        fit: BoxFit.cover),
+                        fit: BoxFit.cover
+                    ),
+                    // Image.asset('assets/images/SGbackground.png', // Custom backdrop picture
+                    //     height: MediaQuery.of(context).size.height / 3,
+                    //     fit: BoxFit.cover),
                     Positioned(
                       child: CircleAvatar(
                         backgroundImage:
-                        AssetImage('assets/images/SGbackground.png'), // Profile picture
+                        NetworkImage(trackProfile.profilePic),
+                        //AssetImage('assets/images/SGbackground.png'), // Profile picture
                         radius: 80.0,
                       ),
                       top: MediaQuery.of(context).size.height / 3 - 100,
@@ -54,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ]),
                   Container(height: 70),
-                  Text(snapshot.data as String, style: GoogleFonts.cabinSketch(fontSize: 30)),
+                  Text(trackProfile.username, style: GoogleFonts.cabinSketch(fontSize: 30)),
                   Container(height: 25),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
@@ -67,7 +77,12 @@ class ProfilePage extends StatelessWidget {
                             child: Text('Edit Profile',
                                 style:
                                 GoogleFonts.scada(fontSize: 15, color: Colors.black)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) =>
+                                      EditProfile(),
+                                      ));
+                            },
                           )),
                     ),
                   ),
@@ -163,13 +178,35 @@ class ProfilePage extends StatelessWidget {
         )
     );});
   }
-
-  Future<String> getUsername() async {
-    String uid = await getCurrentUID();
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((value) {return value['username'];});
-  }
 }
+
+Future<String> getUsername() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {return value['username'];});
+}
+
+Future<String> getProfilePic() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {return value['profilePic'];});
+}
+
+Future<String> getBackground() async {
+  String uid = await getCurrentUID();
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) {return value['backgroundPic'];});
+}
+
+
+
+

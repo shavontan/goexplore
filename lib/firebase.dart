@@ -24,6 +24,8 @@ Future<void> userSetup(String username, String email) async {
     'fnbAvgTime': fnbAvgTime,
     'recreationSeen': recreationSeen,
     'fnbSeen': fnbSeen,
+    'profilePic': "",
+    'backgroundPic': "",
   });
   return;
 }
