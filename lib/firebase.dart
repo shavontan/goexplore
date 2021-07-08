@@ -24,8 +24,8 @@ Future<void> userSetup(String username, String email) async {
     'fnbAvgTime': fnbAvgTime,
     'recreationSeen': recreationSeen,
     'fnbSeen': fnbSeen,
-    'profilePic': "",
-    'backgroundPic': "",
+    'profilePic': "https://thumbs.dreamstime.com/b/no-user-profile-picture-24185395.jpg",
+    'backgroundPic': "https://img.freepik.com/free-photo/singapore-landmark-merlion-sunrise_29505-305.jpg?size=626&ext=jpg",
   });
   return;
 }

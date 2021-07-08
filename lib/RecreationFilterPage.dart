@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:goexplore/swipe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CustomWidgets/SwipingTile.dart';
+import 'ListPage.dart';
 import 'ListPageBuilder.dart';
 import 'flutterfire.dart';
 
@@ -383,7 +384,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                   print(selectedTags);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
-                          ListPageBuilder('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                          ListPage('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                         // ListPageBuilder('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page
                 },

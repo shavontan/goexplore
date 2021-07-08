@@ -250,6 +250,7 @@ class LoginScreen extends StatelessWidget {
 
                           bool shouldNavigate = await signIn(_email.text, _password.text);
                           bool verified = isVerified();
+
                           if (shouldNavigate && verified) {
 
                             if (await shouldUpdateVisitedToday()) {
