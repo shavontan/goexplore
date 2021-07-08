@@ -253,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                           Container(height: 10),
                           AnimatedButton(
                               color: (Colors.deepPurple[50])!,
-                              child: Text("Change Password", style: GoogleFonts.notoSans()),
+                              child: Text("Update Password", style: GoogleFonts.notoSans()),
                               onPressed: () async {
                                 Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => ChangePassword()));

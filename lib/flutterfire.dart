@@ -15,10 +15,13 @@ Future<bool> signIn(String email, String password) async {
 
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+
     return true;
+
   } catch (e) {
-    await anonymousSignIn();
+    // await anonymousSignIn();
     print(e);
+
     return false;
   }
 }
@@ -32,7 +35,11 @@ Future<void> signOut() async {
 }
 
 bool isVerified() {
-  User user = FirebaseAuth.instance.currentUser as User;
+  var user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    return false;
+  }
 
   if (user.emailVerified) {
     return true;
@@ -40,7 +47,7 @@ bool isVerified() {
 }
 
 bool isLoggedIn() {
-  User user = FirebaseAuth.instance.currentUser as User;
+  var user = FirebaseAuth.instance.currentUser;
 
   if (user == null) {
     return false;

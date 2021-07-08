@@ -19,6 +19,7 @@ import './swipe.dart';
 
 import 'AdventureStack.dart';
 import 'ProfileTracker.dart';
+import 'Search.dart';
 import 'main.dart';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-  BackButtonInterceptor.add(myInterceptor);
+    BackButtonInterceptor.add(myInterceptor);
   }
 
   @override
@@ -88,18 +89,24 @@ class _HomePageState extends State<HomePage> {
                         });
                       }),
                   IconButton(
+                      icon: Icon(Icons.search_rounded, color: Colors.white),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Search()));
+                      }),
+                  IconButton(
                       icon: Icon(Icons.account_circle, color: Colors.white),
                       onPressed: () {
+                        print(isLoggedIn());
                         if (isLoggedIn()) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              ProfilePage()
-                                  // ChangeNotifierProvider(
-                                  //     create: (context) => ProfileTracker(),
-                                  //     child: ProfilePage()),
-                            ),
+                                builder: (context) => ProfilePage()
+                                // ChangeNotifierProvider(
+                                //     create: (context) => ProfileTracker(),
+                                //     child: ProfilePage()),
+                                ),
                           );
                         } else {
                           Navigator.push(
@@ -170,7 +177,6 @@ class _HomePageState extends State<HomePage> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 Categories()));
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => Swipe('recreation', 2, []))); // temp path, to delete
                                   },
                                 ),
                                 TextButton(
@@ -357,6 +363,55 @@ class _HomePageState extends State<HomePage> {
                                     child: SingleChildScrollView(
                                         child: Column(
                                       children: [
+                                        Container(height: 10),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Search Page",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        "If you are looking for a location which you previously did not save to your bookmarks or which you accidentally deleted, you can"),
+                                              ]),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        "navigate to the search page by clicking on the"),
+                                                TextSpan(
+                                                    text: " search icon ",
+                                                    style: GoogleFonts.delius(
+                                                        color:
+                                                        Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "to the "),
+                                                TextSpan(
+                                                    text: "right",
+                                                    style: GoogleFonts.delius(
+                                                        color:
+                                                        Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    " of this help icon."),
+                                              ]),
+                                        ),
                                         Container(height: 10),
                                         Text.rich(
                                           TextSpan(

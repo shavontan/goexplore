@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,7 +160,8 @@ class ProfilePage extends StatelessWidget {
                             onPressed: () async {
 
                               await signOut();
-                              await anonymousSignIn();
+                              // await anonymousSignIn();
+
 
                               // Navigator.pushAndRemoveUntil(
                               //     context,
