@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                 ConstrainedBox(
                                   child: Text(
                                     'Do you know what you want to do today?',
-                                    style: GoogleFonts.raviPrakash(
+                                    style: GoogleFonts.averiaLibre(
                                       fontSize: 40,
                                       color: Colors.black,
                                     ),
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                                   child: ConstrainedBox(
                                     child: Text(
                                       'Yes, I have an idea!',
-                                      style: GoogleFonts.raviPrakash(
+                                      style: GoogleFonts.averiaLibre(
                                           fontSize: 20, color: Colors.black54),
                                       textAlign: TextAlign.center,
                                     ),
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                   child: ConstrainedBox(
                                     child: Text(
                                       'No, take me on an adventure!',
-                                      style: GoogleFonts.raviPrakash(
+                                      style: GoogleFonts.averiaLibre(
                                           fontSize: 20, color: Colors.black54),
                                       textAlign: TextAlign.center,
                                     ),
@@ -204,8 +204,8 @@ class _HomePageState extends State<HomePage> {
                           TextButton(
                             child: Text(
                               'Scan for points',
-                              style: GoogleFonts.raviPrakash(
-                                  fontSize: 20, color: Colors.amber),
+                              style: GoogleFonts.jura(
+                                  fontSize: 20, color: Colors.amberAccent[700]),
                             ),
 
                             // ADDED THIS: ----------------------------------------------------------------------------------------------------  ***

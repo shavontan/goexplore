@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,8 @@ class _EditProfileState extends State<EditProfile> {
 
   File tempP = File("");
   File tempB = File("");
+
+  String email = FirebaseAuth.instance.currentUser!.email!;
 
 
   @override
@@ -98,8 +101,11 @@ class _EditProfileState extends State<EditProfile> {
                           ]),
                           Container(height: 70),
                           Text(tempName == "" ? (snapshot.data as List)[0] : tempName, style: GoogleFonts.cabinSketch(fontSize: 30)),
-                          Container(height: 25),
+                          Container(height: 15),
+                          Text("Email: $email", style: GoogleFonts.notoSans()),
+                          Container(height: 20),
                           AnimatedButton(
+                            height: 58.0,
                             color: (Colors.deepPurple[100])!,
                               child: Text("Edit Display Name", style: GoogleFonts.notoSans()),
                               onPressed: () async {
@@ -137,6 +143,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           Container(height: 10),
                           AnimatedButton(
+                              height: 58.0,
                               color: (Colors.deepPurple[100])!,
                             child: Text("Change Profile Picture", style: GoogleFonts.notoSans()),
                             onPressed: () async {
@@ -197,6 +204,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           Container(height: 10),
                           AnimatedButton(
+                              height: 58.0,
                               color: (Colors.deepPurple[100])!,
                               child: Text("Change Background Cover", style: GoogleFonts.notoSans()),
                               onPressed: () async {
@@ -252,6 +260,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           Container(height: 10),
                           AnimatedButton(
+                              height: 58.0,
                               color: (Colors.deepPurple[50])!,
                               child: Text("Update Password", style: GoogleFonts.notoSans()),
                               onPressed: () async {
