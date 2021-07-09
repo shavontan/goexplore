@@ -11,6 +11,7 @@ import 'PointsRedemptionPage.dart';
 import 'ProfileTracker.dart';
 import 'package:provider/provider.dart';
 import 'main.dart';
+import 'OnAdventure.dart';
 
 // class ProfilePage extends StatefulWidget {
 //   //const ProfilePage({Key key}) : super(key: key);
@@ -65,7 +66,7 @@ class ProfilePage extends StatelessWidget {
                         //AssetImage('assets/images/SGbackground.png'), // Profile picture
                         radius: 80.0,
                       ),
-                      top: MediaQuery.of(context).size.height / 3 - 100,
+                      top: MediaQuery.of(context).size.height / 3 - 130,
                       left: (MediaQuery.of(context).size.width - 160) / 2,
                     ),
                     Positioned(
@@ -77,9 +78,9 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ]),
-                  Container(height: 70),
+                  Container(height: 50),
                   Text(trackProfile.username, style: GoogleFonts.cabinSketch(fontSize: 30)),
-                  Container(height: 25),
+                  Container(height: 15),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -116,6 +117,25 @@ class ProfilePage extends StatelessWidget {
                               Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => BookmarkList())
                               );
+                            },
+                          )),
+                    ),
+                  ),
+                  Container(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5.0),
+                    child: SizedBox(
+                      height: 50,
+                      width: 300,
+                      child: ColoredBox(
+                          color: Color(0x33542357),
+                          child: TextButton(
+                            child: Text('Your Current Adventures',
+                                style:
+                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                            onPressed: () {
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => OnAdventure(),),);
                             },
                           )),
                     ),

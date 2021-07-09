@@ -199,7 +199,17 @@ class _HomePageState extends State<HomePage> {
                                 )
                               ]),
 
-                          Container(height: 100),
+                          Container(height: 10),
+                          TextButton(
+                              child: Text("Just Browsing?",
+                                  style: GoogleFonts.averiaLibre(fontSize: 20, color: Colors.black87)),
+                              onPressed: (){ },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Color(
+                                  0xFFF8F1F1)),
+                              //elevation: MaterialStateProperty.all<double>(5.0)
+                          )),
+                          Container(height: 70),
 
                           TextButton(
                             child: Text(
@@ -560,6 +570,42 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                           ),
                                         ),
+
+                                        Container(height: 20),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Just Browsing?",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "Use this feature if you only want to look at the many locations we offer, ignoring our filter functions and recommendations"),
+                                              ]),
+                                        ),
+                                        Container(height: 5),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "(Locations will be displayed in a swiping format.)"),
+                                              ]),
+                                        ),
+
                                         Container(height: 20),
                                         Text.rich(
                                           TextSpan(
