@@ -19,7 +19,20 @@ class _BookmarkListState extends State<BookmarkList> {
         future: getBookmarks(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text('Your bookmarks', style: TextStyle(color: Colors.black)),
+                  backgroundColor: Color(0xB6C4CAE8),
+                  elevation: 0.0,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                    onPressed: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                      Navigator.pop(context);
+                    },
+                  ),),
+                body: Center(child: CircularProgressIndicator()),
+                backgroundColor: Colors.white);
           }
 
           return new Scaffold(

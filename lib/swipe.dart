@@ -125,9 +125,20 @@ class _SwipeState extends State<Swipe> {
                       context, this.category, this.price, this.tags, this.dist),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return Scaffold(
+                          appBar: AppBar(
+                            title: Text('', style: TextStyle(color: Colors.black)),
+                            backgroundColor: Color(0xB6C4CAE8),
+                            elevation: 0.0,
+                            leading: IconButton(
+                              icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                              onPressed: () {
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                                Navigator.pop(context);
+                              },
+                            ),),
+                          body: Center(child: CircularProgressIndicator()),
+                          backgroundColor: Colors.white);
                     }
 
                     final randomDocs = snapshot.data!..shuffle();
@@ -154,7 +165,20 @@ class _SwipeState extends State<Swipe> {
         }
 
         if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
+          return Scaffold(
+              appBar: AppBar(
+                title: Text('', style: TextStyle(color: Colors.black)),
+                backgroundColor: Color(0xB6C4CAE8),
+                elevation: 0.0,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                    Navigator.pop(context);
+                  },
+                ),),
+              body: Center(child: CircularProgressIndicator()),
+              backgroundColor: Colors.white);
         }
 
 
@@ -167,9 +191,20 @@ class _SwipeState extends State<Swipe> {
                       context, this.category, this.price, this.tags, this.dist),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return Scaffold(
+                          appBar: AppBar(
+                            title: Text('', style: TextStyle(color: Colors.black)),
+                            backgroundColor: Color(0xB6C4CAE8),
+                            elevation: 0.0,
+                            leading: IconButton(
+                              icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                              onPressed: () {
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                                Navigator.pop(context);
+                              },
+                            ),),
+                          body: Center(child: CircularProgressIndicator()),
+                          backgroundColor: Colors.white);
                     }
 
                     final randomDocs = snapshot.data!..shuffle();
@@ -203,9 +238,20 @@ class _SwipeState extends State<Swipe> {
 
                       print(snapshot.data);
                       if (!snapshot.hasData) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return Scaffold(
+                            appBar: AppBar(
+                              title: Text('', style: TextStyle(color: Colors.black)),
+                              backgroundColor: Color(0xB6C4CAE8),
+                              elevation: 0.0,
+                              leading: IconButton(
+                                icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                                onPressed: () {
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                                  Navigator.pop(context);
+                                },
+                              ),),
+                            body: Center(child: CircularProgressIndicator()),
+                            backgroundColor: Colors.white);
                       }
 
                       final randomDocs = snapshot.data!..shuffle();
