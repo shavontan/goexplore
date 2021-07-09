@@ -2,6 +2,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,14 +19,13 @@ final listKey = GlobalKey<AnimatedListState>();
 
 
 class OnAdventureState extends State<OnAdventure> {
-  String bookmarkName = "";   // remove this – only temp (change all this.bookmarkName below to get Adventure locations data)
 
   void refresh() => setState(() => {});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: getBookmarkLocations(this.bookmarkName),      // Change this!!
+    return FutureBuilder<List<DocumentSnapshot>>(
+        future: getAdventureLocations(),      // Change this!!
         builder: (context, snapshot) {
 
           if (!snapshot.hasData) {
@@ -58,18 +58,18 @@ class OnAdventureState extends State<OnAdventure> {
                 ),
               ),
               body: ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) =>
                       Dismissible(
                           key: UniqueKey(),
                           child: Padding(
                               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                               child:
-                              BookMarkTile(name: snapshot.data!.docs[index]['name'],
-                                imageURL_360: snapshot.data!.docs[index]['360image'],
-                                description: snapshot.data!.docs[index]['description'],
-                                address: snapshot.data!.docs[index]['address'],
-                                imgURLs: snapshot.data!.docs[index]['imageList'],)
+                              BookMarkTile(name: snapshot.data![index]['name'],
+                                imageURL_360: snapshot.data![index]['360image'],
+                                description: snapshot.data![index]['description'],
+                                address: snapshot.data![index]['address'],
+                                imgURLs: snapshot.data![index]['imageList'],)
                             // BookmarkTile(
                             //   bookmarkName: this.bookmarkName,
                             //   image: Image.network(snapshot.data!.docs[index]['imageURL']),
@@ -79,8 +79,8 @@ class OnAdventureState extends State<OnAdventure> {
                             // )
                           ),
                           onDismissed: (direction) async {
-                            String locationName = snapshot.data!.docs[index]['name'];
-                            removeItem(this.bookmarkName, locationName);
+                            String locationName = snapshot.data![index]['name'];
+                            removeItem(locationName);
 
                             ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                               content: new Text("Location removed"),
@@ -98,23 +98,62 @@ class OnAdventureState extends State<OnAdventure> {
   }
 }
 
-void removeItem(String bookmarkName, String locationName) async {
+// void removeItem(String bookmarkName, String locationName) async {
+//   String uid = await getCurrentUID();
+//   FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(uid)
+//       .collection(bookmarkName)
+//       .doc(locationName)
+//       .delete();
+// }
+//
+// Stream<QuerySnapshot> getBookmarkLocations(String bookmarkName) async* {
+//
+//   String uid = await getCurrentUID();
+//
+//   yield* FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(uid)
+//       .collection(bookmarkName)
+//       .snapshots();
+// }
+
+Future<List<dynamic>> getAdventureList() async {
   String uid = await getCurrentUID();
-  FirebaseFirestore.instance
+
+  return await FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
-      .collection(bookmarkName)
-      .doc(locationName)
-      .delete();
+      .get()
+      .then((value) {return value['adventureLocations'];});
 }
 
-Stream<QuerySnapshot> getBookmarkLocations(String bookmarkName) async* {
+Future<List<DocumentSnapshot>> getAdventureLocations() async {
 
+  List<dynamic> adventureList = await getAdventureList();
+  List<DocumentSnapshot> advLocations = [];
+
+  for (var location in adventureList) {
+    await FirebaseFirestore.instance
+        .collection('adventure')
+        .doc(location as String)
+        .get()
+        .then((value) {advLocations.add(value);});
+  }
+
+  return advLocations;
+}
+
+void removeItem(String locationName) async {
   String uid = await getCurrentUID();
 
-  yield* FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .collection(bookmarkName)
-      .snapshots();
+  List<dynamic> currAdventures = await getAdventureList();
+  currAdventures.remove(locationName);
+
+  await FirebaseFirestore.instance
+    .collection('users')
+    .doc(uid)
+    .update({'adventureLocations':currAdventures});
 }
+
