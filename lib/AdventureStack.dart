@@ -27,7 +27,20 @@ class AdventureStackState extends State<AdventureStack> {
         stream: getAdventureLocationStreamSnapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text('Adventure', style: TextStyle(color: Colors.black)),
+                  backgroundColor: Color(0xB6C4CAE8),
+                  elevation: 0.0,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                    onPressed: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                      Navigator.pop(context);
+                    },
+                  ),),
+                body: Center(child: CircularProgressIndicator()),
+                backgroundColor: Colors.white);
           }
 
           final randomDocs = snapshot.data!.docs..shuffle();
@@ -371,3 +384,5 @@ class AdventureStackState extends State<AdventureStack> {
 Stream<QuerySnapshot> getAdventureLocationStreamSnapshots() async* {
   yield* FirebaseFirestore.instance.collection('adventure').snapshots();
 }
+
+
