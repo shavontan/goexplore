@@ -23,6 +23,7 @@ import 'Search.dart';
 import 'main.dart';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'JustBrowsing.dart';
 
 GlobalKey<AdventureStackState> advKey = GlobalKey<AdventureStackState>();
 
@@ -203,7 +204,13 @@ class _HomePageState extends State<HomePage> {
                           TextButton(
                               child: Text("Just Browsing?",
                                   style: GoogleFonts.averiaLibre(fontSize: 20, color: Colors.black87)),
-                              onPressed: (){ },
+                              onPressed: (){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            JustBrowsing()));
+                              },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(Color(
                                   0xFFF8F1F1)),
