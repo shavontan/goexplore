@@ -20,10 +20,11 @@ class _ImageTileState extends State<ImageTile> {
     return ClipRRect(
       child: ConstrainedBox(
         //child: SizedBox(
-        child: ZoomOverlay(child: CachedNetworkImage(
+        child: ZoomOverlay(child:
+
+        CachedNetworkImage(
           placeholder: (context, url) => CircularProgressIndicator(),
           imageUrl: widget.imgURL,
-
         ),
           //Image.network(widget.imgURL, fit: BoxFit.cover,),
           animationDuration: Duration(milliseconds: 100),),
