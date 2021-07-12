@@ -106,7 +106,9 @@ class _SwipeState extends State<Swipe> {
                       stopwatch.reset();
                       stopwatch.start();
 
-                      return new Scaffold(body:
+                      return new Scaffold(
+                          resizeToAvoidBottomInset: false,
+                          body:
                       Stack(children: [
 
                         new LazyIndexedStack(
@@ -285,7 +287,9 @@ class _SwipeState extends State<Swipe> {
                   stopwatch.reset();
                   stopwatch.start();
 
-                  return new Scaffold(body:
+                  return new Scaffold(
+                      resizeToAvoidBottomInset: false,
+                      body:
                   Stack(children: [
 
                     new LazyIndexedStack(
@@ -437,7 +441,9 @@ class _SwipeState extends State<Swipe> {
                 stopwatch.reset();
                 stopwatch.start();
 
-                return new Scaffold(body:
+                return new Scaffold(
+                    resizeToAvoidBottomInset: false,
+                    body:
                 Stack(children: [
 
                   new LazyIndexedStack(
