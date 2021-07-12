@@ -48,7 +48,6 @@ class _MyListTileState extends State<MyListTile> {
 
   String toStringOfTags(List<String> tags) {
     String StringOfTags = "";
-    print(tags);
 
     for (String tag in tags) {
       StringOfTags = StringOfTags + "# $tag   ";
