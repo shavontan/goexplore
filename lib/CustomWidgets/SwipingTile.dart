@@ -27,6 +27,18 @@ class _SwipingTileState extends State<SwipingTile> {
   bool activate360 = false;         // when activateExtraInfo = true --> activate360 will not change (need to do this check twice)
   bool activateExtraInfo = false;
 
+  double _lon = 0;
+  double _lat = 0;
+  double _tilt = 0;
+
+  void onViewChanged(longitude, latitude, tilt) {
+    setState(() {
+      _lon = longitude;
+      _lat = latitude;
+      _tilt = tilt;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -36,6 +48,9 @@ class _SwipingTileState extends State<SwipingTile> {
             children: [
               AbsorbPointer(child:
               InkWell(child: Panorama(
+                // animSpeed: 1.0,
+                // sensorControl: SensorControl.Orientation,
+                // onViewChanged: onViewChanged,
                 child:
                 Image.network(widget.imageURL_360),
               ),

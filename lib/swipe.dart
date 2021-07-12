@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lazy_indexed_stack/lazy_indexed_stack.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'CustomWidgets/SwipingTile.dart';
 import 'RecommenderSystem.dart';
@@ -52,191 +53,27 @@ class _SwipeState extends State<Swipe> {
   final double dist;
   bool confused = false;
 
+  int index = 0;
+  bool first = true;
+  List<DocumentSnapshot> finalList = [];
+
   _SwipeState(this.category, this.price, this.tags, this.dist);
 
-  List<Widget> _Cards = [];
   List<String> locationNames = [];
 
   @override
   Widget build(BuildContext context) {
-    // Stack of _Cards that can be swiped. Set width, height, etc here.
 
-    // return Container(
-    //
-    //     // Important to keep as a stack to have overlay of _Cards.
-    //
-    //     child: FutureBuilder<List<QueryDocumentSnapshot>>(
-    //         future: getLocationStreamSnapshots(
-    //             context, this.category, this.price, this.tags, this.dist),
-    //         builder: (context, snapshot) {
-    //           if (!snapshot.hasData) {
-    //             return Center(
-    //               child: CircularProgressIndicator(),
-    //             );
-    //           }
-    //
-    //           final randomDocs = snapshot.data!..shuffle();
-    //           final length = randomDocs.length;
-    //
-    //           for (int i = 0; i < length; i++) {
-    //             _Cards.add(_newCard(doc: randomDocs[i], category: category));
-    //           }
-    //
-    //           stopwatch.reset();
-    //           stopwatch.start();
-    //           return Scaffold(
-    //             // appBar: AppBar(
-    //             //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
-    //             //   backgroundColor: Color(0xB6C4CAE8),
-    //             //   elevation: 0.0,
-    //             //   leading: IconButton(
-    //             //     icon: Icon(Icons.arrow_back, color: Colors.white),
-    //             //     onPressed: () {
-    //             //       Navigator.pop(context, false);
-    //             //     },
-    //             //   ),
-    //             //   // actions: [
-    //             //   //   IconButton(
-    //             //   //       icon: Icon(Icons.account_circle, color: Colors.white),
-    //             //   //       onPressed: () {
-    //             //   //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
-    //             //   //       })
-    //             //   // ],
-    //             // ),
-    //             body: Stack(children: [
-    //               Return(),
-    //               ..._Cards,
-    //             ]),
-    //             //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-    //           );
-    //         })
-    //     // child: Stack(
-    //     //   children: _Cards,
-    //     // ),
-    //     );
     return FutureBuilder<List<double>>(
-      future: getUserTimes(this.category),
-      builder: (context, snapshot) {
+        future: getUserTimes(this.category),
+        builder: (context, snapshotTime) {
 
-        if (!isLoggedIn()) {
-          return Container(
-              child: FutureBuilder<List<QueryDocumentSnapshot>>(
-                  future: getLocationStreamSnapshots(
-                      context, this.category, this.price, this.tags, this.dist),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Scaffold(
-                          appBar: AppBar(
-                            title: Text('', style: TextStyle(color: Colors.black)),
-                            backgroundColor: Color(0xB6C4CAE8),
-                            elevation: 0.0,
-                            leading: IconButton(
-                              icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
-                              onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
-                                Navigator.pop(context);
-                              },
-                            ),),
-                          body: Center(child: CircularProgressIndicator()),
-                          backgroundColor: Colors.white);
-                    }
+          if (!isLoggedIn()) {
+              return FutureBuilder<List<DocumentSnapshot>>(
+                    future: getLocationStreamSnapshots(
+                        context, this.category, this.price, this.tags),
+                    builder: (context, snapshot) {
 
-                    final randomDocs = snapshot.data!..shuffle();
-                    final length = randomDocs.length;
-
-                    for (int i = 0; i < length; i++) {
-                      _Cards.add(_newCard(doc: randomDocs[i], category: category));
-                    }
-
-                    stopwatch.reset();
-                    stopwatch.start();
-                    return Scaffold(
-                      body: Stack(children: [
-                        Return(),
-                        ..._Cards,
-                      ]),
-                      //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-                    );
-                  })
-            // child: Stack(
-            //   children: _Cards,
-            // ),
-          );
-        }
-
-        if (!snapshot.hasData) {
-          return Scaffold(
-              appBar: AppBar(
-                title: Text('', style: TextStyle(color: Colors.black)),
-                backgroundColor: Color(0xB6C4CAE8),
-                elevation: 0.0,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
-                  onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
-                    Navigator.pop(context);
-                  },
-                ),),
-              body: Center(child: CircularProgressIndicator()),
-              backgroundColor: Colors.white);
-        }
-
-
-        List<double> userTimes = snapshot.data!;
-
-        if (Matrix.fromList([userTimes]).sum() == 0 || !isLoggedIn()) {
-          return Container(
-              child: FutureBuilder<List<QueryDocumentSnapshot>>(
-                  future: getLocationStreamSnapshots(
-                      context, this.category, this.price, this.tags, this.dist),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Scaffold(
-                          appBar: AppBar(
-                            title: Text('', style: TextStyle(color: Colors.black)),
-                            backgroundColor: Color(0xB6C4CAE8),
-                            elevation: 0.0,
-                            leading: IconButton(
-                              icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
-                              onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
-                                Navigator.pop(context);
-                              },
-                            ),),
-                          body: Center(child: CircularProgressIndicator()),
-                          backgroundColor: Colors.white);
-                    }
-
-                    final randomDocs = snapshot.data!..shuffle();
-                    final length = randomDocs.length;
-
-                    for (int i = 0; i < length; i++) {
-                      _Cards.add(_newCard(doc: randomDocs[i], category: category));
-                    }
-
-                    stopwatch.reset();
-                    stopwatch.start();
-                    return Scaffold(
-                      body: Stack(children: [
-                        Return(),
-                        ..._Cards,
-                      ]),
-                      //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-                    );
-                  })
-              // child: Stack(
-              //   children: _Cards,
-              // ),
-              );
-        }
-
-        locationNames = new Recommender(num_rec: 5, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
-
-        return FutureBuilder<List<DocumentSnapshot>>(
-          future: getLocations(this.category, locationNames),
-          builder: (context, snapshot) {
-
-                      print(snapshot.data);
                       if (!snapshot.hasData) {
                         return Scaffold(
                             appBar: AppBar(
@@ -257,47 +94,732 @@ class _SwipeState extends State<Swipe> {
                       final randomDocs = snapshot.data!..shuffle();
                       final length = randomDocs.length;
 
-                      for (int i = 0; i < length; i++) {
-                        _Cards.add(_newCard(doc: randomDocs[i], category: category));
+                      if (first) {
+                        finalList.addAll(randomDocs);
+                      }
+
+                      print("1");
+                      for (int i = 0; i < finalList.length; i++) {
+                        print(finalList[i]['name']);
                       }
 
                       stopwatch.reset();
                       stopwatch.start();
-                      return Scaffold(
-                              body: Stack(children: [
-                                Return(),
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Container(height: 300),
-                                  FutureBuilder<List<double>>(
-                                  future: getUserTimes(this.category),
-                                  builder: (context, snapshot) {
+
+                      return new Scaffold(body:
+                      Stack(children: [
+
+                        new LazyIndexedStack(
+                          reuse: false,
+                          index: index,
+                          itemBuilder: (c, i) {
+
+                            if (i == finalList.length-1) {
+                              return Return();
+                            }
+
+                            List<String> images = [];
+                            for (int j = 0; j < finalList[i]['imageList'].length; j++) {
+                              images.add(finalList[i]['imageList'][j] as String);
+                            }
+                            String category = "";
+                            if (finalList[i]['isFnb']) {
+                              category = "fnb";
+                            } else {
+                              category = "recreation";
+                            }
+                            return
+
+                              Swipable(child: SwipingTile(
+                                address: finalList[i]['address'],
+                                description: finalList[i]['description'],
+                                imageURL_360: finalList[i]['360image'],
+                                imageURLs: images,
+                                name: finalList[i]['name'],
+                              ),
+                                  onSwipeDown: (finalPosition) async {
+                                    if (isLoggedIn()) {
+
+                                      stopwatch.stop();
+                                      double time = stopwatch.elapsedMilliseconds / 1000;
+
+                                      updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                      stopwatch.reset();
+                                      stopwatch.start();
+
+                                      List<dynamic> bookmarks = await getBookmarks();
+                                      String uid = await getCurrentUID();
+                                      final List<bool> isSelected = globalKey.currentState!.isSelected;
+                                      for (int j = 0; j < isSelected.length; j++) {
+                                        if (isSelected[j]) {
+                                          String bookmarkName = bookmarks[j] as String;
+                                          FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(uid)
+                                              .collection(bookmarkName)
+                                              .doc(finalList[i]['name'])
+                                              .set({
+                                            'name': finalList[i]['name'],
+                                            'description': finalList[i]['description'],
+                                            'price': finalList[i]['price'],
+                                            'address': finalList[i]['address'],
+                                            'tags': finalList[i]['tags'],
+                                            'imageList': finalList[i]['imageList'],
+                                            '360image': finalList[i]['360image'],
+                                          });
+                                        }
+                                      }
+                                      globalKey.currentState!.resetSelection();
+                                    }
+
+                                    setState(() {index += 1; first=false;});
+
+                                  },
+                                  onSwipeUp: (finalPosition) {
+
+                                    if (isLoggedIn()) {
+                                      stopwatch.stop();
+                                      double time = stopwatch.elapsedMilliseconds / 1000;
+                                      updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                      stopwatch.reset();
+                                      stopwatch.start();
+                                    }
+
+                                    setState(() {index += 1; first=false;});
+
+                                  },
+                                  onSwipeLeft: (finalPosition) {
+
+                                    if (isLoggedIn()) {
+                                      stopwatch.stop();
+                                      double time = stopwatch.elapsedMilliseconds / 1000;
+                                      updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                      stopwatch.reset();
+                                      stopwatch.start();
+                                    }
+                                    setState(() {index += 1;first=false;});
+
+                                  },
+
+                                  onSwipeRight: (finalPosition) {
+
+                                    if (isLoggedIn()) {
+                                      stopwatch.stop();
+                                      double time = stopwatch.elapsedMilliseconds / 1000;
+                                      updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                      stopwatch.reset();
+                                      stopwatch.start();
+                                    }
+                                    setState(() {index += 1;first=false;});
+
+                                  });
+                          },
+                          itemCount: finalList.length,
+                        ),
+                        BrowseBar(),])
+                      );
 
 
-                                  return TextButton(
-                                        child: Text("Get more locations"),
-                                        onPressed: () {
-                                          setState(() {
-                                //   List<double> newUserTimes = snapshot.data!;
-                                //   locationNames = new Recommender(num_rec: 5, userTimes: newUserTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
-                                //
-                                //   print(locationNames);
-                                //
-                                }
-                                );});})]),
-                                ..._Cards,
-                              ]),
-                              //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
-                            );
+
+                    });
+              // child: Stack(
+              //   children: _Cards,
+              // ),
           }
-        );
-      }
+
+          if (!snapshotTime.hasData) {
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text('', style: TextStyle(color: Colors.black)),
+                  backgroundColor: Color(0xB6C4CAE8),
+                  elevation: 0.0,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                    onPressed: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                      Navigator.pop(context);
+                    },
+                  ),),
+                body: Center(child: CircularProgressIndicator()),
+                backgroundColor: Colors.white);
+          }
+
+
+          List<double> userTimes = snapshotTime.data!;
+
+          if (Matrix.fromList([userTimes]).sum() == 0 || !isLoggedIn()) {
+
+            return FutureBuilder<List<DocumentSnapshot>>(
+                future: getLocationStreamSnapshots(
+                    context, this.category, this.price, this.tags),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Scaffold(
+                        appBar: AppBar(
+                          title: Text('', style: TextStyle(color: Colors.black)),
+                          backgroundColor: Color(0xB6C4CAE8),
+                          elevation: 0.0,
+                          leading: IconButton(
+                            icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                            onPressed: () {
+                              // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                              Navigator.pop(context);
+                            },
+                          ),),
+                        body: Center(child: CircularProgressIndicator()),
+                        backgroundColor: Colors.white);
+                  }
+
+                  final randomDocs = snapshot.data!..shuffle();
+                  final length = randomDocs.length;
+
+                  if (first) {
+                    finalList.addAll(randomDocs);
+                  }
+
+                  print("2");
+                  for (int i = 0; i < finalList.length; i++) {
+                    print(finalList[i]['name']);
+                  }
+
+                  stopwatch.reset();
+                  stopwatch.start();
+
+                  return new Scaffold(body:
+                  Stack(children: [
+
+                    new LazyIndexedStack(
+                      reuse: false,
+                      index: index,
+                      itemBuilder: (c, i) {
+
+                        if (i == finalList.length-1) {
+                          return Return();
+                        }
+
+                        List<String> images = [];
+                        for (int j = 0; j < finalList[i]['imageList'].length; j++) {
+                          images.add(finalList[i]['imageList'][j] as String);
+                        }
+                        String category = "";
+                        if (finalList[i]['isFnb']) {
+                          category = "fnb";
+                        } else {
+                          category = "recreation";
+                        }
+                        return
+
+                          Swipable(child: SwipingTile(
+                            address: finalList[i]['address'],
+                            description: finalList[i]['description'],
+                            imageURL_360: finalList[i]['360image'],
+                            imageURLs: images,
+                            name: finalList[i]['name'],
+                          ),
+                              onSwipeDown: (finalPosition) async {
+                                if (isLoggedIn()) {
+
+                                  stopwatch.stop();
+                                  double time = stopwatch.elapsedMilliseconds / 1000;
+
+                                  updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                  stopwatch.reset();
+                                  stopwatch.start();
+
+                                  List<dynamic> bookmarks = await getBookmarks();
+                                  String uid = await getCurrentUID();
+                                  final List<bool> isSelected = globalKey.currentState!.isSelected;
+                                  for (int j = 0; j < isSelected.length; j++) {
+                                    if (isSelected[j]) {
+                                      String bookmarkName = bookmarks[j] as String;
+                                      FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(uid)
+                                          .collection(bookmarkName)
+                                          .doc(finalList[i]['name'])
+                                          .set({
+                                        'name': finalList[i]['name'],
+                                        'description': finalList[i]['description'],
+                                        'price': finalList[i]['price'],
+                                        'address': finalList[i]['address'],
+                                        'tags': finalList[i]['tags'],
+                                        'imageList': finalList[i]['imageList'],
+                                        '360image': finalList[i]['360image'],
+                                      });
+                                    }
+                                  }
+                                  globalKey.currentState!.resetSelection();
+                                }
+
+                                setState(() {index += 1; first=false;});
+
+                              },
+                              onSwipeUp: (finalPosition) {
+
+                                if (isLoggedIn()) {
+                                  stopwatch.stop();
+                                  double time = stopwatch.elapsedMilliseconds / 1000;
+                                  updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                  stopwatch.reset();
+                                  stopwatch.start();
+                                }
+
+                                setState(() {index += 1; first=false;});
+
+                              },
+                              onSwipeLeft: (finalPosition) {
+
+                                if (isLoggedIn()) {
+                                  stopwatch.stop();
+                                  double time = stopwatch.elapsedMilliseconds / 1000;
+                                  updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                  stopwatch.reset();
+                                  stopwatch.start();
+                                }
+                                setState(() {index += 1;first=false;});
+
+                              },
+
+                              onSwipeRight: (finalPosition) {
+
+                                if (isLoggedIn()) {
+                                  stopwatch.stop();
+                                  double time = stopwatch.elapsedMilliseconds / 1000;
+                                  updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                  stopwatch.reset();
+                                  stopwatch.start();
+                                }
+                                setState(() {index += 1;first=false;});
+
+                              });
+                      },
+                      itemCount: finalList.length,
+                    ),
+                    BrowseBar(),])
+                  );
+                });
+          }
+
+          locationNames = new Recommender(num_rec: 5, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+
+          return FutureBuilder<List<DocumentSnapshot>>(
+              future: getLocations(this.category, locationNames),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Scaffold(
+                      appBar: AppBar(
+                        title: Text('', style: TextStyle(color: Colors.black)),
+                        backgroundColor: Color(0xB6C4CAE8),
+                        elevation: 0.0,
+                        leading: IconButton(
+                          icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                          onPressed: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+                            Navigator.pop(context);
+                          },
+                        ),),
+                      body: Center(child: CircularProgressIndicator()),
+                      backgroundColor: Colors.white);
+                }
+
+                final randomDocs = snapshot.data!..shuffle();
+                final length = randomDocs.length;
+
+                if (first) {
+                  finalList.addAll(randomDocs);
+                }
+
+                print("3");
+                for (int i = 0; i < finalList.length; i++) {
+                  print(finalList[i]['name']);
+                }
+
+                stopwatch.reset();
+                stopwatch.start();
+
+                return new Scaffold(body:
+                Stack(children: [
+
+                  new LazyIndexedStack(
+                    reuse: false,
+                    index: index,
+                    itemBuilder: (c, i) {
+
+                      if (i == finalList.length-1) {
+                        return Return();
+                      }
+
+                      List<String> images = [];
+                      for (int j = 0; j < finalList[i]['imageList'].length; j++) {
+                        images.add(finalList[i]['imageList'][j] as String);
+                      }
+                      String category = "";
+                      if (finalList[i]['isFnb']) {
+                        category = "fnb";
+                      } else {
+                        category = "recreation";
+                      }
+                      return
+
+                        Swipable(child: SwipingTile(
+                          address: finalList[i]['address'],
+                          description: finalList[i]['description'],
+                          imageURL_360: finalList[i]['360image'],
+                          imageURLs: images,
+                          name: finalList[i]['name'],
+                        ),
+                            onSwipeDown: (finalPosition) async {
+                              if (isLoggedIn()) {
+
+                                stopwatch.stop();
+                                double time = stopwatch.elapsedMilliseconds / 1000;
+
+                                updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                stopwatch.reset();
+                                stopwatch.start();
+
+                                List<dynamic> bookmarks = await getBookmarks();
+                                String uid = await getCurrentUID();
+                                final List<bool> isSelected = globalKey.currentState!.isSelected;
+                                for (int j = 0; j < isSelected.length; j++) {
+                                  if (isSelected[j]) {
+                                    String bookmarkName = bookmarks[j] as String;
+                                    FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(uid)
+                                        .collection(bookmarkName)
+                                        .doc(finalList[i]['name'])
+                                        .set({
+                                      'name': finalList[i]['name'],
+                                      'description': finalList[i]['description'],
+                                      'price': finalList[i]['price'],
+                                      'address': finalList[i]['address'],
+                                      'tags': finalList[i]['tags'],
+                                      'imageList': finalList[i]['imageList'],
+                                      '360image': finalList[i]['360image'],
+                                    });
+                                  }
+                                }
+                                globalKey.currentState!.resetSelection();
+                              }
+
+                              setState(() {index += 1; first=false;});
+
+                            },
+                            onSwipeUp: (finalPosition) {
+
+                              if (isLoggedIn()) {
+                                stopwatch.stop();
+                                double time = stopwatch.elapsedMilliseconds / 1000;
+                                updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                stopwatch.reset();
+                                stopwatch.start();
+                              }
+
+                              setState(() {index += 1; first=false;});
+
+                            },
+                            onSwipeLeft: (finalPosition) {
+
+                              if (isLoggedIn()) {
+                                stopwatch.stop();
+                                double time = stopwatch.elapsedMilliseconds / 1000;
+                                updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                stopwatch.reset();
+                                stopwatch.start();
+                              }
+                              setState(() {index += 1;first=false;});
+
+                            },
+
+                            onSwipeRight: (finalPosition) {
+
+                              if (isLoggedIn()) {
+                                stopwatch.stop();
+                                double time = stopwatch.elapsedMilliseconds / 1000;
+                                updateAvgTimeSeen(category, finalList[i]['name'], time);
+                                stopwatch.reset();
+                                stopwatch.start();
+                              }
+                              setState(() {index += 1;first=false;});
+
+                            });
+                    },
+                    itemCount: finalList.length,
+                  ),
+                  BrowseBar(),])
+                );
+
+                // return Scaffold(
+                //   body: Stack(children: [
+                //     Return(),
+                //     ..._Cards,
+                //   ]),
+                //   //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+                // );
+              });
+        }
     );
 
 
   }
 }
+
+// class _SwipeState extends State<Swipe> {
+//   // Dynamically load _Cards from database
+//
+//   final String category;
+//   final int price;
+//   final List<String> tags;
+//   final double dist;
+//   bool confused = false;
+//
+//   _SwipeState(this.category, this.price, this.tags, this.dist);
+//
+//   List<Widget> _Cards = [];
+//   List<String> locationNames = [];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // Stack of _Cards that can be swiped. Set width, height, etc here.
+//
+//     // return Container(
+//     //
+//     //     // Important to keep as a stack to have overlay of _Cards.
+//     //
+//     //     child: FutureBuilder<List<QueryDocumentSnapshot>>(
+//     //         future: getLocationStreamSnapshots(
+//     //             context, this.category, this.price, this.tags, this.dist),
+//     //         builder: (context, snapshot) {
+//     //           if (!snapshot.hasData) {
+//     //             return Center(
+//     //               child: CircularProgressIndicator(),
+//     //             );
+//     //           }
+//     //
+//     //           final randomDocs = snapshot.data!..shuffle();
+//     //           final length = randomDocs.length;
+//     //
+//     //           for (int i = 0; i < length; i++) {
+//     //             _Cards.add(_newCard(doc: randomDocs[i], category: category));
+//     //           }
+//     //
+//     //           stopwatch.reset();
+//     //           stopwatch.start();
+//     //           return Scaffold(
+//     //             // appBar: AppBar(
+//     //             //   title: Text("Let's Explore!", style: TextStyle(color: Colors.black)),
+//     //             //   backgroundColor: Color(0xB6C4CAE8),
+//     //             //   elevation: 0.0,
+//     //             //   leading: IconButton(
+//     //             //     icon: Icon(Icons.arrow_back, color: Colors.white),
+//     //             //     onPressed: () {
+//     //             //       Navigator.pop(context, false);
+//     //             //     },
+//     //             //   ),
+//     //             //   // actions: [
+//     //             //   //   IconButton(
+//     //             //   //       icon: Icon(Icons.account_circle, color: Colors.white),
+//     //             //   //       onPressed: () {
+//     //             //   //         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+//     //             //   //       })
+//     //             //   // ],
+//     //             // ),
+//     //             body: Stack(children: [
+//     //               Return(),
+//     //               ..._Cards,
+//     //             ]),
+//     //             //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+//     //           );
+//     //         })
+//     //     // child: Stack(
+//     //     //   children: _Cards,
+//     //     // ),
+//     //     );
+//     return FutureBuilder<List<double>>(
+//       future: getUserTimes(this.category),
+//       builder: (context, snapshot) {
+//
+//         if (!isLoggedIn()) {
+//           return Container(
+//               child: FutureBuilder<List<QueryDocumentSnapshot>>(
+//                   future: getLocationStreamSnapshots(
+//                       context, this.category, this.price, this.tags, this.dist),
+//                   builder: (context, snapshot) {
+//                     if (!snapshot.hasData) {
+//                       return Scaffold(
+//                           appBar: AppBar(
+//                             title: Text('', style: TextStyle(color: Colors.black)),
+//                             backgroundColor: Color(0xB6C4CAE8),
+//                             elevation: 0.0,
+//                             leading: IconButton(
+//                               icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+//                               onPressed: () {
+//                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+//                                 Navigator.pop(context);
+//                               },
+//                             ),),
+//                           body: Center(child: CircularProgressIndicator()),
+//                           backgroundColor: Colors.white);
+//                     }
+//
+//                     final randomDocs = snapshot.data!..shuffle();
+//                     final length = randomDocs.length;
+//
+//                     for (int i = 0; i < length; i++) {
+//                       _Cards.add(_newCard(doc: randomDocs[i], category: category));
+//                     }
+//
+//                     stopwatch.reset();
+//                     stopwatch.start();
+//                     return Scaffold(
+//                       body: Stack(children: [
+//                         Return(),
+//                         ..._Cards,
+//                       ]),
+//                       //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+//                     );
+//                   })
+//             // child: Stack(
+//             //   children: _Cards,
+//             // ),
+//           );
+//         }
+//
+//         if (!snapshot.hasData) {
+//           return Scaffold(
+//               appBar: AppBar(
+//                 title: Text('', style: TextStyle(color: Colors.black)),
+//                 backgroundColor: Color(0xB6C4CAE8),
+//                 elevation: 0.0,
+//                 leading: IconButton(
+//                   icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+//                   onPressed: () {
+//                     // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+//                     Navigator.pop(context);
+//                   },
+//                 ),),
+//               body: Center(child: CircularProgressIndicator()),
+//               backgroundColor: Colors.white);
+//         }
+//
+//
+//         List<double> userTimes = snapshot.data!;
+//
+//         if (Matrix.fromList([userTimes]).sum() == 0 || !isLoggedIn()) {
+//           return Container(
+//               child: FutureBuilder<List<QueryDocumentSnapshot>>(
+//                   future: getLocationStreamSnapshots(
+//                       context, this.category, this.price, this.tags, this.dist),
+//                   builder: (context, snapshot) {
+//                     if (!snapshot.hasData) {
+//                       return Scaffold(
+//                           appBar: AppBar(
+//                             title: Text('', style: TextStyle(color: Colors.black)),
+//                             backgroundColor: Color(0xB6C4CAE8),
+//                             elevation: 0.0,
+//                             leading: IconButton(
+//                               icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+//                               onPressed: () {
+//                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+//                                 Navigator.pop(context);
+//                               },
+//                             ),),
+//                           body: Center(child: CircularProgressIndicator()),
+//                           backgroundColor: Colors.white);
+//                     }
+//
+//                     final randomDocs = snapshot.data!..shuffle();
+//                     final length = randomDocs.length;
+//
+//                     for (int i = 0; i < length; i++) {
+//                       _Cards.add(_newCard(doc: randomDocs[i], category: category));
+//                     }
+//
+//                     stopwatch.reset();
+//                     stopwatch.start();
+//                     return Scaffold(
+//                       body: Stack(children: [
+//                         Return(),
+//                         ..._Cards,
+//                       ]),
+//                       //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+//                     );
+//                   })
+//               // child: Stack(
+//               //   children: _Cards,
+//               // ),
+//               );
+//         }
+//
+//         locationNames = new Recommender(num_rec: 5, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+//
+//         return FutureBuilder<List<DocumentSnapshot>>(
+//           future: getLocations(this.category, locationNames),
+//           builder: (context, snapshot) {
+//
+//                       print(snapshot.data);
+//                       if (!snapshot.hasData) {
+//                         return Scaffold(
+//                             appBar: AppBar(
+//                               title: Text('', style: TextStyle(color: Colors.black)),
+//                               backgroundColor: Color(0xB6C4CAE8),
+//                               elevation: 0.0,
+//                               leading: IconButton(
+//                                 icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+//                                 onPressed: () {
+//                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
+//                                   Navigator.pop(context);
+//                                 },
+//                               ),),
+//                             body: Center(child: CircularProgressIndicator()),
+//                             backgroundColor: Colors.white);
+//                       }
+//
+//                       final randomDocs = snapshot.data!..shuffle();
+//                       final length = randomDocs.length;
+//
+//                       for (int i = 0; i < length; i++) {
+//                         _Cards.add(_newCard(doc: randomDocs[i], category: category));
+//                       }
+//
+//                       stopwatch.reset();
+//                       stopwatch.start();
+//                       return Scaffold(
+//                               body: Stack(children: [
+//                                 Return(),
+//                                 Column(
+//                                     mainAxisAlignment: MainAxisAlignment.center,
+//                                     children: [
+//                                   Container(height: 300),
+//                                   FutureBuilder<List<double>>(
+//                                   future: getUserTimes(this.category),
+//                                   builder: (context, snapshot) {
+//
+//
+//                                   return TextButton(
+//                                         child: Text("Get more locations"),
+//                                         onPressed: () {
+//                                           setState(() {
+//                                 //   List<double> newUserTimes = snapshot.data!;
+//                                 //   locationNames = new Recommender(num_rec: 5, userTimes: newUserTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+//                                 //
+//                                 //   print(locationNames);
+//                                 //
+//                                 }
+//                                 );});})]),
+//                                 ..._Cards,
+//                               ]),
+//                               //bottomNavigationBar: SingleChildScrollView(child: BookmarksBar(key: globalKey), scrollDirection: Axis.horizontal,),
+//                             );
+//           }
+//         );
+//       }
+//     );
+//
+//
+//   }
+// }
 
 // class _Card extends StatelessWidget {
 //   // Made to distinguish _Cards
@@ -693,104 +1215,629 @@ class _SwipeState extends State<Swipe> {
 //     ]);
 //   }
 // }
+//
+// class _newCard extends StatefulWidget {
+//   final DocumentSnapshot doc;
+//   final String category;
+//
+//   const _newCard({required this.doc, required this.category});
+//
+//
+//   @override
+//   __newCardState createState() => __newCardState();
+// }
+//
+// class __newCardState extends State<_newCard> {
+//   bool confused = false;
+//   // final globalKey = GlobalKey<BookmarksBarState>();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     List<String> images = [];
+//     widget.doc['imageList'].forEach((item) {
+//       images.add(item as String);
+//     });
+//
+//     return Stack(
+//         children: [
+//           Swipable(
+//             // Set the swipable widget
+//               child: SwipingTile(
+//                 address: widget.doc['address'],
+//                 description: widget.doc['description'],
+//                 imageURL_360: widget.doc['360image'],
+//                 imageURLs: images,
+//                 name: widget.doc['name'],
+//               ),
+//               onSwipeDown: (finalPosition) async {
+//                 stopwatch.stop();
+//                 double time = stopwatch.elapsedMilliseconds / 1000;
+//                 updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+//                 stopwatch.reset();
+//                 stopwatch.start();
+//
+//                 List<dynamic> bookmarks = await getBookmarks();
+//                 String uid = await getCurrentUID();
+//                 final List<bool> isSelected = globalKey.currentState!.isSelected;
+//                 for (int i = 0; i < isSelected.length; i++) {
+//                   if (isSelected[i]) {
+//                     String bookmarkName = bookmarks[i] as String;
+//                     FirebaseFirestore.instance
+//                         .collection('users')
+//                         .doc(uid)
+//                         .collection(bookmarkName)
+//                         .doc(widget.doc['name'])
+//                         .set({
+//                       'name': widget.doc['name'],
+//                       'description': widget.doc['description'],
+//                       'price': widget.doc['price'],
+//                       'address': widget.doc['address'],
+//                       'tags': widget.doc['tags'],
+//                       'imageList': widget.doc['imageList'],
+//                       '360image': widget.doc['360image'],
+//                     });
+//                   }
+//                 }
+//                 globalKey.currentState!.resetSelection();
+//               },
+//             onSwipeLeft: (finalPosition) async {
+//               stopwatch.stop();
+//               double time = stopwatch.elapsedMilliseconds / 1000;
+//               updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+//               stopwatch.reset();
+//               stopwatch.start();
+//             },
+//             onSwipeRight: (finalPosition) async {
+//               stopwatch.stop();
+//               double time = stopwatch.elapsedMilliseconds / 1000;
+//               updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+//               stopwatch.reset();
+//               stopwatch.start();
+//             },
+//
+//             onSwipeUp: (finalPosition) async {
+//               stopwatch.stop();
+//               double time = stopwatch.elapsedMilliseconds / 1000;
+//               updateAvgTimeSeen(widget.category, widget.doc['name'], time);
+//               stopwatch.reset();
+//               stopwatch.start();
+//             },
+//
+//             // onSwipeRight, left, up, down, cancel, etc...
+//           ),
+//           Container(
+//               child: Column(children: [
+//                 Container(height: MediaQuery.of(context).size.height / 1.08),
+//                 SingleChildScrollView(
+//                   child: BookmarksBar(key: globalKey),
+//                   scrollDirection: Axis.horizontal,
+//                 ),
+//               ])),
+//           Positioned(
+//             child: IconButton(
+//               icon: Icon(Icons.arrow_back, color: Colors.lightBlueAccent),
+//               onPressed: () {
+//                 Navigator.pop(context, false);
+//               },
+//             ),
+//           ),
+//           Positioned(
+//               child: IconButton(
+//                   icon: Icon(Icons.help_outline, color: Colors.white),
+//                   onPressed: () {
+//                     setState(() {
+//                       confused = true;
+//                     });
+//                   }),
+//               right: 20,
+//               top: 20
+//           ),
+//           Visibility(
+//             child: Center(
+//               child: ClipRRect(
+//                 borderRadius: BorderRadius.circular(15.0),
+//                 child: Container(
+//                   color: Colors.white,
+//                   height: 500,
+//                   width: 275,
+//                   child: Column(
+//                     children: [
+//                       Container(height: 10),
+//                       SizedBox(
+//                           child: SingleChildScrollView(
+//                               child: Column(
+//                                 children: [
+//                                   Container(height: 10),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                       text: "Features about this page",
+//                                       style: GoogleFonts.delius(
+//                                           fontSize: 18,
+//                                           fontWeight: FontWeight.bold),
+//                                     ),
+//                                   ),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "This page displays recommended locations (suited to user's preferences) in an interactive way."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 50),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                       text: "Double Tap",
+//                                       style: GoogleFonts.delius(
+//                                           fontSize: 18,
+//                                           fontWeight: FontWeight.bold),
+//                                     ),
+//                                   ),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(text: "This "),
+//                                           TextSpan(
+//                                               text: "enables ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(text: "and "),
+//                                           TextSpan(
+//                                               text: "disables ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               "the ability to interact with the "),
+//                                           TextSpan(
+//                                               text: "360-view image",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(text: "."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(text: "Take note: the "),
+//                                           TextSpan(
+//                                               text: "Lock Icon ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               "(RED/GREEN) is a visual indicator of the current state of 360-view image (whether it is enabled or disabled). When the lock is red, interactivity is "),
+//                                           TextSpan(
+//                                               text: "disabled",
+//                                               style: GoogleFonts.delius(
+//                                                   color: Colors.red)),
+//                                           TextSpan(
+//                                               text:
+//                                               ", and when it is green, interactivity is "),
+//                                           TextSpan(
+//                                               text: "enabled",
+//                                               style: GoogleFonts.delius(
+//                                                   color: Colors.green)),
+//                                           TextSpan(text: "."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 20),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                       text: "Press and hold",
+//                                       style: GoogleFonts.delius(
+//                                           fontSize: 18,
+//                                           fontWeight: FontWeight.bold),
+//                                     ),
+//                                   ),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(text: "This "),
+//                                           TextSpan(
+//                                               text: "activates ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(text: "and "),
+//                                           TextSpan(
+//                                               text: "deactivates ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               "the pop-up screen that provides additional information of this particular location."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "This screen provides "),
+//                                           TextSpan(
+//                                               text:
+//                                               "additional information",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               ", like: name of location, a scrollable list of images, the location's address and additional written details."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 20),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                       text: "Swipe left/right",
+//                                       style: GoogleFonts.delius(
+//                                           fontSize: 18,
+//                                           fontWeight: FontWeight.bold),
+//                                     ),
+//                                   ),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 12,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "when 360-view is disabled",
+//                                               style: GoogleFonts.delius(
+//                                                   fontWeight:
+//                                                   FontWeight.bold)),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "Discards this location recommendation as it is "),
+//                                           TextSpan(
+//                                               text:
+//                                               "not suited to your preferences",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(text: "."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "We will then automatically provide a new location recommendation for you!"),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 20),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                       text: "Select Bookmarks + Swipe down",
+//                                       style: GoogleFonts.delius(
+//                                           fontSize: 17,
+//                                           fontWeight: FontWeight.bold),
+//                                     ),
+//                                   ),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 11,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "when 360-view is disabled",
+//                                               style: GoogleFonts.delius(
+//                                                   fontWeight:
+//                                                   FontWeight.bold)),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text: "Select ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               "the bookmark(s) you wish to save this location to (at the bottom of the screen)."),
+//                                           TextSpan(
+//                                               text:
+//                                               "Then when you swipe down, the current location is "),
+//                                           TextSpan(
+//                                               text: "saved ",
+//                                               style: GoogleFonts.delius(
+//                                                   color:
+//                                                   Colors.pinkAccent)),
+//                                           TextSpan(
+//                                               text:
+//                                               "to the bookmark(s) selected."),
+//                                         ]),
+//                                   ),
+//                                   Container(height: 5),
+//                                   Text.rich(
+//                                     TextSpan(
+//                                         text: "",
+//                                         style: GoogleFonts.delius(
+//                                           fontSize: 15,
+//                                         ),
+//                                         children: <TextSpan>[
+//                                           TextSpan(
+//                                               text:
+//                                               "We will then automatically provide a new location recommendation for you!"),
+//                                         ]),
+//                                   ),
+//                                 ],
+//                               )),
+//                           height: 420,
+//                           width: 250),
+//                       Container(height: 10),
+//                       TextButton(
+//                         child: Text(
+//                           "Close",
+//                           style: GoogleFonts.itim(
+//                             color: Colors.black,
+//                             fontSize: 20,
+//                           ),
+//                         ),
+//                         onPressed: () {
+//                           setState(() {
+//                             confused = false;
+//                           });
+//                         },
+//                       ),
+//                       Container(height: 10),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             visible: confused,
+//           )
+//         ]);
+//   }
+// }
 
-class _newCard extends StatefulWidget {
-  final DocumentSnapshot doc;
-  final String category;
+Future<List<double>> getUserTimes(String category) async {
+  String uid = await getCurrentUID();
+  String field = category + "AvgTime";
+  List<dynamic> avgList = await FirebaseFirestore
+      .instance.collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[field];});
+  List<double> result = [];
 
-  const _newCard({required this.doc, required this.category});
+  for (int i = 0; i < avgList.length; i++) {
+    result.add(avgList[i] as double);
+  }
 
-
-  @override
-  __newCardState createState() => __newCardState();
+  return result;
 }
 
-class __newCardState extends State<_newCard> {
+Future<List<DocumentSnapshot>> getLocations(String category, List<String> locationNames) async {
+  List<DocumentSnapshot> result = [];
+
+  for (int i = 0; i < locationNames.length; i++) {
+    await FirebaseFirestore.instance
+        .collection(category)
+        .doc(locationNames[i])
+        .get()
+        .then((d) {result.add(d);});
+  }
+
+  return result;
+}
+
+Future<void> updateAvgTimeSeen(String category, String locationName, double time) async {
+  String uid = await getCurrentUID();
+
+  String categoryAvgTime = category + "AvgTime";
+  String categorySeen = category + "Seen";
+
+  List<dynamic> avgList = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[categoryAvgTime];});
+  
+  int locationID = await FirebaseFirestore.instance
+    .collection(category)
+    .doc(locationName)
+    .get()
+    .then((doc) {return doc['id'];});
+  
+  List<dynamic> seenList = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((doc) {return doc[categorySeen];});
+
+  seenList[locationID] = seenList[locationID] + 1;
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({categorySeen: seenList});
+  
+  avgList[locationID] = (avgList[locationID] + time) / seenList[locationID];
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .update({categoryAvgTime: avgList});
+}
+
+// Stream<QuerySnapshot> getLocationStreamSnapshots(
+//     BuildContext context, String category, int price, List<String> tags) async* {
+//
+//   yield* FirebaseFirestore.instance
+//       .collection(category)
+//       .where('price', isLessThanOrEqualTo: price)
+//       .snapshots();
+//
+// }
+
+Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
+    BuildContext context,
+    String category,
+    int price,
+    List<String> tags) async {
+  QuerySnapshot qs = await FirebaseFirestore.instance
+      .collection(category)
+      .where('price', isLessThanOrEqualTo: price)
+      .get();
+  //
+  // Stream<QueryDocumentSnapshot> docsStream = Stream.fromIterable(qs
+  //     .docs
+  //     .where((d) => checkTags(d['tags'], tags)));
+
+  Iterable<QueryDocumentSnapshot> docsStream =
+      qs.docs.where((d) => checkTags(d['tags'], tags));
+
+  // Init PermissionHandler
+  // bool status;
+  // PermissionHandler permissionHandler = PermissionHandler();
+  // // Request location permissions
+  // status = await permissionHandler.requestLocationPermission();
+  //
+  // if (!status) {
+  //   return docsStream.toList();
+  // }
+  //
+  // FusedLocationProviderClient locationService = FusedLocationProviderClient();
+  // LocationRequest locationRequest = new LocationRequest();
+  // locationRequest.numUpdates = 1;
+  //
+  // await locationService.requestLocationUpdates(locationRequest);
+  // Location curr = await locationService.getLastLocation();
+  // double lat = curr.latitude;
+  // double long = curr.longitude;
+  //
+  //
+  // List<QueryDocumentSnapshot> docsList = [];
+  // for (QueryDocumentSnapshot d in docsStream) {
+  //   if(await checkDist(d, dist, status, lat, long)) {
+  //     docsList.add(d);
+  //   }
+  // }
+  //
+  // return docsList;
+
+  return docsStream.toList();
+}
+
+bool checkTags(List<dynamic> doc, List<String> tag) {
+  // if (tag.contains('Indoor') && tag.contains('Outdoor')) {
+  //   tag.remove('Indoor');
+  //   tag.remove('Outdoor');
+  // }
+  //
+  // if (tag.contains('Physical') && tag.contains('Leisure')) {
+  //   tag.remove('Physical');
+  //   tag.remove('Leisure');
+  // }
+  //
+  // if (tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+  //     tag.length == 0) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+
+  if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+      tag.length == 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> checkDist(QueryDocumentSnapshot doc, double requiredDist,
+    bool status, double lat, double long) async {
+  List<gc.Location> locations = await gc.locationFromAddress(doc['address']);
+  double distanceInKM = Geolocator.distanceBetween(
+          lat, long, locations[0].latitude, locations[0].longitude) *
+      0.001;
+  return distanceInKM < requiredDist;
+}
+
+// Future<String> getImageURL(String locationName) async {
+//   String fileName = locationName + ".jpg";
+//   final ref = FirebaseStorage.instance.ref().child()
+// }
+
+class BrowseBar extends StatefulWidget {
+  const BrowseBar({Key? key}) : super(key: key);
+
+  @override
+  _BrowseBarState createState() => _BrowseBarState();
+}
+
+class _BrowseBarState extends State<BrowseBar> {
+
   bool confused = false;
-  // final globalKey = GlobalKey<BookmarksBarState>();
 
   @override
   Widget build(BuildContext context) {
-    List<String> images = [];
-    widget.doc['imageList'].forEach((item) {
-      images.add(item as String);
-    });
-
     return Stack(
-        children: [
-          Swipable(
-            // Set the swipable widget
-              child: SwipingTile(
-                address: widget.doc['address'],
-                description: widget.doc['description'],
-                imageURL_360: widget.doc['360image'],
-                imageURLs: images,
-                name: widget.doc['name'],
+        children: [Container(
+            child: Column(children: [
+              Container(height: MediaQuery.of(context).size.height / 1.08),
+              SingleChildScrollView(
+                child: BookmarksBar(key: globalKey),
+                scrollDirection: Axis.horizontal,
               ),
-              onSwipeDown: (finalPosition) async {
-                stopwatch.stop();
-                double time = stopwatch.elapsedMilliseconds / 1000;
-                updateAvgTimeSeen(widget.category, widget.doc['name'], time);
-                stopwatch.reset();
-                stopwatch.start();
-
-                List<dynamic> bookmarks = await getBookmarks();
-                String uid = await getCurrentUID();
-                final List<bool> isSelected = globalKey.currentState!.isSelected;
-                for (int i = 0; i < isSelected.length; i++) {
-                  if (isSelected[i]) {
-                    String bookmarkName = bookmarks[i] as String;
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(uid)
-                        .collection(bookmarkName)
-                        .doc(widget.doc['name'])
-                        .set({
-                      'name': widget.doc['name'],
-                      'description': widget.doc['description'],
-                      'price': widget.doc['price'],
-                      'address': widget.doc['address'],
-                      'tags': widget.doc['tags'],
-                      'imageList': widget.doc['imageList'],
-                      '360image': widget.doc['360image'],
-                    });
-                  }
-                }
-                globalKey.currentState!.resetSelection();
-              },
-            onSwipeLeft: (finalPosition) async {
-              stopwatch.stop();
-              double time = stopwatch.elapsedMilliseconds / 1000;
-              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
-              stopwatch.reset();
-              stopwatch.start();
-            },
-            onSwipeRight: (finalPosition) async {
-              stopwatch.stop();
-              double time = stopwatch.elapsedMilliseconds / 1000;
-              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
-              stopwatch.reset();
-              stopwatch.start();
-            },
-
-            onSwipeUp: (finalPosition) async {
-              stopwatch.stop();
-              double time = stopwatch.elapsedMilliseconds / 1000;
-              updateAvgTimeSeen(widget.category, widget.doc['name'], time);
-              stopwatch.reset();
-              stopwatch.start();
-            },
-
-            // onSwipeRight, left, up, down, cancel, etc...
-          ),
-          Container(
-              child: Column(children: [
-                Container(height: MediaQuery.of(context).size.height / 1.08),
-                SingleChildScrollView(
-                  child: BookmarksBar(key: globalKey),
-                  scrollDirection: Axis.horizontal,
-                ),
-              ])),
+            ])),
           Positioned(
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.lightBlueAccent),
@@ -1121,176 +2168,7 @@ class __newCardState extends State<_newCard> {
             ),
             visible: confused,
           )
+
         ]);
   }
 }
-
-Future<List<double>> getUserTimes(String category) async {
-  String uid = await getCurrentUID();
-  String field = category + "AvgTime";
-  List<dynamic> avgList = await FirebaseFirestore
-      .instance.collection('users')
-      .doc(uid)
-      .get()
-      .then((doc) {return doc[field];});
-  List<double> result = [];
-
-  for (int i = 0; i < avgList.length; i++) {
-    result.add(avgList[i] as double);
-  }
-
-  return result;
-}
-
-Future<List<DocumentSnapshot>> getLocations(String category, List<String> locationNames) async {
-  List<DocumentSnapshot> result = [];
-
-  for (int i = 0; i < locationNames.length; i++) {
-    await FirebaseFirestore.instance
-        .collection(category)
-        .doc(locationNames[i])
-        .get()
-        .then((d) {result.add(d);});
-  }
-
-  return result;
-}
-
-Future<void> updateAvgTimeSeen(String category, String locationName, double time) async {
-  String uid = await getCurrentUID();
-
-  String categoryAvgTime = category + "AvgTime";
-  String categorySeen = category + "Seen";
-
-  List<dynamic> avgList = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .get()
-      .then((doc) {return doc[categoryAvgTime];});
-  
-  int locationID = await FirebaseFirestore.instance
-    .collection(category)
-    .doc(locationName)
-    .get()
-    .then((doc) {return doc['id'];});
-  
-  List<dynamic> seenList = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .get()
-      .then((doc) {return doc[categorySeen];});
-
-  seenList[locationID] = seenList[locationID] + 1;
-
-  await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .update({categorySeen: seenList});
-  
-  avgList[locationID] = (avgList[locationID] + time) / seenList[locationID];
-
-  await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .update({categoryAvgTime: avgList});
-}
-
-// Stream<QuerySnapshot> getLocationStreamSnapshots(
-//     BuildContext context, String category, int price, List<String> tags) async* {
-//
-//   yield* FirebaseFirestore.instance
-//       .collection(category)
-//       .where('price', isLessThanOrEqualTo: price)
-//       .snapshots();
-//
-// }
-
-Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
-    BuildContext context,
-    String category,
-    int price,
-    List<String> tags,
-    double dist) async {
-  QuerySnapshot qs = await FirebaseFirestore.instance
-      .collection(category)
-      .where('price', isLessThanOrEqualTo: price)
-      .get();
-  //
-  // Stream<QueryDocumentSnapshot> docsStream = Stream.fromIterable(qs
-  //     .docs
-  //     .where((d) => checkTags(d['tags'], tags)));
-
-  Iterable<QueryDocumentSnapshot> docsStream =
-      qs.docs.where((d) => checkTags(d['tags'], tags));
-
-  // Init PermissionHandler
-  // bool status;
-  // PermissionHandler permissionHandler = PermissionHandler();
-  // // Request location permissions
-  // status = await permissionHandler.requestLocationPermission();
-  //
-  // if (!status) {
-  //   return docsStream.toList();
-  // }
-  //
-  // FusedLocationProviderClient locationService = FusedLocationProviderClient();
-  // LocationRequest locationRequest = new LocationRequest();
-  // locationRequest.numUpdates = 1;
-  //
-  // await locationService.requestLocationUpdates(locationRequest);
-  // Location curr = await locationService.getLastLocation();
-  // double lat = curr.latitude;
-  // double long = curr.longitude;
-  //
-  //
-  // List<QueryDocumentSnapshot> docsList = [];
-  // for (QueryDocumentSnapshot d in docsStream) {
-  //   if(await checkDist(d, dist, status, lat, long)) {
-  //     docsList.add(d);
-  //   }
-  // }
-  //
-  // return docsList;
-
-  return docsStream.toList();
-}
-
-bool checkTags(List<dynamic> doc, List<String> tag) {
-  // if (tag.contains('Indoor') && tag.contains('Outdoor')) {
-  //   tag.remove('Indoor');
-  //   tag.remove('Outdoor');
-  // }
-  //
-  // if (tag.contains('Physical') && tag.contains('Leisure')) {
-  //   tag.remove('Physical');
-  //   tag.remove('Leisure');
-  // }
-  //
-  // if (tag.any((item) => doc.contains(item)) && doc.length > 0 ||
-  //     tag.length == 0) {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
-
-  if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
-      tag.length == 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-Future<bool> checkDist(QueryDocumentSnapshot doc, double requiredDist,
-    bool status, double lat, double long) async {
-  List<gc.Location> locations = await gc.locationFromAddress(doc['address']);
-  double distanceInKM = Geolocator.distanceBetween(
-          lat, long, locations[0].latitude, locations[0].longitude) *
-      0.001;
-  return distanceInKM < requiredDist;
-}
-
-// Future<String> getImageURL(String locationName) async {
-//   String fileName = locationName + ".jpg";
-//   final ref = FirebaseStorage.instance.ref().child()
-// }

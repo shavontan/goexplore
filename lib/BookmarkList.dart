@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'flutterfire.dart';
 
 import 'Bookmark.dart';
+import 'package:lazy_indexed_stack/lazy_indexed_stack.dart';
 
 class BookmarkList extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class BookmarkList extends StatefulWidget {
 
 class _BookmarkListState extends State<BookmarkList> {
   bool confused = false;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {

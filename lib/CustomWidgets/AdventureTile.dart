@@ -106,7 +106,6 @@ class AdventureTileState extends State<AdventureTile> {
                                 context: context,
                                 barrierDismissible: true,
                                 builder: (BuildContext context) {
-                                  updateAdventureLocation(widget.name);
 
                                   if (!isLoggedIn()) {
                                     return AlertDialog(
@@ -124,6 +123,8 @@ class AdventureTileState extends State<AdventureTile> {
                                             }, child: Text("Proceed"),)
                                         ]);
                                   }
+
+                                  updateAdventureLocation(widget.name);
 
                                   return ClassicGeneralDialogWidget(
                                     titleText: "You're all set!",

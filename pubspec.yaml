@@ -57,6 +57,7 @@ dependencies:
   image_cropper: ^1.4.1
   animated_button: ^0.2.0
   fsearch: ^1.0.1
+  lazy_indexed_stack: ^0.0.1
 
 
 #dependency_overrides:
