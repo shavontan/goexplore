@@ -1,154 +1,82 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ml_linalg/matrix.dart';
 
+
 // How to use:
-// calling new Recommender(num_rec: ???, userTimes: ???, filters: ???, isFnB: ???).getRecommendations()      =>  returns a List<String> of TOP 'num_rec' recommendations of location names
+// calling new Recommender(num_rec: ???).getRecommendations()      =>  returns a List<String> of TOP 'num_rec' recommendations of location names
 
 class Recommender {
   int num_rec = 0;
   List<String> user = ['USER'];
-  List<String> fnbLocations = ['Atlas Bar',   // -- 0
-                                'Ayam Penyet Ria',
-                                'Beaulieu House',
-                                'Bistro Gardenasia',
-                                'Blu Jaz Cafe',
-                                'Bollywood Veggies', // -- 5
-                                'Cafe Colbar',
-                                'Daebak Korean Restaurant',
-                                'Druggists',
-                                'Fu Lin Bar & Kitchen',
-                                'Fu Lin Tofu Garden', // -- 10
-                                'GO Noodle House',
-                                'Gong Cha (Eunos)',
-                                'Knots Cafe and Living',
-                                'Maxwell Food Centre',
-                                "McDonald's (Queensway)",  // -- 15
-                                'Poke Theory (Cross Street Exchange)',
-                                'Saizeriya (Toa Payoh)',
-                                'Starbucks (Changi Airport)',
-                                'Stellar at 1-Altitude',
-                                'Super Loco Customs House',  // -- 20
-                                'Tendon Ginza Itsuki',
-                                'The Alkaff Mansion',
-                                'The Roti Prata House',
-                                'Thus Coffee',
-                                'Whisk & Paddle',   // -- 25
-                              ];
+  List<String> fnbLocations = ['51 Soho',  // -- 0
+    'Atlas Bar', 'Ayam Penyet Ria', 'Beaulieu House', 'Beer Factory', 'Birds of a Feather', // -- 5
+    'Bistro Gardenasia', 'Blu Jaz Cafe', 'Blu Kouzina', 'Bollywood Veggies', 'Burnt Ends',  // -- 10
+    'Cafe Colbar', 'Candlenut', 'Central Perk Cafe', 'Common Man Coffee Roasters', 'Crave',     // -- 15
+    'Daebak Korean Restaurant', 'Druggists', 'Fish & Co.', 'Fu Lin Bar & Kitchen', 'Fu Lin Tofu Garden',  // 20
+    'GO Noodle House', 'Geláre', 'Gibson Bar', 'Go-Ang Pratunam Chicken Rice', 'Gong Cha (Eunos)',    // -- 25
+    'Intermission Bar at The Projector', 'KFC', 'Knots Cafe and Living', 'Komala Vilas', 'Lime House Caribbean',   // -- 30
+    'Little Island Brewing Co', 'Maxwell Food Centre', "McDonald's (Queensway)", 'PS.Cafe', 'Plain Vanilla Bakery',    // 35
+    'Platform 1094', 'Poke Theory (Cross Street Exchange)', 'Saizeriya (Toa Payoh)', 'Smith Marine Floating Restaurant', 'Starbucks (Changi Airport)',    // 40
+    'Stellar at 1-Altitude', 'Super Loco Customs House', 'Tendon Ginza Itsuki', 'The Alkaff Mansion', 'The Banana Leaf Apolo',   // 45
+    'The Black Swan', 'The Coconut Club', 'The National Kitchen', 'The Roti Prata House', 'Thus Coffee',   // 50
+    'True Blue', 'Whisk & Paddle', 'Yixing Xuan Teahouse', 'Zam Zam Restaurant', "d’Good Café",     // 55
+  ];
 
-  List<String> recLocations = ['Adventure Cove Water Park',   // -- 0
-                                'ArtScience Museum',
-                                'Chinese Garden',
-                                'Civil Defence Heritage Gallery',
-                                'Dragon Playground',
-                                'Forest Adventure',   // -- 5
-                                'G-Max Reverse Bungy',
-                                'K Bowling Club',
-                                'MacRitchie Reservoir',
-                                'Madame Tussauds',
-                                'Merlion',   // -- 10
-                                'National Gallery Singapore',
-                                'Peranakan Museum',
-                                'Pororo Park',
-                                'Raffles Marina Lighthouse',
-                                'S.E.A. Aquarium',    // -- 15
-                                'Singapore Zoo',
-                                'Skyline Luge',
-                                'Snow City',
-                                'Sungei Buloh Wetland Reserve',
-                                'Thow Kwang Pottery Jungle',    // -- 20
-                                'Universal Studios Singapore',
-                                'Wild Wild Wet',
-                                'Xtreme SkatePark',
-                              ];
+  List<String> recLocations = ['1-Altitude',  // -- 0
+    'Adventure Cove Water Park', 'Amoy Hotel', 'ArtScience Museum', 'Asian Civilisations Museum', 'Champion Mini Golf',  // 5
+    'Changi Jurassic Mile', 'Chinese Garden', 'Civil Defence Heritage Gallery', 'Clementi Forest', 'Clock Playground',  // 10
+    'Dairy Farm Nature Park', 'Diggersite', 'Dragon Playground', 'Elgin Bridge', 'Flight Experience',   // 15
+    'Forest Adventure', 'G-Max Reverse Bungy', 'Haji Lane', 'Hay Dairies Pte Ltd', 'Helix Bridge',  // 20
+    'Holey Moley', 'Japanese Cemetery Park', 'Japanese Garden', 'Jurong Frog Farm', 'K Bowling Club',   // 25
+    'Kranji Marshes', 'Kuan Im Tng Temple', 'Little Guilin', 'MacRitchie Reservoir', 'Madame Tussauds',   // 30
+    'Marine Cove Playground', 'Merlion', 'National Gallery Singapore', 'Peranakan Museum', 'Pororo Park',  // 35
+    'Raffles Marina Lighthouse', 'S.E.A. Aquarium', 'Sembawang Hot Spring Park', 'Singapore Zoo', 'Skyline Luge',  // 40
+    'Snow City', 'Sungei Buloh Wetland Reserve', 'Supertree Grove', 'The Intan', 'The Karting Arena',   // 45
+    'Thow Kwang Pottery Jungle', 'Tiong Bahru Air Raid Shelter', 'Trick Eye Museum', 'Universal Studios Singapore', 'Wild Wild Wet',   // 50
+    'Xtreme SkatePark', 'Yunomori Onsen & Spa', 'iFly Singapore',  // 53
+  ];
 
-  List<String> fnbTags = ["Beverages", // --- 0
-                          "Ambience",
-                          "Chinese",
-                          "Korean",
-                          "Japanese",    // --- 4
-                          "Malay",
-                          "Indian",
-                          "Halal",
-                          "Western",    // --- 8
-                          "Fast Food",
-                          "Vegan",
-                          "Vegetarian",
-                          "Dessert",     // --- 12
-                        ];
+  List<String> fnbTags = ["Beverages", // 0
+    "Ambience", "Chinese", "Korean", "Japanese",    // 4
+    "Malay", "Indian", "Halal", "Western",    // 8
+    "Fast Food", "Vegan", "Vegetarian", "Dessert",     // 12
+    "Seafood",
+  ];
 
+  List<String> recTags = ["Indoor", // 0
+    "Outdoor", "Physical", "Leisure",   // 3
+    "Nature", "Cultural", "Educational",   // 6
+    "Service", "Nightlife", "Kid-Friendly",   // 9
+  ];
 
-  List<String> recTags = ["Indoor",
-                          "Outdoor",
-                          "Physical",
-                          "Leisure",
-                          "Nature",
-                          "Cultural",
-                          "Educational",
-                          "Service",
-                          "Nightlife",
-                          "Kid-Friendly",
-                        ];
+  List<List<double>> fnbTagsInBits = [ [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], // 0: 51 Soho
+    [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0], // 5: Birds of a Feather
+    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], // 10: Burnt Ends
+    [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0], // 15: Crave
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 20: Fu Lin Tofu Garden
+    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], // 25: Gong Cha (Eunos)
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1], // 30:  Lime House Caribbean
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], // 35: Plain Vanilla Bakery
+    [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 40: Starbucks (Changi Airport)
+    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1], // 45: The Banana Leaf Apolo
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], // 50: Thus Coffee
+    [0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], // 55: d'Good Cafe
+  ];
 
-  List<List<double>> fnbTagsInBits = [ [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // 0 = Atlas Bar
-                                      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],  // 5 = Bollywood Veggies
-                                      [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
-                                      [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-                                      [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  // 11 = GO Noodle House
-                                      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],   // 18 = Starbucks (Changi)
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],   // 22 = Alkaff Mansion
-                                      [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
-                                      [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-                                    ];
+  List<List<double>> recTagsInBits = [[0, 1, 0, 0, 0, 0, 0, 0, 1, 0], // 0: 1-Altitude
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 1, 0, 1, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0, 0, 0, 1], // 5: Champion Mini Golf
+    [0, 1, 0, 0, 0, 0, 1, 0, 0, 1], [0, 1, 0, 1, 1, 1, 0, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [0, 1, 1, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0, 1], // 10: Clock Playground
+    [0, 1, 1, 0, 1, 0, 1, 0, 0, 0], [0, 1, 0, 0, 0, 0, 1, 0, 0, 1], [0, 1, 0, 1, 0, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, 0, 1, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 1], // 15: Flight Experience
+    [0, 1, 1, 0, 1, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 1, 0, 0, 1], [0, 1, 0, 1, 0, 0, 0, 0, 0, 0], // 20: Helix Bridge
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 1, 0, 1, 1, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0, 0], // 25: K Bowling Club
+    [0, 1, 0, 1, 1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 1, 1, 0, 0, 0, 0, 1], [1, 0, 0, 1, 0, 0, 0, 0, 0, 1], // 30: Madame Tussauds
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 1], [0, 1, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 0, 1, 0, 1, 1, 0, 0, 1], [1, 0, 0, 0, 0, 1, 1, 0, 0, 1], [1, 0, 0, 1, 0, 0, 0, 0, 0, 1], // 35: Pororo Park
+    [0, 1, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [0, 1, 0, 1, 0, 0, 1, 0, 0, 1], [0, 1, 0, 1, 1, 0, 1, 0, 0, 1], [0, 1, 1, 0, 0, 0, 0, 0, 0, 0], // 40: Skyline Luge
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 1], [0, 1, 0, 1, 1, 0, 0, 0, 0, 1], [0, 1, 0, 1, 0, 0, 0, 0, 1, 1], [1, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 1], // 45: The Karting Arena
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 1], [0, 1, 1, 1, 0, 0, 0, 0, 0, 1], [0, 1, 1, 0, 0, 0, 0, 0, 0, 1], // 50: Wild Wild Wet
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0, 1], // 53: iFly
+  ];
 
-  List<List<double>> recTagsInBits = [[0, 1, 1, 0, 0, 0, 0, 0],  // 0 = Adventure Cove
-                                      [1, 0, 0, 1, 0, 0, 1, 0],
-                                      [0, 1, 0, 1, 1, 1, 0, 0],
-                                      [1, 0, 0, 1, 0, 0, 1, 0],
-                                      [0, 1, 0, 1, 0, 0, 0, 0],
-                                      [0, 1, 1, 0, 1, 0, 0, 0],   // 5 = Forest Adventure
-                                      [0, 1, 1, 0, 0, 0, 0, 0],
-                                      [1, 0, 1, 0, 0, 0, 0, 0],
-                                      [0, 1, 0, 1, 1, 0, 0, 0],
-                                      [1, 0, 0, 1, 0, 0, 0, 0],    // 9 = Madame Tussauds
-                                      [0, 1, 0, 1, 0, 0, 0, 0],
-                                      [1, 0, 0, 1, 0, 1, 1, 0],
-                                      [1, 0, 0, 0, 0, 1, 1, 0],
-                                      [1, 0, 0, 1, 0, 0, 0, 0],    // 13 = Pororo Park
-                                      [0, 1, 0, 1, 0, 0, 0, 0],
-                                      [1, 0, 0, 1, 0, 0, 1, 0],
-                                      [0, 1, 0, 1, 1, 0, 1, 0],
-                                      [0, 1, 1, 0, 0, 0, 0, 0],    // 17 = Skyline Luge
-                                      [1, 0, 1, 0, 0, 0, 0, 0],
-                                      [0, 1, 0, 1, 1, 0, 0, 0],
-                                      [1, 0, 0, 1, 0, 0, 0, 0],
-                                      [0, 1, 1, 1, 0, 0, 0, 0],   // 20 = Thow Kwung Pottery Jungle
-                                      [0, 1, 1, 0, 0, 0, 0, 0],
-                                      [0, 1, 1, 0, 0, 0, 0, 0]
-                                    ];
-
-  // remove this
-  // List<double> userTimes = [3, 10, 20,
-  //                           5, 0, 7,
-  //                           0, 0, 0];
-
-  List<double> userTimes = [0]; // added
+  List<double> userTimes = [0];
   List<String> filters = [];
 
 
@@ -187,44 +115,16 @@ class Recommender {
       location_tags = Matrix.fromList(this.recTagsInBits);
     }
 
-    // print(users_locations);
-    // print(location_tags);
-
     var user_tags = users_locations * location_tags;
     user_tags = user_tags /
         user_tags.reduceColumns((combine, vector) => combine + vector);
-    // print(user_tags);
 
     var user_times = user_tags * location_tags.transpose();
-    // print(user_times);
-
-    // print("____________________________________________________________");
-
-    List<double> tempList = List<double>.filled(num_locations, 0);
-    for (int i = 0; i < tempList.length; i++) {
-      // print(userTimes[i]);
-      if (userTimes[i] == 0.0) {
-        tempList[i] = 1;
-      }
-    }
-    // print(tempList);
-
-    var temp = Matrix.fromList([tempList]);
-    // print("temp matrix: " + temp.toString());
-
-    // print(user_times);
-    var new_user_times = user_times.multiply(temp);
-    // print(new_user_times);
-
 
     List<List<double>> xs = List<List<double>>.filled(num_locations, [0,-1], growable: true);
 
     for (int i = num_locations - 1; i >= 0; i--) {
-      if (new_user_times[0][i] != 0.0) {
-        xs[i] = [new_user_times[0][i], i.toDouble()];
-      } else {
-        xs.removeAt(i);
-      }
+      xs[i] = [user_times[0][i], i.toDouble()];
     }
 
     List<int> filterTags = [];
@@ -253,7 +153,6 @@ class Recommender {
         }
       }
     }
-    // print(xs);
 
     var result = List<String>.filled(num_rec, "");
 
@@ -283,7 +182,6 @@ class Recommender {
       }
     }
 
-    // print(result);
     return result;
   }
 
@@ -291,58 +189,65 @@ class Recommender {
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_FnB_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
     List<String> FnB_tags = ["Beverages", // --- 0
-                              "Ambience",
-                              "Chinese",
-                              "Korean",
-                              "Japanese",    // --- 4
-                              "Malay",
-                              "Indian",
-                              "Halal",
-                              "Western",    // --- 8
-                              "Fast Food",
-                              "Vegan",
-                              "Vegetarian",
-                              "Dessert",     // --- 12
-                            ];
+      "Ambience",
+      "Chinese",
+      "Korean",
+      "Japanese",    // --- 4
+      "Malay",
+      "Indian",
+      "Halal",
+      "Western",    // --- 8
+      "Fast Food",
+      "Vegan",
+      "Vegetarian",
+      "Dessert",     // --- 12
+      "Seafood",
+    ]; // extend this to be all the tags in FnB
     List<int> result = List<int>.filled(FnB_tags.length, 0);
+    int count = 0;
 
     int len = locationTags.length;
     for (int i = 0; i < len; i++) {
       for (int j = 0; j < FnB_tags.length; j++) {
         if (locationTags[i] == FnB_tags[j]) {
           result[j] = 1;
+          count++;
           break;
         }
       }
     }
-    return result;
+
+    List<int> error = [-1];
+    return count == locationTags.length ? result : error;
   }
 
   // example: ['Western', 'Asian'] => [0,0,1,1]
   List<int> convert_rec_tags_ToBits({required List<String> locationTags}) {      // converts a location's tags into bits form
     List<String> rec_tags = ["Indoor",
-                              "Outdoor",
-                              "Physical",
-                              "Leisure",
-                              "Nature",
-                              "Cultural",
-                              "Educational",
-                              "Service",
-                              "Nightlife",
-                              "Kid-Friendly",
-                            ];
+      "Outdoor",
+      "Physical",
+      "Leisure",
+      "Nature",
+      "Cultural",
+      "Educational",
+      "Service",
+      "Nightlife",
+      "Kid-Friendly",
+    ]; // extend this to be all the tags in RECREATION
     List<int> result = List<int>.filled(rec_tags.length, 0);
+    int count = 0;
 
     int len = locationTags.length;
     for (int i = 0; i < len; i++) {
       for (int j = 0; j <rec_tags.length; j++) {
         if (locationTags[i] == rec_tags[j]) {
           result[j] = 1;
+          count++;
           break;
         }
       }
     }
-    return result;
+    List<int> error = [-1];
+    return count == locationTags.length ? result : error;
   }
-
 }

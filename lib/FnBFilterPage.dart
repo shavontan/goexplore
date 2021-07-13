@@ -27,6 +27,7 @@ class FnBFilter extends StatefulWidget {
     "Vegan",
     "Vegetarian",
     "Dessert",     // --- 12
+    "Seafood",
   ];
 
   @override
@@ -47,7 +48,7 @@ class _FnBFilterState extends State<FnBFilter> {
 
 
 
-  var selected = new List.filled(13, 0, growable: false); // 13 = recreationTags.length
+  var selected = new List.filled(14, 0, growable: false); // 13 = fnbTags.length
 
   double currentPriceLimit = 20;
   double distanceInKm = 100;
@@ -65,6 +66,7 @@ class _FnBFilterState extends State<FnBFilter> {
   bool stateTen = false;
   bool stateEleven = false;
   bool stateTwelve = false;
+  bool stateThirteen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -413,6 +415,29 @@ class _FnBFilterState extends State<FnBFilter> {
                           setState(() {
                             selected[12] = 0;
                             stateTwelve = false;
+                          });
+                        }
+                      }),
+                  InkWell(
+                      child: Card(
+                        child: Padding(
+                            child: Opacity(child: Text(widget.fnbTags[13], style: GoogleFonts.neucha(
+                                fontSize: 30),),
+                                opacity: stateThirteen ? 1.0 : 0.4),
+                            padding: EdgeInsets.all(7.0)),
+                        color: stateThirteen ? Color(0xA9DBD0F6) : Colors.white,
+                        elevation: stateThirteen ? 5.0 : 0.0,
+                      ),
+                      onTap: () {
+                        if (selected.elementAt(13) == 0) {
+                          setState(() {
+                            selected[13] = 1;
+                            stateThirteen = true;
+                          });
+                        } else {
+                          setState(() {
+                            selected[13] = 0;
+                            stateThirteen = false;
                           });
                         }
                       }),
