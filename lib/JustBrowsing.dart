@@ -61,7 +61,8 @@ class _JustBrowsingState extends State<JustBrowsing> {
                 backgroundColor: Colors.white);
           }
 
-          final randomDocs = snapshot.data!..shuffle();
+          //final randomDocs = snapshot.data!..shuffle();
+          final randomDocs = snapshot.data!;
           final length = randomDocs.length;
 
           // for (int i = 0; i < length; i++) {
@@ -113,6 +114,7 @@ class _JustBrowsingState extends State<JustBrowsing> {
                 name: finalList[i]['name'],
               ),
                 onSwipeDown: (finalPosition) async {
+
                   if (isLoggedIn()) {
 
                     stopwatch.stop();
@@ -1125,26 +1127,45 @@ Future<void> updateAvgTimeSeen(String category, String locationName, double time
 
 Future<List<QueryDocumentSnapshot>> getAllLocations() async {
 
+  QuerySnapshot qsSponsored = await FirebaseFirestore.instance
+      .collection('sponsored')
+      .get();
+  List<QueryDocumentSnapshot> sponsoredList = qsSponsored.docs.toList();
+
   QuerySnapshot qsRecreation = await FirebaseFirestore.instance
       .collection('recreation')
       .get();
 
-  List<QueryDocumentSnapshot> recreationDocs = qsRecreation.docs.toList();
+  List<QueryDocumentSnapshot> recreationDocs =
+  qsRecreation.docs
+      .where((d) => checkDuplicates(d['name'], sponsoredList))
+      .toList();
 
   QuerySnapshot qsFnb = await FirebaseFirestore.instance
       .collection('fnb')
       .get();
 
-  List<QueryDocumentSnapshot> fnbDocs = qsFnb.docs.toList();
+  List<QueryDocumentSnapshot> fnbDocs =
+    qsFnb.docs
+        .where((d) => checkDuplicates(d['name'], sponsoredList))
+        .toList();
 
   recreationDocs.addAll(fnbDocs);
   recreationDocs..shuffle();
-  List<QueryDocumentSnapshot> temp = [];
-  for (int i = 0; i < 10; i++) {
-    temp.add(recreationDocs[i]);
+
+  sponsoredList..shuffle();
+  sponsoredList.addAll(recreationDocs);
+
+  return sponsoredList;
+}
+
+bool checkDuplicates(String name, List<QueryDocumentSnapshot> sponsoredDocs) {
+  for (int i = 0; i < sponsoredDocs.length; i++) {
+    if (sponsoredDocs[i]['name'] == name) {
+      return false;
+    }
   }
-  // return temp;
-  return recreationDocs;
+  return true;
 }
 
 

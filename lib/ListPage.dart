@@ -5,6 +5,8 @@ import 'CustomWidgets/MyListTile.dart';
 // call: myListTile(imgURLs: ???, name: ???, description: ???, address: ???, imageURL_360: ???, tags: ???, price: ???)
 import 'package:fsearch/fsearch.dart';
 
+import 'CustomWidgets/SponsoredTile.dart';
+
 class ListPage extends StatefulWidget {
   // const Search({Key? key}) : super(key: key);
   final String category;
@@ -77,19 +79,48 @@ class _ListPageState extends State<ListPage> {
       int price,
       List<String> tags,
       double dist) async {
+
+    // sponsors start
+    bool fnb;
+    if (category == "fnb") {
+      fnb = true;
+    } else {
+      fnb = false;
+    }
+    QuerySnapshot sponsoredQS = await FirebaseFirestore.instance
+        .collection('sponsored')
+        .where('isFnb', isEqualTo: fnb)
+        .get();
+    List<QueryDocumentSnapshot> sponsoredList = sponsoredQS.docs
+        .where((d) => d['price'] <= price)
+        .where((doc) => checkTags(doc['tags'], tags))
+        .toList();
+    // sponsors end
+
+
     QuerySnapshot qs = await FirebaseFirestore.instance
         .collection(category)
         .where('price', isLessThanOrEqualTo: price)
         .get();
 
     Iterable<QueryDocumentSnapshot> docsStream =
-    qs.docs.where((d) => checkTags(d['tags'], tags));
+    qs.docs
+        .where((d) => checkTags(d['tags'], tags))
+        .where((doc) => checkDuplicates(doc['name'], sponsoredList));
+
+    // start
+    List<QueryDocumentSnapshot> categoryList = docsStream.toList();
+    categoryList.sort((a, b) {
+      return a['name'].toLowerCase().compareTo(b['name'].toLowerCase());});
+    // sponsors first
+    sponsoredList.addAll(categoryList);
+    // end
 
     setState(() {
-      _allResults = docsStream.toList();
+      _allResults = sponsoredList;
     });
     searchResultsList();
-    return docsStream.toList();
+    return sponsoredList;
   }
 
   bool checkTags(List<dynamic> doc, List<String> tag) {
@@ -103,8 +134,213 @@ class _ListPageState extends State<ListPage> {
     }
   }
 
+  bool checkDuplicates(String name, List<QueryDocumentSnapshot> sponsoredDocs) {
+    for (int i = 0; i < sponsoredDocs.length; i++) {
+      if (sponsoredDocs[i]['name'] == name) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    if (widget.category == "fnb" && widget.price == 0) {
+
+      return Scaffold(
+          appBar: AppBar(
+              title: Text('List Recommendations',
+                  style: TextStyle(color: Colors.black)),
+              backgroundColor: Color(0xB6C4CAE8),
+              elevation: 0.0,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              actions: [
+                IconButton(
+                    icon: Icon(Icons.help_outline, color: Colors.white),
+                    onPressed: () {
+                      setState(() {
+                        confused = true;
+                      });
+                    })
+              ]),
+          body: Container(
+              child: Stack(children: [Column(
+                  children: [
+
+              Container(height: MediaQuery.of(context).size.height / 4),
+
+                SizedBox(
+                    height: 200,
+                    width: 500,
+                    child: Image.network(
+                  "https://lh3.googleusercontent.com/proxy/3gzVwtaanyMIgLFi21MQD1DB7Po1aQ0wFgA2FxA1Cq4eVAxHVfoUjHx9yZG25XaicAYUGGPJ2ryjYb6LGCbfryqhVHonIaWL-S4KjmQcPuYm",
+                  fit: BoxFit.scaleDown)),
+
+                  ]),
+                Visibility(
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Container(
+                        color: Colors.white,
+                        height: 500,
+                        width: 275,
+                        child: Column(
+                          children: [
+                            Container(height: 10),
+                            SizedBox(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Container(height: 10),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Features about this page",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "This page provides a list of locations catered to your preferences, as indicated in your filters."),
+                                              ]),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "Each location has tags that provide more insight to a location's features and a price range to meet budgeting needs."),
+                                              ]),
+                                        ),
+                                        Container(height: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Search Bar:",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "Simply type the name of the location you are looking for into the search bar and we will return you a list of locations that match your search."),
+                                              ]),
+                                        ),
+
+                                        Container(height: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Tap (List Tile):",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "This will bring you to a new page that provides"),
+                                                TextSpan(
+                                                    text: " extra information ",
+                                                    style: GoogleFonts.delius(
+                                                        color: Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "about this particular location."),
+                                              ]),
+                                        ),
+                                        Container(height: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Long Press (List Tile):",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "This will bring up a list of"),
+                                                TextSpan(
+                                                    text: " bookmarks ",
+                                                    style: GoogleFonts.delius(
+                                                        color: Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "you currently have. You may choose multiple bookmarks to save the location to, or create new bookmarks."),
+                                              ]),
+                                        ),
+
+
+                                      ],
+                                    )),
+                                height: 420,
+                                width: 250),
+                            Container(height: 10),
+                            TextButton(
+                              child: Text(
+                                "Close",
+                                style: GoogleFonts.itim(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  confused = false;
+                                });
+                              },
+                            ),
+                            Container(height: 10),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  visible: confused,
+                )])
+          ));
+
+    }
     return Scaffold(
         appBar: AppBar(
             title: Text('List Recommendations',
@@ -194,6 +430,18 @@ class _ListPageState extends State<ListPage> {
                             _resultsList[index]['tags'].forEach((item) {
                               tags.add(item as String);
                             });
+
+                            if(_resultsList[index]['sponsored']) {
+
+                              return SponsoredTile(
+                                    imgURLs: images,
+                                    name: _resultsList[index]['name'],
+                                    description: _resultsList[index]['description'],
+                                    address: _resultsList[index]['address'],
+                                    imageURL_360: _resultsList[index]['360image'],
+                                    tags: tags,
+                                    price: _resultsList[index]['price']);
+                            }
 
                             return MyListTile(
                                 imgURLs: images,
