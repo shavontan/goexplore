@@ -178,9 +178,8 @@ class _ListPageState extends State<ListPage> {
                 SizedBox(
                     height: 200,
                     width: 500,
-                    child: Image.network(
-                  "https://lh3.googleusercontent.com/proxy/3gzVwtaanyMIgLFi21MQD1DB7Po1aQ0wFgA2FxA1Cq4eVAxHVfoUjHx9yZG25XaicAYUGGPJ2ryjYb6LGCbfryqhVHonIaWL-S4KjmQcPuYm",
-                  fit: BoxFit.scaleDown)),
+                    child: Image.asset(
+                        'assets/images/freefood.jpg')),
 
                   ]),
                 Visibility(
@@ -341,6 +340,7 @@ class _ListPageState extends State<ListPage> {
           ));
 
     }
+
     return Scaffold(
         appBar: AppBar(
             title: Text('List Recommendations',
