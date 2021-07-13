@@ -72,10 +72,10 @@ class _RecreationFilterState extends State<RecreationFilter> {
         ),
         actions: [
           IconButton(onPressed: () async {
-            List<double> recreationAvgTime = List.filled(24, 0, growable: true);
-            List<double> fnbAvgTime = List.filled(26, 0, growable: true);
-            List<int> recreationSeen = List.filled(24, 0, growable: true);
-            List<int> fnbSeen = List.filled(26, 0, growable: true);
+            List<double> recreationAvgTime = List.filled(54, 0, growable: true);
+            List<double> fnbAvgTime = List.filled(56, 0, growable: true);
+            List<int> recreationSeen = List.filled(54, 0, growable: true);
+            List<int> fnbSeen = List.filled(56, 0, growable: true);
             String uid = await getCurrentUID();
             await FirebaseFirestore.instance
                 .collection('users')

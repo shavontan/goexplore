@@ -404,11 +404,12 @@ class _SwipeState extends State<Swipe> {
                 });
           }
 
-          locationNames = new Recommender(num_rec: 5, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+          locationNames = new Recommender(num_rec: 51, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
 
-          return FutureBuilder<List<DocumentSnapshot>>(
+          return FutureBuilder<List<QueryDocumentSnapshot>>(
               future: getLocations(this.category, locationNames, this.price, this.tags),
               builder: (context, snapshot) {
+
 
                 if (!snapshot.hasData) {
                   return Scaffold(
@@ -582,8 +583,8 @@ Future<List<double>> getUserTimes(String category) async {
   return result;
 }
 
-Future<List<DocumentSnapshot>> getLocations(String category, List<String> locationNames, int price, List<String> tags) async {
-  List<DocumentSnapshot> result = [];
+Future<List<QueryDocumentSnapshot>> getLocations(String category, List<String> locationNames, int price, List<String> tags) async {
+  List<QueryDocumentSnapshot> result = [];
 
   // sponsors start
   bool fnb;
@@ -596,29 +597,41 @@ Future<List<DocumentSnapshot>> getLocations(String category, List<String> locati
       .collection('sponsored')
       .where('isFnb', isEqualTo: fnb)
       .get();
-  List<DocumentSnapshot> sponsoredList = sponsoredQS.docs
+  List<QueryDocumentSnapshot> sponsoredList = sponsoredQS.docs
       .where((d) => d['price'] <= price)
       .where((doc) => checkTags(doc['tags'], tags))
       .toList();
   // sponsors end
 
   // getting recommended locations
+  QuerySnapshot qs = await FirebaseFirestore.instance
+      .collection(category)
+      .get();
+  var iter = qs.docs.where((d) => checkDuplicates(d['name'], sponsoredList));
+
+
   for (int i = 0; i < locationNames.length; i++) {
-    await FirebaseFirestore.instance
-        .collection(category)
-        .doc(locationNames[i])
-        .get()
-        .then((d) {
-          if (checkDuplicates(d['name'], sponsoredList)) {
-            result.add(d);
-          }
-        });
+    // await FirebaseFirestore.instance
+    //     .collection(category)
+    //     .doc(locationNames[i])
+    //     .get()
+    //     .then((d) {
+    //       if (checkDuplicates(d['name'], sponsoredList)) {
+    //         result.add(d);
+    //       }
+    //     });
+    var temp = iter.where((d) => d['name'] == locationNames[i]).toList();
+    if (temp.length > 0) {
+      result.add(temp[0]);
+    }
+
   }
 
+  sponsoredList..shuffle(); // QDS, result: DS
 
-
-  sponsoredList..shuffle();
-  sponsoredList.addAll(result);
+  for (QueryDocumentSnapshot qds in result) {
+    sponsoredList.add(qds);
+  }
 
   return sponsoredList;
 }
@@ -773,7 +786,8 @@ bool checkTags(List<dynamic> doc, List<String> tag) {
   }
 }
 
-bool checkDuplicates(String name, List<DocumentSnapshot> sponsoredDocs) {
+bool checkDuplicates(String name, List<QueryDocumentSnapshot> sponsoredDocs) {
+
   for (int i = 0; i < sponsoredDocs.length; i++) {
     if (sponsoredDocs[i]['name'] == name) {
       return false;
