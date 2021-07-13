@@ -148,7 +148,7 @@ class _PointsRedemptionPageState extends State<PointsRedemptionPage> {
                       PointRedemptionTile(
                         cost: 400, promotion: "\$5 Off",
                         company: "Watsons", shortDescription: "Spend a minimum of \$5 and get \$5 off a single receipt at Watsons",
-                        picture: Image.network('https://scontent.fsin8-2.fna.fbcdn.net/v/t1.18169-9/16114077_1402226893155362_4189868323049304654_n.png?_nc_cat=1&ccb=1-3&_nc_sid=973b4a&_nc_ohc=NSQCVreW2cAAX_sVMDB&_nc_ht=scontent.fsin8-2.fna&oh=896291f8e3a47aa5312bb90172a392c4&oe=60DB6D28', fit: BoxFit.cover,), ),
+                        picture: Image.network('https://www.capitaland.com/content/dam/capitaland-media-library/retail/Singapore/Singapore/cma-tenants/watsons-logo-982-px-x-818.jpg.transform/cap-midres/image.jpg', fit: BoxFit.cover,), ),
                       Container(width: 10),
                       PointRedemptionTile(
                         cost: 800, promotion: "\$10 Off",
