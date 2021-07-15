@@ -93,14 +93,14 @@ class AdventureTileState extends State<AdventureTile> {
                         children: [
                           Container(width: 35),
                           InkWell(
-                            child: SizedBox(child: Text("No, Not Today", style: GoogleFonts.hiMelody(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black26)), height: 32, width: 150),
+                            child: SizedBox(child: Text("No, Not Today", style: GoogleFonts.rancho(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.red)), height: 32, width: 150),
                             onTap: () {
                               advKey.currentState!.nextCard();
                             },
                           ),
                           Container(width: 40),
                           InkWell(
-                            child: SizedBox(child: Text("Let's Go!", style: GoogleFonts.hiMelody(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.green),), height: 32, width: 95),
+                            child: SizedBox(child: Text("Let's Go!", style: GoogleFonts.rancho(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.green),), height: 32, width: 95),
                             onTap: () {
                               showAnimatedDialog(
                                 context: context,
