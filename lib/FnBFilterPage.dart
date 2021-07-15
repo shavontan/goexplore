@@ -441,7 +441,7 @@ class _FnBFilterState extends State<FnBFilter> {
                   print(currentPriceLimit);
                 });
               },
-              max: 1000,
+              max: 150,
               min: 0,
               activeColor: Colors.deepPurpleAccent,
               inactiveColor: Colors.black12,
