@@ -251,7 +251,7 @@ class LoginScreen extends StatelessWidget {
                     child: TextButton(
                         onPressed: () async {
 
-                          bool shouldNavigate = await signIn(_email.text, _password.text);
+                          bool shouldNavigate = await signIn(_email.text.trim(), _password.text);
                           bool verified = isVerified();
 
                           if (shouldNavigate && verified) {
