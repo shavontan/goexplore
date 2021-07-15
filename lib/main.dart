@@ -16,13 +16,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'CustomWidgets/PointTracker.dart';
 import 'RecommenderSystem.dart';
 
+import 'package:flutter/services.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   await anonymousSignIn();
 
-  runApp(MyApp2());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp2()));
   // runApp(Temp());
 }
 
