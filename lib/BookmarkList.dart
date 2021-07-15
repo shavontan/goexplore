@@ -65,6 +65,17 @@ class _BookmarkListState extends State<BookmarkList> {
                     itemBuilder: (BuildContext context, int index) =>
                         //  buildCard(context, (snapshot.data! as List)[index])
                         new Dismissible(
+                            background: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Container(color: Colors.transparent,
+                                  //child: Center(child: Text("Delete?", style: GoogleFonts.nanumGothic(fontSize: 30, fontWeight: FontWeight.w600),))),
+                                  child: Row(children: [
+                                    Container(width: MediaQuery.of(context).size.width / 8),
+                                    Icon(Icons.delete, size: 25,),
+                                    Container(width: MediaQuery.of(context).size.width / 1.8),
+                                    Icon(Icons.delete, size: 25),
+                                  ])),
+                            ),
                           key: UniqueKey(),
                           onDismissed: (direction) async {
                             String uid = await getCurrentUID();

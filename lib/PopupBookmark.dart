@@ -33,7 +33,9 @@ class _PopupBookmarkState extends State<PopupBookmark> {
   @override
   Widget build(BuildContext context) {
     return Center(child:
-      SizedBox(child:
+      ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: SizedBox(child:
         Scaffold(body:
         FutureBuilder<List<String>>(
           future: getBookmarks(),
@@ -306,7 +308,7 @@ class _PopupBookmarkState extends State<PopupBookmark> {
           );}
     )
         ),
-          height: 500, width: 300)
+          height: 500, width: 300))
     );
   }
 }

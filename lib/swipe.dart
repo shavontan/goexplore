@@ -138,6 +138,7 @@ class _SwipeState extends State<Swipe> {
                                 imageURL_360: finalList[i]['360image'],
                                 imageURLs: images,
                                 name: finalList[i]['name'],
+                                isSponsored: finalList[i]['sponsored'],
                               ),
                                   onSwipeDown: (finalPosition) async {
                                     if (isLoggedIn()) {
@@ -320,6 +321,7 @@ class _SwipeState extends State<Swipe> {
                             imageURL_360: finalList[i]['360image'],
                             imageURLs: images,
                             name: finalList[i]['name'],
+                            isSponsored: finalList[i]['sponsored'],
                           ),
                               onSwipeDown: (finalPosition) async {
                                 if (isLoggedIn()) {
@@ -475,6 +477,7 @@ class _SwipeState extends State<Swipe> {
                           imageURL_360: finalList[i]['360image'],
                           imageURLs: images,
                           name: finalList[i]['name'],
+                          isSponsored: finalList[i]['sponsored'],
                         ),
                             onSwipeDown: (finalPosition) async {
                               if (isLoggedIn()) {
