@@ -28,23 +28,10 @@ class RecreationFilter extends StatefulWidget {
 }
 
 class _RecreationFilterState extends State<RecreationFilter> {
-  List<String> testerURLs = [
-    'https://1.bp.blogspot.com/-iUYjW8TuqtE/UkWmCkx_Z1I/AAAAAAAAdAA/Z08tUps8-yM/s1600/01+Cafe+Colbar+-+A+Journey+Back+In+Time+to+the+Colonial+Bar+@+9A+Whitchurch+Road+%5BNext+to+the+Upcoming+Mediapolis%5D+(Large).JPG',
-    'https://live.staticflickr.com/3387/5713143243_3ee59eacbf_b.jpg',
-    'https://untouristsingapore.files.wordpress.com/2015/03/kp6081607.jpg',
-    'https://thelionraw.files.wordpress.com/2013/02/img_7853.jpg'];
-
-  String name = "Cafe Colbar";
-  String address = "9A Whitchurch Road, Singapore 138839";
-  String description = "An old-school kopitiam from the 1950s that is untouched by time.";
-  String image_360 = "https://firebasestorage.googleapis.com/v0/b/goexplore-af61c.appspot.com/o/Adventure%20Cove%20Waterpark.jpg?alt=media&token=9c9f0129-480f-4473-b78c-f8f67955da99";
-
-
 
   var selected = new List.filled(10, 0, growable: false); // 8 = recreationTags.length
 
   double currentPriceLimit = 20;
-  double distanceInKm = 100;
 
   bool stateZero = false; // false = not selected (0) & true = selected (1)
   bool stateOne = false;
@@ -70,20 +57,6 @@ class _RecreationFilterState extends State<RecreationFilter> {
             Navigator.pop(context, false);
           },
         ),
-        actions: [
-          IconButton(onPressed: () async {
-            List<double> recreationAvgTime = List.filled(54, 0, growable: true);
-            List<double> fnbAvgTime = List.filled(56, 0, growable: true);
-            List<int> recreationSeen = List.filled(54, 0, growable: true);
-            List<int> fnbSeen = List.filled(56, 0, growable: true);
-            String uid = await getCurrentUID();
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(uid)
-                .update({'recreationAvgTime':recreationAvgTime, 'fnbAvgTime':fnbAvgTime,
-              'recreationSeen':recreationSeen, 'fnbSeen':fnbSeen});
-          }, icon: Icon(Icons.refresh))
-        ],
       ),
       body: Column(
         children: [
@@ -353,22 +326,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
           ),
 
           Container(height: 80),
-          // Text("How far are you willing to travel: ${distanceInKm.floor()} km", style: TextStyle(fontSize: 18),),
-          // Slider(
-          //   value: distanceInKm,
-          //   onChanged: (newValue) {
-          //     setState(() {
-          //       distanceInKm = newValue;
-          //       print(distanceInKm);
-          //     });
-          //   },
-          //   max: 1000,
-          //   min: 0,
-          //   activeColor: Colors.deepPurpleAccent,
-          //   inactiveColor: Colors.black12,
-          // ),
-          //
-          // Container(height: 80),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -384,7 +342,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
                   print(selectedTags);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
-                          ListPage('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                          ListPage('recreation', currentPriceLimit.round(), selectedTags,)));
                          // ListPageBuilder('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page
@@ -401,7 +359,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
                   print(selectedTags);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
-                          Swipe('recreation', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                          Swipe('recreation', currentPriceLimit.round(), selectedTags,)));
 
                   //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                   // pass data to database + go to next page

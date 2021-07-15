@@ -32,8 +32,9 @@ class _MyListTileState extends State<MyListTile> {
     if (price < 0) {
       return "Invalid price stored in database";
     }
-
-    if (price < 5) {
+    if (price == 0) {
+      return "FREE";
+    } else if (price < 5) {
       return "\$";
     } else if (price < 10) {
       return "\$\$";

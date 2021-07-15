@@ -12,9 +12,9 @@ class ListPage extends StatefulWidget {
   final String category;
   final int price;
   final List<String> tags;
-  final double dist;
+  // final double dist;
 
-  ListPage(this.category, this.price, this.tags, this.dist);
+  ListPage(this.category, this.price, this.tags,);
 
   @override
   _ListPageState createState() => _ListPageState();
@@ -71,14 +71,13 @@ class _ListPageState extends State<ListPage> {
 
   void didChangeDependencies() {
     super.didChangeDependencies();
-    resultsLoaded = getLocationStreamSnapshots(widget.category, widget.price, widget.tags, widget.dist);
+    resultsLoaded = getLocationStreamSnapshots(widget.category, widget.price, widget.tags);
   }
 
   Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
       String category,
       int price,
-      List<String> tags,
-      double dist) async {
+      List<String> tags) async {
 
     // sponsors start
     bool fnb;

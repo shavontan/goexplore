@@ -33,13 +33,13 @@ class Swipe extends StatefulWidget {
   final String category;
   final int price;
   final List<String> tags;
-  final double dist;
+  // final double dist;
 
-  Swipe(this.category, this.price, this.tags, this.dist);
+  Swipe(this.category, this.price, this.tags,);
 
   @override
   _SwipeState createState() =>
-      _SwipeState(this.category, this.price, this.tags, this.dist);
+      _SwipeState(this.category, this.price, this.tags,);
 }
 
 final globalKey = GlobalKey<BookmarksBarState>();
@@ -50,14 +50,14 @@ class _SwipeState extends State<Swipe> {
   final String category;
   final int price;
   final List<String> tags;
-  final double dist;
+  // final double dist;
   bool confused = false;
 
   int index = 0;
   bool first = true;
   List<DocumentSnapshot> finalList = [];
 
-  _SwipeState(this.category, this.price, this.tags, this.dist);
+  _SwipeState(this.category, this.price, this.tags,);
 
   List<String> locationNames = [];
 

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../bookmarksbar.dart';
 import 'ExtraInfo.dart';
@@ -16,8 +17,9 @@ class SwipingTile extends StatefulWidget {
   final String name;
   final String description;
   final String address;
+  final bool isSponsored;
 
-  const SwipingTile({required this.imageURLs, required this.imageURL_360, required this.name, required this.description, required this.address});
+  const SwipingTile({required this.imageURLs, required this.imageURL_360, required this.name, required this.description, required this.address, required this.isSponsored});
 
   @override
   _SwipingTileState createState() => _SwipingTileState();
@@ -106,6 +108,13 @@ class _SwipingTileState extends State<SwipingTile> {
                       top: 30,
                       left: 40),
                   visible: !activateExtraInfo),
+              Visibility(
+                child: Positioned(
+                    child: Text("Sponsored", style: GoogleFonts.rancho(color: Colors.red, fontSize: 30),),
+                    top: 30,
+                    left: (MediaQuery.of(context).size.width / 2) - 45),
+                visible: widget.isSponsored,
+              )
             ]
         )
     );

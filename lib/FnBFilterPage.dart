@@ -51,7 +51,6 @@ class _FnBFilterState extends State<FnBFilter> {
   var selected = new List.filled(14, 0, growable: false); // 13 = fnbTags.length
 
   double currentPriceLimit = 20;
-  double distanceInKm = 100;
 
   bool stateZero = false; // false = not selected (0) & true = selected (1)
   bool stateOne = false;
@@ -81,20 +80,6 @@ class _FnBFilterState extends State<FnBFilter> {
               Navigator.pop(context, false);
             },
           ),
-          actions: [
-            IconButton(onPressed: () async {
-              List<double> recreationAvgTime = List.filled(54, 0, growable: true);
-              List<double> fnbAvgTime = List.filled(56, 0, growable: true);
-              List<int> recreationSeen = List.filled(54, 0, growable: true);
-              List<int> fnbSeen = List.filled(56, 0, growable: true);
-              String uid = await getCurrentUID();
-              await FirebaseFirestore.instance
-                .collection('users')
-                .doc(uid)
-                .update({'recreationAvgTime':recreationAvgTime, 'fnbAvgTime':fnbAvgTime,
-                  'recreationSeen':recreationSeen, 'fnbSeen':fnbSeen});
-            }, icon: Icon(Icons.refresh))
-          ],
         ),
         body: SingleChildScrollView(child: Column(
           children: [
@@ -463,22 +448,7 @@ class _FnBFilterState extends State<FnBFilter> {
             ),
 
             Container(height: 80),
-            // Text("How far are you willing to travel: ${distanceInKm.floor()} km", style: TextStyle(fontSize: 18),),
-            // Slider(
-            //   value: distanceInKm,
-            //   onChanged: (newValue) {
-            //     setState(() {
-            //       distanceInKm = newValue;
-            //       print(distanceInKm);
-            //     });
-            //   },
-            //   max: 1000,
-            //   min: 0,
-            //   activeColor: Colors.deepPurpleAccent,
-            //   inactiveColor: Colors.black12,
-            // ),
-            //
-            // Container(height: 80),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -494,7 +464,7 @@ class _FnBFilterState extends State<FnBFilter> {
                     print(selectedTags);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) =>
-                            ListPage('fnb', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                            ListPage('fnb', currentPriceLimit.round(), selectedTags,)));
                            // ListPageBuilder('fnb', currentPriceLimit.round(), selectedTags, distanceInKm)));
                     //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                     // pass data to database + go to next page
@@ -511,7 +481,7 @@ class _FnBFilterState extends State<FnBFilter> {
                     print(selectedTags);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) =>
-                            Swipe('fnb', currentPriceLimit.round(), selectedTags, distanceInKm)));
+                            Swipe('fnb', currentPriceLimit.round(), selectedTags,)));
                     //SwipingTile(imageURLs: testerURLs, name: name, address: address, description: description, imageURL_360: image_360,)));
                     // pass data to database + go to next page
                   },
