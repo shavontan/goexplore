@@ -19,7 +19,7 @@ class Collection extends StatefulWidget {
 
 class _CollectionState extends State<Collection> {
   // final bool onAdventure = false; // EDIT THIS — get from data base
-  int pointsEarned = 1000; // arbitrary number
+  int pointsEarned = 50; // arbitrary number
 
   @override
   Widget build(BuildContext context) {

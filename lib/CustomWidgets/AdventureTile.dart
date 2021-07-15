@@ -157,8 +157,8 @@ class AdventureTileState extends State<AdventureTile> {
               Visibility(
                   child: Positioned(
                       child: Icon(activate360 ? Icons.lock_open_outlined : Icons.lock, color: activate360 ? Colors.green : Colors.redAccent),
-                      top: 40,
-                      left: 20),
+                      top: 30,
+                      left: 40),
                   visible: !activateExtraInfo),
             ]
         )

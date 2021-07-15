@@ -840,6 +840,8 @@ class _BrowseBarState extends State<BrowseBar> {
                 Navigator.pop(context, false);
               },
             ),
+            top: 20,
+            left: 0,
           ),
           Positioned(
               child: IconButton(

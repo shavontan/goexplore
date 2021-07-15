@@ -93,6 +93,8 @@ class AdventureStackState extends State<AdventureStack> {
                             Navigator.pop(context);
                           },
                         ),
+                        top: 20,
+                        left: 0,
                       ),
                       Positioned(
                         child: IconButton(
