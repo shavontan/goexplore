@@ -106,6 +106,7 @@ class _JustBrowsingState extends State<JustBrowsing> {
                           imageURL_360: finalList[i]['360image'],
                           imageURLs: images,
                           name: finalList[i]['name'],
+                          isSponsored: finalList[i]['sponsored'],
                         ),
                         onSwipeDown: (finalPosition) async {
                           if (isLoggedIn()) {

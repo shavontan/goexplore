@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './flutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'main.dart';
 
 class BookmarksBar extends StatefulWidget {
@@ -76,7 +75,7 @@ class BookmarksBarState extends State<BookmarksBar> {
             return Text("");
           }
 
-          return Row(children: [
+          return SingleChildScrollView(child: Row(children: [
             ToggleButtons(
               children: <Widget>[
                 ...(snapshot.data! as List<Widget>),
@@ -89,6 +88,8 @@ class BookmarksBarState extends State<BookmarksBar> {
                 });
               },
               isSelected: isSelected,
+              // elevation: 5,
+              //   unselectedFillColor: Colors.transparent,
             ),
             MaterialButton(
               child: Icon(Icons.add_box),
@@ -129,7 +130,7 @@ class BookmarksBarState extends State<BookmarksBar> {
                     });
               },
             )
-          ]);
+          ]));
         });
   }
 }
