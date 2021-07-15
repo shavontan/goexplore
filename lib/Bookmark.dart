@@ -20,6 +20,7 @@ final listKey = GlobalKey<AnimatedListState>();
 class BookmarkState extends State<Bookmark> {
   String bookmarkName;
   BookmarkState(this.bookmarkName);
+  bool confused = false;
 
   void refresh() => setState(() => {});
 
@@ -57,8 +58,16 @@ class BookmarkState extends State<Bookmark> {
                     Navigator.pop(context, false);
                   },
                 ),
-              ),
-              body: ListView.builder(
+                  actions: [
+                    IconButton(
+                        icon: Icon(Icons.help_outline, color: Colors.white),
+                        onPressed: () {
+                          setState(() {
+                            confused = true;
+                          });
+                        })
+                  ]),
+              body: Stack(children:[ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) =>
                       Dismissible(
@@ -99,7 +108,124 @@ class BookmarkState extends State<Bookmark> {
                               ])),
                        )
                       )
-              )
+              ),
+              Visibility(
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Container(
+                      color: Colors.white,
+                      height: 500,
+                      width: 275,
+                      child: Column(
+                        children: [
+                          Container(height: 10),
+                          SizedBox(
+                              child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(height: 10),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Features about this page",
+                                          style: GoogleFonts.delius(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "",
+                                            style: GoogleFonts.delius(
+                                              fontSize: 15,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                  "This page displays all the locations you have bookmarked."),
+                                            ]),
+                                      ),
+                                      Container(height: 50),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Tap (Tile):",
+                                          style: GoogleFonts.delius(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "",
+                                            style: GoogleFonts.delius(
+                                              fontSize: 15,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                  "This will bring you to a new page that provides"),
+                                              TextSpan(
+                                                  text: " extra information ",
+                                                  style: GoogleFonts.delius(
+                                                      color: Colors.pinkAccent)),
+                                              TextSpan(
+                                                  text:
+                                                  "about this particular location"),
+                                            ]),
+                                      ),
+                                      Container(height: 20),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Swipe (Tile):",
+                                          style: GoogleFonts.delius(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "",
+                                            style: GoogleFonts.delius(
+                                              fontSize: 15,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(text: "This "),
+                                              TextSpan(
+                                                  text: "removes ",
+                                                  style: GoogleFonts.delius(
+                                                      color: Colors.pinkAccent)),
+                                              TextSpan(
+                                                  text:
+                                                  "the particular location from this collection of bookmarks."),
+                                            ]),
+                                      ),
+                                    ],
+                                  )),
+                              height: 420,
+                              width: 250),
+                          Container(height: 10),
+                          TextButton(
+                            child: Text(
+                              "Close",
+                              style: GoogleFonts.itim(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                confused = false;
+                              });
+                            },
+                          ),
+                          Container(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                visible: confused,
+              )])
           );
         }
     );
