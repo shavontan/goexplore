@@ -45,6 +45,7 @@ class History extends StatelessWidget {
         .collection('users')
         .doc(uid)
         .collection('history')
+        .orderBy('latestTime', descending: true)
         .snapshots();
   }
 

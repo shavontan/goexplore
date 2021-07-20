@@ -766,12 +766,14 @@ void updateHistory(String locationName, String imageURL) async {
       return doc['dates'];
     });
     times.add(Timestamp.now());
+    docRef.update({'latestTime':Timestamp.now()});
     docRef.update({'dates': times});
   } else {
     docRef.set({
       'name': locationName,
       'imageURL': imageURL,
-      'dates': [Timestamp.now()]
+      'dates': [Timestamp.now()],
+      'latestTime': Timestamp.now()
     });
   }
 }
