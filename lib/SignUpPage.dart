@@ -75,43 +75,13 @@ class SignUpPage extends StatelessWidget {
                       ),
                       TextButton(
                           onPressed: () async {
-                            if (_password.text == _confirmPassword.text) {
-                              bool shouldRegister = await register(_email.text,
-                                  _password.text, _username.text, context);
 
-                              if (shouldRegister) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                          title: Text(
-                                              "Please verify the email address for " +
-                                                  _email.text),
-                                          actions: <Widget>[
-                                            MaterialButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                    MyApp2(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text("OK"),
-                                            )
-                                          ]);
-                                    });
-                                // else: pop-up – account alr registered under this email
-                              }
-                            }
-                            // else : pop-up screen: confirm password does not match password
-                            else {
+                            if (_email.text.trim().isEmpty) {
                               showDialog(
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        title: Text("Passwords do not match"),
+                                        title: Text("Please enter an email"),
                                         actions: <Widget>[
                                           MaterialButton(
                                             onPressed: () {
@@ -121,8 +91,72 @@ class SignUpPage extends StatelessWidget {
                                           )
                                         ]);
                                   });
+                            } else if (_password.text.trim().isEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                        title: Text("Please enter a password"),
+                                        actions: <Widget>[
+                                          MaterialButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("OK"),
+                                          )
+                                        ]);
+                                  });
+                            } else {
+                              if (_password.text == _confirmPassword.text) {
+                                bool shouldRegister = await register(_email.text,
+                                    _password.text, _username.text, context);
+
+                                if (shouldRegister) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            title: Text(
+                                                "Please verify the email address for " +
+                                                    _email.text),
+                                            actions: <Widget>[
+                                              MaterialButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MyApp2(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text("OK"),
+                                              )
+                                            ]);
+                                      });
+                                  // else: pop-up – account alr registered under this email
+                                }
+                              }
+                              // else : pop-up screen: confirm password does not match password
+                              else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          title: Text("Passwords do not match"),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("OK"),
+                                            )
+                                          ]);
+                                    });
+                              }
                             }
-                          },
+                            },
+
                           child: Text('Sign up'))
                     ])))));
   }

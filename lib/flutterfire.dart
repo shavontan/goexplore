@@ -128,7 +128,7 @@ Future<bool> register(String email, String password, String username, BuildConte
     } else {
       showDialog(context: context, builder: (context) {
         return AlertDialog(
-            title: Text(e.toString()),
+            title: Text(e.message!),
             actions: <Widget>[
               MaterialButton(
                 onPressed: () {
