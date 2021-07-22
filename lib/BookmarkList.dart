@@ -12,6 +12,9 @@ class BookmarkList extends StatefulWidget {
   _BookmarkListState createState() => _BookmarkListState();
 }
 
+final TextEditingController _newBookmark = TextEditingController();
+final _formKey = GlobalKey<FormState>();
+
 class _BookmarkListState extends State<BookmarkList> {
   int index = 0;
 
@@ -23,7 +26,7 @@ class _BookmarkListState extends State<BookmarkList> {
           if (!snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text('Your bookmarks', style: TextStyle(color: Colors.black)),
+                  title: Text('Bookmarks', style: TextStyle(color: Colors.black)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -32,14 +35,15 @@ class _BookmarkListState extends State<BookmarkList> {
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
                       Navigator.pop(context);
                     },
-                  ),),
+                  ),
+                ),
                 body: Center(child: CircularProgressIndicator()),
                 backgroundColor: Colors.white);
           }
 
           return new Scaffold(
               appBar: AppBar(
-                  title: Text('Your bookmarks',
+                  title: Text('Bookmarks',
                       style: TextStyle(color: Colors.black)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
@@ -48,7 +52,43 @@ class _BookmarkListState extends State<BookmarkList> {
                     onPressed: () {
                       Navigator.pop(context, false);
                     },
-                  ),),
+                  ),
+                actions: [
+                  IconButton(icon: Icon(Icons.add, color: Colors.white),
+                    onPressed: (){
+                      showDialog(context: context, builder: (context) {
+                        return AlertDialog(
+                            actions: <Widget>[
+                              TextFormField(
+                                key: _formKey,
+                                controller: _newBookmark,
+                                decoration: InputDecoration(
+                                  hintText: "Enter bookmark name",
+                                ),
+
+                              ),
+                              MaterialButton(onPressed: () async {
+                                String uid = await getCurrentUID();
+                                if (_newBookmark.text.trim().isNotEmpty) {
+                                  Navigator.pop(context);
+                                  if (_newBookmark.text.trim().isNotEmpty) {
+                                    FirebaseFirestore.instance.collection('users').doc(uid).update({'bookmarks': FieldValue.arrayUnion([_newBookmark.text.trim()])});
+                                    setState (() {
+                                    });
+                                  }
+                                  _newBookmark.clear();
+                                }
+
+                              },
+                                child: Text("Done"),
+                              ),
+                            ]
+                        );
+                      });
+
+                    },)
+                ],
+              ),
               body: Stack(children: [
                 ListView.builder(
                     itemCount: (snapshot.data! as List).length,
