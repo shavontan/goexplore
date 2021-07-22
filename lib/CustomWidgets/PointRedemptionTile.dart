@@ -110,7 +110,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                           widget.cost.toString() + " points?"),
                   actions: <Widget>[
                     TextButton(
-                      child: Text("Cancel"),
+                      child: Text("Cancel", style: TextStyle(color: Colors.grey)),
                       onPressed: () {
                         Navigator.pop(context);
                       },
