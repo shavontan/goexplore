@@ -129,13 +129,14 @@ class AdventureTileState extends State<AdventureTile> {
                                   return ClassicGeneralDialogWidget(
                                     titleText: "You're all set!",
                                     contentText: 'Visit ' + widget.name + ' now to earn double points!',
+                                    positiveText: "Done",
                                     onPositiveClick: () {
 
                                       Navigator.of(context).pop();
                                     },
-                                    onNegativeClick: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                    // onNegativeClick: () {
+                                    //   Navigator.of(context).pop();
+                                    // },
                                   );
 
                                 },
