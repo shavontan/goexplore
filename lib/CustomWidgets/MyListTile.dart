@@ -68,7 +68,7 @@ class _MyListTileState extends State<MyListTile> {
             children: [
               InkWell(
                 child: BookMarkTile(imgURLs: widget.imgURLs, name: widget.name, description: widget.description,
-                  address: widget.address, imageURL_360: widget.imageURL_360,),
+                  address: widget.address, imageURL_360: widget.imageURL_360, bookmark: true, ),
                 onLongPress: () async {
                   // Add to bookmarks
 

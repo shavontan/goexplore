@@ -69,7 +69,7 @@ class OnAdventureState extends State<OnAdventure> {
                                 imageURL_360: snapshot.data![index]['360image'],
                                 description: snapshot.data![index]['description'],
                                 address: snapshot.data![index]['address'],
-                                imgURLs: snapshot.data![index]['imageList'],)
+                                imgURLs: snapshot.data![index]['imageList'], bookmark: true,)
                             // BookmarkTile(
                             //   bookmarkName: this.bookmarkName,
                             //   image: Image.network(snapshot.data!.docs[index]['imageURL']),
