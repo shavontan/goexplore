@@ -20,8 +20,6 @@ class PopupBookmark extends StatefulWidget {
   _PopupBookmarkState createState() => _PopupBookmarkState();
 }
 
-List<String> list = ["test1", "test2", "test3"];
-
 final TextEditingController _newBookmark = TextEditingController();
 final _formKey = GlobalKey<FormState>();
 

@@ -17,8 +17,11 @@ class BookMarkTile extends StatefulWidget {
   final String description;
   final String address;
   final String imageURL_360;
+  final bool bookmark;
 
-  const BookMarkTile({required this.imgURLs, required this.name, required this.description, required this.address, required this.imageURL_360});
+
+  const BookMarkTile({required this.imgURLs, required this.name, required this.description,
+    required this.address, required this.imageURL_360, required this.bookmark});
 
 
   @override
@@ -51,7 +54,9 @@ class _BookMarkTileState extends State<BookMarkTile> {
                     alignment: Alignment.center,),
                 ),]),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ExtraInfoPage(imgURLs: imageList, name: widget.name, description: widget.description, address: widget.address, imageURL_360: widget.imageURL_360),),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ExtraInfoPage(
+                imgURLs: imageList, name: widget.name, description: widget.description,
+                address: widget.address, imageURL_360: widget.imageURL_360, showBookmark: widget.bookmark,),),);
           }
       ),
     );

@@ -79,7 +79,8 @@ class BookmarkState extends State<Bookmark> {
                                   imageURL_360: snapshot.data!.docs[index]['360image'],
                                   description: snapshot.data!.docs[index]['description'],
                                   address: snapshot.data!.docs[index]['address'],
-                                  imgURLs: snapshot.data!.docs[index]['imageList'],)
+                                  imgURLs: snapshot.data!.docs[index]['imageList'], bookmark: false,
+                                  )
                               // BookmarkTile(
                               //   bookmarkName: this.bookmarkName,
                               //   image: Image.network(snapshot.data!.docs[index]['imageURL']),

@@ -108,7 +108,8 @@ class SponsoredTile extends StatelessWidget {
                         name: this.name,
                         description: this.description,
                         address: this.address,
-                        imageURL_360: this.imageURL_360),
+                        imageURL_360: this.imageURL_360, showBookmark: true,
+                        ),
                   ),
                 );
               }),

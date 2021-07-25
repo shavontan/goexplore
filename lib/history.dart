@@ -83,7 +83,7 @@ class History extends StatelessWidget {
               name: ds['name'],
               description: ds['description'],
               address: ds['address'],
-              imageURL_360: ds['360image']
+              imageURL_360: ds['360image'], showBookmark: true,
               )));
 
         },

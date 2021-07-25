@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'CustomWidgets/ExtraInfo.dart';
 import 'package:panorama/panorama.dart';
+
+import 'PopupBookmark.dart';
+import 'flutterfire.dart';
+import 'main.dart';
 
 class ExtraInfoPage extends StatefulWidget {
   final List<String> imgURLs;
@@ -10,13 +15,16 @@ class ExtraInfoPage extends StatefulWidget {
   final String description;
   final String address;
   final String imageURL_360;
+  final bool showBookmark;
 
   const ExtraInfoPage(
       {required this.imgURLs,
       required this.name,
       required this.description,
       required this.address,
-      required this.imageURL_360});
+      required this.imageURL_360,
+        required this.showBookmark
+      });
 
   @override
   _ExtraInfoPageState createState() => _ExtraInfoPageState();
@@ -28,6 +36,7 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
             title: Text('Extra info about ' + widget.name,
@@ -41,6 +50,41 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
               },
             ),
             actions: [
+              Visibility(child: IconButton(
+                  icon: Icon(Icons.add, color: Colors.white),
+                  onPressed: () {
+                    showAnimatedDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+
+                        if (!isLoggedIn()) {
+                          return AlertDialog(
+                              title: Text("Uh Oh!"),
+                              content: Text("You currently do not have an account. \n\nLog in or sign up now to start adding to bookmarks!"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  }, child: Text("Cancel", style: TextStyle(color: Colors.grey)),),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                                  }, child: Text("Proceed"),)
+                              ]);
+                        }
+
+
+                        return PopupBookmark(imgURLs: widget.imgURLs, name: widget.name,
+                            description: widget.description, address: widget.address,
+                            imageURL_360: widget.imageURL_360, tags: [], price: 0);
+                      },
+                      animationType: DialogTransitionType.size,
+                      curve: Curves.fastOutSlowIn,
+                      duration: Duration(seconds: 1),
+                    );
+                  }), visible: widget.showBookmark,),
               IconButton(
                   icon: Icon(Icons.help_outline, color: Colors.white),
                   onPressed: () {
