@@ -133,6 +133,15 @@ class Recommender {
       filterTags = convert_FnB_tags_ToBits(locationTags: this.filters);
     } else {
       filterTags = convert_rec_tags_ToBits(locationTags: this.filters);
+
+      if (filterTags[0] == 1 && filterTags[1] == 1) {
+        filterTags[0] = 0;
+        filterTags[1] = 0;
+      }
+      if (filterTags[2] == 1 && filterTags[3] == 1) {
+        filterTags[2] = 0;
+        filterTags[3] = 0;
+      }
     }
 
     for (int i = xs.length - 1; i >= 0; i--) {
@@ -142,16 +151,25 @@ class Recommender {
 
       if (isFnB) {
         locationBits = this.fnbTagsInBits[indexOfLocation];
+        bool match = false;
+        for (int j = 0; j < filterTags.length; j++) {
+          if (filterTags[j] == 1 && locationBits[j] == 1) {
+            match = true;
+          }
+        }
+        if (!match) {
+          xs.removeAt(i);
+        }
       } else {
         locationBits = this.recTagsInBits[indexOfLocation];
-      }
-
-      for (int j = 0; j < filterTags.length; j++) {
-        if (filterTags[j] == 1 && locationBits[j] == 1.0) {
-          xs.removeAt(i);
-          break;
+        for (int j = 0; j < filterTags.length; j++) {
+          if (filterTags[j] == 1 && locationBits[j] == 0) {
+            xs.removeAt(i);
+            break;
+          }
         }
       }
+
     }
 
     var result = List<String>.filled(num_rec, "");
