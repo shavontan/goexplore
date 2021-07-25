@@ -32,6 +32,8 @@ class _EditProfileState extends State<EditProfile> {
 
   String email = FirebaseAuth.instance.currentUser!.email!;
 
+  bool leavingPage = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,8 @@ class _EditProfileState extends State<EditProfile> {
             return Scaffold(
                 body: SafeArea(
                     child: SingleChildScrollView(
-                        child: Column(children: [
+                        child: Stack(children: [
+                          AbsorbPointer(child: Column(children: [
                           Stack(overflow: Overflow.visible, children: [
                             //Image.asset('assets/images/SGbackground.png', // Custom backdrop picture
                             Container(
@@ -94,7 +97,11 @@ class _EditProfileState extends State<EditProfile> {
                               child: IconButton(
                                 icon: Icon(Icons.arrow_back, color: Colors.white),
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                  setState(() {
+                                    print("cc");
+                                    leavingPage = true;
+                                  });
                                 },
                               ),
                             ),
@@ -292,8 +299,46 @@ class _EditProfileState extends State<EditProfile> {
 
                             },
                           )
-
-                        ])
+                        ]), absorbing: leavingPage,),
+                        Visibility(
+                            child: Positioned(
+                              left: MediaQuery.of(context).size.width/2 - 160,
+                                top: MediaQuery.of(context).size.height/2 - 120,
+                                child: SizedBox(
+                                    height: 240,
+                                    width: 320,
+                                    child: Stack(children: [
+                                          Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white, 
+                                                  border: Border.all(color: Colors.red, width: 3),
+                                              borderRadius: BorderRadius.circular(10))),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(height: 20),
+                                            Text("Are you sure you want to leave this page?", style: GoogleFonts.comingSoon(fontSize: 28, color: Colors.red, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                                            Container(height:10),
+                                            Text("You may have some unsaved changes.", style: GoogleFonts.comingSoon(fontSize: 13)),
+                                            Container(height:5),
+                                            Text("Click on 'Confirm Changes' to save your changes.", textAlign: TextAlign.center, style: GoogleFonts.comingSoon(fontSize: 13)),
+                                            Container(height: 20),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                TextButton(child: Text("Cancel", style: GoogleFonts.comingSoon(fontSize: 18, fontWeight: FontWeight.bold)), onPressed: () {
+                                                  setState(() {
+                                                    leavingPage = false;
+                                                  });
+                                                },),
+                                                TextButton(child: Text("Leave Page", style: GoogleFonts.comingSoon(fontSize: 18, fontWeight: FontWeight.bold)), onPressed: () {
+                                                  Navigator.pop(context);
+                                                },)
+                                              ]
+                                            )
+                                          ]
+                                        )])
+                        )), visible: leavingPage)])
                       //)
                     )
                 )
