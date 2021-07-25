@@ -116,7 +116,7 @@ class _SwipeState extends State<Swipe> {
                           index: index,
                           itemBuilder: (c, i) {
 
-                            if (i == finalList.length-1) {
+                            if (i == finalList.length) {
                               return Return();
                             }
 
@@ -217,7 +217,7 @@ class _SwipeState extends State<Swipe> {
 
                                   });
                           },
-                          itemCount: finalList.length,
+                          itemCount: finalList.length+1,
                         ),
                         BrowseBar(),])
                       );
@@ -296,10 +296,10 @@ class _SwipeState extends State<Swipe> {
                     new LazyIndexedStack(
                       reuse: false,
                       index: index,
-                      itemCount: finalList.length,
+                      itemCount: finalList.length+1,
                       itemBuilder: (c, i) {
 
-                        if (i == finalList.length-1) {
+                        if (i == finalList.length) {
                           return Return();
                         }
 
@@ -406,7 +406,7 @@ class _SwipeState extends State<Swipe> {
                 });
           }
 
-          locationNames = new Recommender(num_rec: 51, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
+          locationNames = new Recommender(num_rec: 50, userTimes: userTimes, filters: this.tags, isFnB: this.category=="fnb").getRecommendations();
 
           return FutureBuilder<List<QueryDocumentSnapshot>>(
               future: getLocations(this.category, locationNames, this.price, this.tags),
@@ -455,7 +455,7 @@ class _SwipeState extends State<Swipe> {
                     index: index,
                     itemBuilder: (c, i) {
 
-                      if (i == finalList.length-1) {
+                      if (i == finalList.length) {
                         return Return();
                       }
 
@@ -556,7 +556,7 @@ class _SwipeState extends State<Swipe> {
 
                             });
                     },
-                    itemCount: finalList.length,
+                    itemCount: finalList.length+1,
                   ),
                   BrowseBar(),])
                 );
@@ -602,7 +602,7 @@ Future<List<QueryDocumentSnapshot>> getLocations(String category, List<String> l
       .get();
   List<QueryDocumentSnapshot> sponsoredList = sponsoredQS.docs
       .where((d) => d['price'] <= price)
-      .where((doc) => checkTags(doc['tags'], tags))
+      .where((doc) => checkTags(doc['tags'], tags, fnb))
       .toList();
   // sponsors end
 
@@ -707,7 +707,7 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
     .get();
   List<QueryDocumentSnapshot> sponsoredList = sponsoredQS.docs
       .where((d) => d['price'] <= price)
-      .where((doc) => checkTags(doc['tags'], tags))
+      .where((doc) => checkTags(doc['tags'], tags, fnb))
       .toList();
   // sponsors end
 
@@ -722,7 +722,7 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
 
   Iterable<QueryDocumentSnapshot> docsStream =
       qs.docs
-          .where((d) => checkTags(d['tags'], tags))
+          .where((d) => checkTags(d['tags'], tags, fnb))
           .where((doc) => checkDuplicates(doc['name'], sponsoredList));
 
   // Init PermissionHandler
@@ -763,7 +763,7 @@ Future<List<QueryDocumentSnapshot>> getLocationStreamSnapshots(
   return sponsoredList;
 }
 
-bool checkTags(List<dynamic> doc, List<String> tag) {
+bool checkTags(List<dynamic> doc, List<String> tag, bool isFnb) {
   // if (tag.contains('Indoor') && tag.contains('Outdoor')) {
   //   tag.remove('Indoor');
   //   tag.remove('Outdoor');
@@ -781,11 +781,45 @@ bool checkTags(List<dynamic> doc, List<String> tag) {
   //   return false;
   // }
 
-  if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
-      tag.length == 0) {
+  // if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+  //     tag.length == 0) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+
+  if (tag.length == 0 || doc.length == 0) {
     return true;
+  }
+
+  if (isFnb) {
+    // fnb
+    if (tag.any((item) => doc.contains(item) && doc.length > 0 || tag.length == 0)) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
-    return false;
+    // recreation
+    if (tag.contains("Indoor") && tag.contains("Outdoor")) {
+      tag.remove("Indoor");
+      tag.remove("Outdoor");
+    }
+
+    if (tag.contains("Physical") && tag.contains("Leisure")) {
+      tag.remove("Physical");
+      tag.remove("Leisure");
+    }
+
+    if (tag.length == 0) {
+      return true;
+    }
+
+    if (tag.every((item) => doc.contains(item))) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

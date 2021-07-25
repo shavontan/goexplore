@@ -192,17 +192,36 @@ class ProfilePage extends StatelessWidget {
                                 GoogleFonts.scada(fontSize: 15, color: Colors.black)),
                             onPressed: () async {
 
-                              await signOut();
-                              // await anonymousSignIn();
+                              showDialog(context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Logging out"),
+                                      content: Text("Are you sure you want to log out?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text("Cancel", style: TextStyle(color: Colors.grey)),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("Confirm"),
+                                          onPressed: () async {
+                                            await signOut();
+                                            // await anonymousSignIn();
 
 
-                              // Navigator.pushAndRemoveUntil(
-                              //     context,
-                              //     MaterialPageRoute(builder: (context) => MyApp2()),
-                              //         (Route<dynamic> route) => false);
+                                            // Navigator.pushAndRemoveUntil(
+                                            //     context,
+                                            //     MaterialPageRoute(builder: (context) => MyApp2()),
+                                            //         (Route<dynamic> route) => false);
 
-                              Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp2()));
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (context) => MyApp2()));
+                                          },),
+                                      ],
+                                    );
+                                  });
                             },
                           )),
                     ),
