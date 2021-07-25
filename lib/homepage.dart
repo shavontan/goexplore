@@ -263,6 +263,7 @@ class _HomePageState extends State<HomePage> {
                                     });
                               } else {
                                 await _scan();
+
                                 if (!qrCode.contains("G0ExPl0rE")) {
                                   showDialog(
                                       context: context,
@@ -322,7 +323,9 @@ class _HomePageState extends State<HomePage> {
                                     bool onAdventure =
                                         await validAdventureLocation(
                                             substrings.elementAt(2));
-                                    updateHistory(substrings.elementAt(2),
+                                    updateHistory(
+                                        substrings.elementAt(1),
+                                        substrings.elementAt(2),
                                         substrings.elementAt(3));
                                     removeAdventureLocation(
                                         substrings.elementAt(2));
@@ -746,7 +749,11 @@ void removeAdventureLocation(String locationName) async {
   }
 }
 
-void updateHistory(String locationName, String imageURL) async {
+void updateHistory(String category, String locationName, String imageURL) async {
+
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  print(category);
+
   String uid = await getCurrentUID();
   DocumentReference docRef = FirebaseFirestore.instance
       .collection('users')
@@ -773,7 +780,8 @@ void updateHistory(String locationName, String imageURL) async {
       'name': locationName,
       'imageURL': imageURL,
       'dates': [Timestamp.now()],
-      'latestTime': Timestamp.now()
+      'latestTime': Timestamp.now(),
+      'category': category,
     });
   }
 }
