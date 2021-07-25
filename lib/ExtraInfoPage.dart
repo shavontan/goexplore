@@ -34,6 +34,18 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
   bool activate360 = false;
   bool confused = false;
 
+  double _lon = 0;
+  double _lat = 0;
+  double _tilt = 0;
+
+  void onViewChanged(longitude, latitude, tilt) {
+    setState(() {
+      _lon = longitude;
+      _lat = latitude;
+      _tilt = tilt;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -105,6 +117,9 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
           ),
           Visibility(
               child: Panorama(
+                animSpeed: 0.1,
+                sensorControl: SensorControl.Orientation,
+                onViewChanged: onViewChanged,
                 child: Image.network(widget.imageURL_360),
               ),
               visible: activate360),
