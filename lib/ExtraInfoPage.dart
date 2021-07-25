@@ -239,6 +239,38 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
                                               " of this location (where you can scroll around on)"),
                                     ]),
                               ),
+                              Visibility(
+                                  child: Column(children: [
+                                    Container(height: 20),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: '"+" icon:',
+                                        style: GoogleFonts.delius(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                          text: "",
+                                          style: GoogleFonts.delius(
+                                            fontSize: 15,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                "Click on this button to "),
+                                            TextSpan(
+                                                text: "add this location to bookmarks",
+                                                style: GoogleFonts.delius(
+                                                    color: Colors.pinkAccent)),
+                                            TextSpan(
+                                                text:
+                                                " of your choice."),
+                                          ]),
+                                    ),
+                                  ]),
+                                  visible: widget.showBookmark),
                             ],
                           )),
                           height: 420,

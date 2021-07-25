@@ -17,6 +17,7 @@ final _formKey = GlobalKey<FormState>();
 
 class _BookmarkListState extends State<BookmarkList> {
   int index = 0;
+  bool confused = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,14 @@ class _BookmarkListState extends State<BookmarkList> {
                         );
                       });
 
-                    },)
+                    },),
+                  IconButton(
+                      icon: Icon(Icons.help_outline, color: Colors.white),
+                      onPressed: () {
+                        setState(() {
+                          confused = true;
+                        });
+                      }),
                 ],
               ),
               body: Stack(children: [
@@ -152,6 +160,150 @@ class _BookmarkListState extends State<BookmarkList> {
                               context, (snapshot.data! as List)[index]),
                           // background: new Container(color: Colors.red),
                         )),
+
+                Visibility(
+                  visible: confused,
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Container(
+                        color: Colors.white,
+                        height: 500,
+                        width: 275,
+                        child: Column(
+                          children: [
+                            Container(height: 10),
+                            SizedBox(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Container(height: 10),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Features about this page",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "This page displays all the bookmarks you have created."),
+                                              ]),
+                                        ),
+                                        Container(height: 50),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Tap (Tile):",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                    "This will bring you to a new page that provides"),
+                                                TextSpan(
+                                                    text: " all the locations ",
+                                                    style: GoogleFonts.delius(
+                                                        color: Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "that you have saved to this bookmark."),
+                                              ]),
+                                        ),
+                                        Container(height: 20),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Swipe (Tile):",
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(text: "This "),
+                                                TextSpan(
+                                                    text: "deletes ",
+                                                    style: GoogleFonts.delius(
+                                                        color: Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "the particular bookmark along with all its saved locations."),
+                                              ]),
+                                        ),
+                                        Container(height: 20),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: '"+" icon:',
+                                            style: GoogleFonts.delius(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                              text: "",
+                                              style: GoogleFonts.delius(
+                                                fontSize: 15,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(text: "Click on this button to "),
+                                                TextSpan(
+                                                    text: "create ",
+                                                    style: GoogleFonts.delius(
+                                                        color: Colors.pinkAccent)),
+                                                TextSpan(
+                                                    text:
+                                                    "a new bookmark."),
+                                              ]),
+                                        ),
+                                      ],
+                                    )),
+                                height: 420,
+                                width: 250),
+                            Container(height: 10),
+                            TextButton(
+                              child: Text(
+                                "Close",
+                                style: GoogleFonts.itim(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  confused = false;
+                                });
+                              },
+                            ),
+                            Container(height: 10),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ]));
         });
   }
