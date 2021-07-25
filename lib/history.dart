@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:goexplore/ProfilePage.dart';
 import './flutterfire.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
+import 'ExtraInfoPage.dart';
 
 class History extends StatelessWidget {
 
@@ -31,7 +34,8 @@ class History extends StatelessWidget {
                   body: ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) =>
-                          buildCard(context, snapshot.data!.docs[index])
+                          buildCard(context, snapshot.data!.docs[index]),
+
                   ));
             }
         )
@@ -56,7 +60,34 @@ class History extends StatelessWidget {
       result = result + new DateFormat("yyyy-MM-dd  hh:mm").format(arr[i].toDate()) + "\n";
     }
 
-    return new Container(
+    return GestureDetector(
+        onTap: () async {
+
+          String locationName = location['name'];
+          String category = location['category'];
+
+          DocumentSnapshot ds = await FirebaseFirestore.instance
+              .collection(category)
+              .doc(locationName)
+              .get();
+
+          List<dynamic> dynamicList = ds['imageList'];
+          List<String> imageList = [];
+          for (int i = 0; i < dynamicList.length; i++) {
+          imageList.add(dynamicList[i] as String);
+          }
+
+            Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ExtraInfoPage(
+              imgURLs: imageList,
+              name: ds['name'],
+              description: ds['description'],
+              address: ds['address'],
+              imageURL_360: ds['360image']
+              )));
+
+        },
+        child: Container(
         child:
         Card(
             child: Padding(
@@ -101,6 +132,7 @@ class History extends StatelessWidget {
             )
 
         )
+    )
     );
   }
 }
