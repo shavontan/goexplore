@@ -84,7 +84,7 @@ class _FnBFilterState extends State<FnBFilter> {
         body: SingleChildScrollView(child: Column(
           children: [
             Container(height: 20),
-            Text("Select your tags to filter out:", style: TextStyle(fontSize: 20),),
+            Text("Select the tags you want:", style: TextStyle(fontSize: 20,),),
             Container(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -427,10 +427,6 @@ class _FnBFilterState extends State<FnBFilter> {
                         }
                       }),
                 ]),
-
-            Container(height: 5),
-            Text("(select tags you DO NOT want)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
-
             Container(height: 80),
             Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),
             Slider(

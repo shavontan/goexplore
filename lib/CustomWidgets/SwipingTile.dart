@@ -53,7 +53,7 @@ class _SwipingTileState extends State<SwipingTile> {
               InkWell(
                 child: Opacity(
                   child: Panorama(
-                    animSpeed: 1.0,
+                    animSpeed: 0.1,
                     sensorControl: SensorControl.Orientation,
                     onViewChanged: onViewChanged,
                     child: Image.network(widget.imageURL_360),

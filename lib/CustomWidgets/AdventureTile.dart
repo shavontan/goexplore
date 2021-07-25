@@ -32,6 +32,18 @@ class AdventureTileState extends State<AdventureTile> {
   bool activate360 = true;         // when activateExtraInfo = true --> activate360 will not change (need to do this check twice)
   bool activateExtraInfo = false;
 
+  double _lon = 0;
+  double _lat = 0;
+  double _tilt = 0;
+
+  void onViewChanged(longitude, latitude, tilt) {
+    setState(() {
+      _lon = longitude;
+      _lat = latitude;
+      _tilt = tilt;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -43,6 +55,9 @@ class AdventureTileState extends State<AdventureTile> {
               InkWell(
                 child: Opacity(
                   child: Panorama(
+                    animSpeed: 0.1,
+                    sensorControl: SensorControl.Orientation,
+                    onViewChanged: onViewChanged,
                     child: Image.network(widget.imageURL_360),
                   ),
                   opacity: activateExtraInfo ? 0.3 : 1,
