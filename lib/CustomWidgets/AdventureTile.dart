@@ -29,7 +29,7 @@ class AdventureTile extends StatefulWidget {
 }
 
 class AdventureTileState extends State<AdventureTile> {
-  bool activate360 = false;         // when activateExtraInfo = true --> activate360 will not change (need to do this check twice)
+  bool activate360 = true;         // when activateExtraInfo = true --> activate360 will not change (need to do this check twice)
   bool activateExtraInfo = false;
 
   @override
@@ -40,17 +40,15 @@ class AdventureTileState extends State<AdventureTile> {
             alignment: Alignment.center,
             children: [
               AbsorbPointer(child:
-              InkWell(child: Panorama(
-                child: Image.network(widget.imageURL_360),
-              ),
-                onDoubleTap: () {
-                  setState(() {
-                    activate360 = !activate360;
-                  });
-                },
+              InkWell(
+                child: Opacity(
+                  child: Panorama(
+                    child: Image.network(widget.imageURL_360),
+                  ),
+                  opacity: activateExtraInfo ? 0.3 : 1,
+                ),
                 onLongPress: () {
                   setState(() {
-                    activate360 = false;
                     activateExtraInfo = true;
                   });
                 },
@@ -60,11 +58,6 @@ class AdventureTileState extends State<AdventureTile> {
               Visibility(
                 child: InkWell(
                   child: SizedBox(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width),
-                  onDoubleTap: () {
-                    setState(() {
-                      activate360 = !activate360;
-                    });
-                  },
                   onLongPress: () {
                     setState(() {
                       activateExtraInfo = true;
@@ -155,12 +148,6 @@ class AdventureTileState extends State<AdventureTile> {
                 ),
                 visible: activateExtraInfo,
               ),
-              Visibility(
-                  child: Positioned(
-                      child: Icon(activate360 ? Icons.lock_open_outlined : Icons.lock, color: activate360 ? Colors.green : Colors.redAccent),
-                      top: 30,
-                      left: 40),
-                  visible: !activateExtraInfo),
             ]
         )
     );
