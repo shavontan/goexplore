@@ -288,9 +288,34 @@ class _BrowseBarState extends State<BrowseBar> {
                           Container(height: 50),
                           Text.rich(
                             TextSpan(
+                              text: "Move Your Device",
+                              style: GoogleFonts.delius(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Text.rich(
+                            TextSpan(
+                                text: "",
+                                style: GoogleFonts.delius(
+                                  fontSize: 15,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(text: "This "),
+                                  TextSpan(
+                                      text: "moves ",
+                                      style: GoogleFonts.delius(
+                                          color: Colors.pinkAccent)),
+                                  TextSpan(text: "the 360 image to show you how the different parts of the location look like and its overall ambience."),
+                                ]),
+                          ),
+                          Container(height: 20),
+                          Text.rich(
+                            TextSpan(
                               text: "Double Tap",
                               style: GoogleFonts.delius(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Text.rich(
@@ -304,19 +329,22 @@ class _BrowseBarState extends State<BrowseBar> {
                                   TextSpan(
                                       text: "enables ",
                                       style: GoogleFonts.delius(
-                                          color: Colors.pinkAccent)),
+                                          color:
+                                          Colors.pinkAccent)),
                                   TextSpan(text: "and "),
                                   TextSpan(
                                       text: "disables ",
                                       style: GoogleFonts.delius(
-                                          color: Colors.pinkAccent)),
+                                          color:
+                                          Colors.pinkAccent)),
                                   TextSpan(
                                       text:
-                                          "the ability to interact with the "),
+                                      "the ability to interact with the 360-view image with "),
                                   TextSpan(
-                                      text: "360-view image",
+                                      text: "dragging gestures",
                                       style: GoogleFonts.delius(
-                                          color: Colors.pinkAccent)),
+                                          color:
+                                          Colors.pinkAccent)),
                                   TextSpan(text: "."),
                                 ]),
                           ),
@@ -332,17 +360,18 @@ class _BrowseBarState extends State<BrowseBar> {
                                   TextSpan(
                                       text: "Lock Icon ",
                                       style: GoogleFonts.delius(
-                                          color: Colors.pinkAccent)),
+                                          color:
+                                          Colors.pinkAccent)),
                                   TextSpan(
                                       text:
-                                          "(RED/GREEN) is a visual indicator of the current state of 360-view image (whether it is enabled or disabled). When the lock is red, interactivity is "),
+                                      "(RED/GREEN) is a visual indicator of the current state of 360-view image (whether dragging is enabled or disabled). When the lock is red, dragging interactivity is "),
                                   TextSpan(
                                       text: "disabled",
                                       style: GoogleFonts.delius(
                                           color: Colors.red)),
                                   TextSpan(
                                       text:
-                                          ", and when it is green, interactivity is "),
+                                      ", and when it is green, dragging interactivity is "),
                                   TextSpan(
                                       text: "enabled",
                                       style: GoogleFonts.delius(

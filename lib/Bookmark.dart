@@ -65,7 +65,7 @@ class BookmarkState extends State<Bookmark> {
                           setState(() {
                             confused = true;
                           });
-                        })
+                        }),
                   ]),
               body: Stack(children:[ListView.builder(
                   itemCount: snapshot.data!.docs.length,
@@ -81,13 +81,6 @@ class BookmarkState extends State<Bookmark> {
                                   address: snapshot.data!.docs[index]['address'],
                                   imgURLs: snapshot.data!.docs[index]['imageList'], bookmark: false,
                                   )
-                              // BookmarkTile(
-                              //   bookmarkName: this.bookmarkName,
-                              //   image: Image.network(snapshot.data!.docs[index]['imageURL']),
-                              //   title: snapshot.data!.docs[index]['name'],
-                              //   shortDescription: snapshot.data!.docs[index]['description'],
-                              //   estimatedPrice: snapshot.data!.docs[index]['price'],
-                              // )
                           ),
                         onDismissed: (direction) async {
                           String locationName = snapshot.data!.docs[index]['name'];
@@ -111,6 +104,7 @@ class BookmarkState extends State<Bookmark> {
                       )
               ),
               Visibility(
+                visible: confused,
                 child: Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
@@ -171,7 +165,7 @@ class BookmarkState extends State<Bookmark> {
                                                       color: Colors.pinkAccent)),
                                               TextSpan(
                                                   text:
-                                                  "about this particular location"),
+                                                  "about this particular location."),
                                             ]),
                                       ),
                                       Container(height: 20),
@@ -225,7 +219,6 @@ class BookmarkState extends State<Bookmark> {
                     ),
                   ),
                 ),
-                visible: confused,
               )])
           );
         }

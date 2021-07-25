@@ -161,7 +161,7 @@ class AdventureStackState extends State<AdventureStack> {
                                                 Container(height: 50),
                                                 Text.rich(
                                                   TextSpan(
-                                                    text: "Double Tap",
+                                                    text: "Move Your Device",
                                                     style: GoogleFonts.delius(
                                                         fontSize: 18,
                                                         fontWeight: FontWeight.bold),
@@ -176,25 +176,22 @@ class AdventureStackState extends State<AdventureStack> {
                                                       children: <TextSpan>[
                                                         TextSpan(text: "This "),
                                                         TextSpan(
-                                                            text: "enables ",
+                                                            text: "moves ",
                                                             style: GoogleFonts.delius(
                                                                 color: Colors.pinkAccent)),
-                                                        TextSpan(text: "and "),
-                                                        TextSpan(
-                                                            text: "disables ",
-                                                            style: GoogleFonts.delius(
-                                                                color: Colors.pinkAccent)),
-                                                        TextSpan(
-                                                            text:
-                                                            "the ability to interact with the "),
-                                                        TextSpan(
-                                                            text: "360-view image",
-                                                            style: GoogleFonts.delius(
-                                                                color: Colors.pinkAccent)),
-                                                        TextSpan(text: "."),
+                                                        TextSpan(text: "the 360 image to show you how the different parts of the location look like and its overall ambience."),
                                                       ]),
                                                 ),
-                                                Container(height: 5),
+
+                                                Container(height: 20),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    text: "Drag the Screen",
+                                                    style: GoogleFonts.delius(
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
                                                 Text.rich(
                                                   TextSpan(
                                                       text: "",
@@ -202,28 +199,15 @@ class AdventureStackState extends State<AdventureStack> {
                                                         fontSize: 15,
                                                       ),
                                                       children: <TextSpan>[
-                                                        TextSpan(text: "Take note: the "),
+                                                        TextSpan(text: "This "),
                                                         TextSpan(
-                                                            text: "Lock Icon ",
+                                                            text: "moves ",
                                                             style: GoogleFonts.delius(
                                                                 color: Colors.pinkAccent)),
-                                                        TextSpan(
-                                                            text:
-                                                            "(RED/GREEN) is a visual indicator of the current state of 360-view image (whether it is enabled or disabled). When the lock is red, interactivity is "),
-                                                        TextSpan(
-                                                            text: "disabled",
-                                                            style: GoogleFonts.delius(
-                                                                color: Colors.red)),
-                                                        TextSpan(
-                                                            text:
-                                                            ", and when it is green, interactivity is "),
-                                                        TextSpan(
-                                                            text: "enabled",
-                                                            style: GoogleFonts.delius(
-                                                                color: Colors.green)),
-                                                        TextSpan(text: "."),
+                                                        TextSpan(text: "the 360 image to show you how the different parts of the location look like and its overall ambience."),
                                                       ]),
                                                 ),
+
                                                 Container(height: 20),
                                                 Text.rich(
                                                   TextSpan(
