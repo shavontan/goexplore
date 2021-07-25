@@ -50,13 +50,15 @@ class _SwipingTileState extends State<SwipingTile> {
             alignment: Alignment.center,
             children: [
               AbsorbPointer(child:
-              InkWell(child: Panorama(
-                // animSpeed: 1.0,
-                // sensorControl: SensorControl.Orientation,
-                // onViewChanged: onViewChanged,
-                child:
-                Image.network(widget.imageURL_360),
-              ),
+              InkWell(
+                child: Opacity(
+                  child: Panorama(
+                    animSpeed: 1.0,
+                    sensorControl: SensorControl.Orientation,
+                    onViewChanged: onViewChanged,
+                    child: Image.network(widget.imageURL_360),
+                  ),
+                  opacity: activateExtraInfo ? 0.3 : 1,),
                 onDoubleTap: () {
                   setState(() {
                     activate360 = !activate360;
