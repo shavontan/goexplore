@@ -92,7 +92,7 @@ class _ListPageState extends State<ListPage> {
         .get();
     List<QueryDocumentSnapshot> sponsoredList = sponsoredQS.docs
         .where((d) => d['price'] <= price)
-        .where((doc) => checkTags(doc['tags'], tags))
+        .where((doc) => checkTags(doc['tags'], tags, fnb))
         .toList();
     // sponsors end
 
@@ -104,7 +104,7 @@ class _ListPageState extends State<ListPage> {
 
     Iterable<QueryDocumentSnapshot> docsStream =
     qs.docs
-        .where((d) => checkTags(d['tags'], tags))
+        .where((d) => checkTags(d['tags'], tags, fnb))
         .where((doc) => checkDuplicates(doc['name'], sponsoredList));
 
     // start
@@ -122,14 +122,51 @@ class _ListPageState extends State<ListPage> {
     return sponsoredList;
   }
 
-  bool checkTags(List<dynamic> doc, List<String> tag) {
+  // bool checkTags(List<dynamic> doc, List<String> tag) {
+  //
+  //   if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
+  //       tag.length == 0) {
+  //
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
-    if (!tag.any((item) => doc.contains(item)) && doc.length > 0 ||
-        tag.length == 0) {
+  bool checkTags(List<dynamic> doc, List<String> tag, bool isFnb) {
 
+    if (tag.length == 0 || doc.length == 0) {
       return true;
+    }
+
+    if (isFnb) {
+      // fnb
+      if (tag.any((item) => doc.contains(item) && doc.length > 0 || tag.length == 0)) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      // recreation
+      if (tag.contains("Indoor") && tag.contains("Outdoor")) {
+        tag.remove("Indoor");
+        tag.remove("Outdoor");
+      }
+
+      if (tag.contains("Physical") && tag.contains("Leisure")) {
+        tag.remove("Physical");
+        tag.remove("Leisure");
+      }
+
+      if (tag.length == 0) {
+        return true;
+      }
+
+      if (tag.every((item) => doc.contains(item))) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
