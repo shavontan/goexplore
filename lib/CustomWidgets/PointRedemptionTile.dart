@@ -65,23 +65,25 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                   Positioned(
                     child: ConstrainedBox(
                       child: Text(widget.promotion,      // BUY 1 GET 1 FREE
-                        style: GoogleFonts.caveat(fontSize: 30, fontWeight: FontWeight.bold),),
+                        style: GoogleFonts.neucha(fontSize: 25, fontWeight: FontWeight.bold),),
                       constraints: BoxConstraints(maxWidth: 100, maxHeight: 80),
                     ),
+                    left: 5,
+                    top: 5
                   ),
                   Positioned(
                       child: ConstrainedBox(
                         child: Text(widget.company,      // STARBUCKS
-                          style: GoogleFonts.caveat(fontSize: 18, fontWeight: FontWeight.bold),),
+                          style: GoogleFonts.delius(fontSize: 15, fontWeight: FontWeight.bold), textAlign: TextAlign.right,),
                         constraints: BoxConstraints(maxWidth: 90, maxHeight: 80),
                       ),
-                      right: 10,
-                      top: 10
+                      right: 5,
+                      top: 5
                   ),
                   Positioned(
                     child: ConstrainedBox(              // long text
                       child: Text(widget.shortDescription,
-                        style: GoogleFonts.handlee(fontSize: 17, fontWeight: FontWeight.bold),),
+                        style: GoogleFonts.delius(fontSize: 15, fontWeight: FontWeight.bold),),
                       constraints: BoxConstraints(maxWidth: 180, maxHeight: 70),
                     ),
                     top: 85,
@@ -90,7 +92,7 @@ class _PointRedemptionTileState extends State<PointRedemptionTile> {
                   Positioned(
                     child: ConstrainedBox(
                       child: Text("$cost points",
-                        style: GoogleFonts.handlee(fontSize: 17, fontWeight: FontWeight.bold),),
+                        style: GoogleFonts.delius(fontSize: 17, fontWeight: FontWeight.bold),),
                       constraints: BoxConstraints(maxWidth: 200),
                     ),
                     right: 10,

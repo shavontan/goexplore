@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import './flutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
@@ -160,7 +161,7 @@ Future<List<dynamic>> generateToggleButtons(List<bool> list) async {
   for (int i = 0; i < bookmarks.length; i++) {
     children.add(Column(children: [
       Icon(Icons.bookmark),
-      Text(bookmarks[i]),
+      Text(bookmarks[i], style: GoogleFonts.delius(fontWeight: FontWeight.normal),),
     ]));
   }
   return children;

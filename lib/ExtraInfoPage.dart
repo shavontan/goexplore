@@ -51,8 +51,8 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text('Extra info about ' + widget.name,
-                style: TextStyle(color: Colors.black)),
+            title: Text('Extra info',
+                style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
             backgroundColor: Color(0xB6C4CAE8),
             elevation: 0.0,
             leading: IconButton(
@@ -279,9 +279,10 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
                       TextButton(
                         child: Text(
                           "Close",
-                          style: GoogleFonts.itim(
+                          style: GoogleFonts.delius(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                         onPressed: () {

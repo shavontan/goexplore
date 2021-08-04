@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:goexplore/ProfileTracker.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import './flutterfire.dart';
@@ -184,7 +185,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login page', style: TextStyle(color: Colors.black)),
+          title: Text('Login page', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
           backgroundColor: Color(0xB6C4CAE8),
           elevation: 0.0,
           leading: IconButton(
@@ -215,9 +216,11 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Container(height: 20),
                 Text("GoExplore",
-                    style: TextStyle(
-                      fontSize: 50,
+                    style: GoogleFonts.neucha(
+                      fontSize: 70,
                       color: Colors.blueAccent,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.bold
                     )),
                 Container(height: 40),
                 Container(
@@ -226,7 +229,7 @@ class LoginScreen extends StatelessWidget {
                       decoration: InputDecoration(
                           icon: Icon(Icons.person, color: Colors.blueGrey),
                           hintText: 'Email'),
-                      style: TextStyle(
+                      style: GoogleFonts.delius(
                         color: Colors.grey,
                       )),
                   alignment: Alignment.center,
@@ -241,11 +244,12 @@ class LoginScreen extends StatelessWidget {
                         icon: Icon(Icons.lock, color: Colors.blueGrey),
                         hintText: 'Password',
                         ),
+                    style: GoogleFonts.delius(),
                   ),
                   alignment: Alignment.center,
                   width: 300,
                 ),
-                Container(height: 20),
+                Container(height: 5),
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: TextButton(
@@ -297,24 +301,23 @@ class LoginScreen extends StatelessWidget {
                             });
                           }
                         }, // GO TO HOME PAGE
-                        child: Text('Login', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 20)),
+                        child: Text('Login', style: GoogleFonts.delius(color: Colors.lightBlueAccent, fontSize: 20, fontWeight: FontWeight.bold)),
                         style: ButtonStyle()
                     )
                 ),
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Container(
-                      child: TextButton(
+                Container(height: 30),
+                Row(
+                    children: [
+                      Container(width: 60,),
+                      Text("Don't have an account?"),
+                      Container(width: 0),
+                      TextButton(
                           onPressed: () async {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => SignUpPage(),),);
                             },
                           child: Text('Sign up now', style: TextStyle(fontSize: 15)),
-                      style: ButtonStyle()),
-                      width: 130,
-                      height: 50,
-                      alignment: Alignment.center,
-                    )),
+        ),]),
               ],
             ))));
   }

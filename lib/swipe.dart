@@ -81,7 +81,7 @@ class _SwipeState extends State<Swipe> {
                               backgroundColor: Color(0xB6C4CAE8),
                               elevation: 0.0,
                               leading: IconButton(
-                                icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                                icon: Icon(Icons.arrow_back_sharp, color: Colors.white, size: 30,),
                                 onPressed: () {
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
                                   Navigator.pop(context);
@@ -98,7 +98,6 @@ class _SwipeState extends State<Swipe> {
                         finalList.addAll(randomDocs);
                       }
 
-                      print("1");
                       for (int i = 0; i < finalList.length; i++) {
                         print(finalList[i]['name']);
                       }
@@ -420,7 +419,7 @@ class _SwipeState extends State<Swipe> {
                         backgroundColor: Color(0xB6C4CAE8),
                         elevation: 0.0,
                         leading: IconButton(
-                          icon: Icon(Icons.arrow_back_sharp, color: Colors.white),
+                          icon: Icon(Icons.arrow_back_sharp, color: Colors.white, size: 30),
                           onPressed: () {
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2()));
                             Navigator.pop(context);
@@ -872,24 +871,24 @@ class _BrowseBarState extends State<BrowseBar> {
             ])),
           Positioned(
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.lightBlueAccent),
+              icon: Icon(Icons.arrow_back, color: Colors.lightBlueAccent, size: 30,),
               onPressed: () {
                 Navigator.pop(context, false);
               },
             ),
-            top: 20,
+            top: 25,
             left: 0,
           ),
           Positioned(
               child: IconButton(
-                  icon: Icon(Icons.help_outline, color: Colors.white),
+                  icon: Icon(Icons.help_outline, color: Colors.white, size: 30),
                   onPressed: () {
                     setState(() {
                       confused = true;
                     });
                   }),
               right: 20,
-              top: 20
+              top: 25
           ),
           Visibility(
             child: Center(

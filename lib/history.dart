@@ -33,7 +33,7 @@ class _HistoryState extends State<History> {
                       Scaffold(
                     appBar: AppBar(
                       title: Text(
-                          'History', style: TextStyle(color: Colors.black)),
+                          'History', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                       backgroundColor: Color(0xB6C4CAE8),
                       elevation: 0.0,
                       leading: IconButton(
@@ -135,9 +135,10 @@ class _HistoryState extends State<History> {
                                   TextButton(
                                     child: Text(
                                       "Close",
-                                      style: GoogleFonts.itim(
+                                      style: GoogleFonts.delius(
                                         color: Colors.black,
-                                        fontSize: 20,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     onPressed: () {
@@ -210,7 +211,7 @@ class _HistoryState extends State<History> {
     List<dynamic> arr = location['dates'];
     String result = "";
     for (int i = 0; i < arr.length; i++) {
-      result = result + new DateFormat("yyyy-MM-dd  hh:mm").format(arr[i].toDate()) + "\n";
+      result = result + new DateFormat("yyyy-MM-dd     hh:mm").format(arr[i].toDate()) + "\n";
     }
 
     return GestureDetector(
@@ -267,7 +268,7 @@ class _HistoryState extends State<History> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                           ConstrainedBox(child: Text(location['name'],
-                            style: new TextStyle(fontSize: 30.0), textAlign: TextAlign.center,),
+                            style: GoogleFonts.delius(fontSize: 30.0, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width -50,),),
                         ]),
                       ),
@@ -277,7 +278,7 @@ class _HistoryState extends State<History> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                          Text(result),
+                          Text(result, style: GoogleFonts.delius()),
                         ]),
                       )
                     ]

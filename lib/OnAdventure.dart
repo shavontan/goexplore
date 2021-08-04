@@ -31,7 +31,7 @@ class OnAdventureState extends State<OnAdventure> {
           if (!snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Your Current Adventures", style: TextStyle(color: Colors.black)),
+                  title: Text("Your Current Adventures", style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -47,7 +47,7 @@ class OnAdventureState extends State<OnAdventure> {
 
           return Scaffold(
               appBar: AppBar(
-                title: Text("Your Current Adventures", style: TextStyle(color: Colors.black)),
+                title: Text("Your Current Adventures", style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                 backgroundColor: Color(0xB6C4CAE8),
                 elevation: 0.0,
                 leading: IconButton(

@@ -315,9 +315,10 @@ class AdventureStackState extends State<AdventureStack> {
                                     TextButton(
                                       child: Text(
                                         "Close",
-                                        style: GoogleFonts.itim(
+                                        style: GoogleFonts.delius(
                                           color: Colors.black,
-                                          fontSize: 20,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       onPressed: () {

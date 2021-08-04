@@ -31,7 +31,7 @@ class _CollectionState extends State<Collection> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Earning Points', style: TextStyle(color: Colors.black)),
+          title: Text('Earning Points', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
           backgroundColor: Color(0xB6C4CAE8),
           elevation: 0.0,
           leading: IconButton(
@@ -60,24 +60,24 @@ class _CollectionState extends State<Collection> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       Positioned(
-                        child: ConstrainedBox(child: Text(widget.location, style: GoogleFonts.neucha(fontSize: 20), textAlign: TextAlign.center,),
-                          constraints: BoxConstraints(maxWidth: 250, maxHeight: 35),),
-                        top: 10,
+                        child: ConstrainedBox(child: Text(widget.location, style: GoogleFonts.delius(fontSize: 20), textAlign: TextAlign.left,),
+                          constraints: BoxConstraints(maxWidth: 280, maxHeight: 45),),
+                        top: 5,
                         left: 10,
                       ),
                       Positioned(
-                        child:Text("Congratulations!", style: GoogleFonts.kalam(fontSize: 40)),
+                        child:Text("Congratulations!", style: GoogleFonts.neucha(fontSize: 43, fontWeight: FontWeight.bold, letterSpacing: 1.3)),
                         left: 15,
-                        top: 40,
+                        top: 80,
                       ),
                       Positioned(
-                        child: ConstrainedBox(child: Text("You have earned $pointsEarned points", style: GoogleFonts.kalam(fontSize: 30), textAlign: TextAlign.center,),
-                          constraints: BoxConstraints(maxWidth: 250),),
-                        left: 25,
-                        top: 120,
+                        child: ConstrainedBox(child: Text("You have earned $pointsEarned points", style: GoogleFonts.neucha(fontSize: 26, letterSpacing: 1.3), textAlign: TextAlign.center,),
+                          constraints: BoxConstraints(maxWidth: 200),),
+                        left: 50,
+                        top: 145,
                       ),
                       Positioned(
-                        child:TextButton(child: Text("Claim", style: GoogleFonts.pangolin(fontSize: 30, color: Colors.black45),), onPressed: () async {
+                        child:TextButton(child: Text("Claim", style: GoogleFonts.delius(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),), onPressed: () async {
                           // widget.onAdventure ? updatePoints(pointsEarned * 2) : updatePoints(pointsEarned);
                           // userPoints.changePoints(widget.onAdventure? 2*pointsEarned : pointsEarned);
 

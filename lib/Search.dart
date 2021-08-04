@@ -95,7 +95,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
         appBar: AppBar(
             title: Text('Find a Location',
-                style: TextStyle(color: Colors.black)),
+                style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
             backgroundColor: Color(0xB6C4CAE8),
             elevation: 0.0,
             leading: IconButton(
@@ -147,7 +147,7 @@ class _SearchState extends State<Search> {
           // ),
           height: 35.0,
           backgroundColor: Colors.transparent,
-          style: TextStyle(fontSize: 16.0, height: 1.0, color: Colors.grey[600]),
+          style: GoogleFonts.delius(fontSize: 16.0, height: 1.0, color: Colors.grey[600]),
           margin: EdgeInsets.only(left: 12.0, right: 12.0, top: 7.0, bottom: 7.0),
           padding:
           EdgeInsets.only(left: 6.0, right: 6.0, top: 3.0, bottom: 3.0),
@@ -358,9 +358,10 @@ class _SearchState extends State<Search> {
                     TextButton(
                       child: Text(
                         "Close",
-                        style: GoogleFonts.itim(
+                        style: GoogleFonts.delius(
                           color: Colors.black,
-                          fontSize: 20,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       onPressed: () {

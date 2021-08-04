@@ -187,7 +187,7 @@ class _ListPageState extends State<ListPage> {
       return Scaffold(
           appBar: AppBar(
               title: Text('List Recommendations',
-                  style: TextStyle(color: Colors.black)),
+                  style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
               backgroundColor: Color(0xB6C4CAE8),
               elevation: 0.0,
               leading: IconButton(
@@ -380,7 +380,7 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text('List Recommendations',
-                style: TextStyle(color: Colors.black)),
+                style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
             backgroundColor: Color(0xB6C4CAE8),
             elevation: 0.0,
             leading: IconButton(
@@ -629,9 +629,10 @@ class _ListPageState extends State<ListPage> {
                           TextButton(
                             child: Text(
                               "Close",
-                              style: GoogleFonts.itim(
+                              style: GoogleFonts.delius(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                             onPressed: () {

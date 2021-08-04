@@ -35,7 +35,7 @@ class _EarnPointsState extends State<EarnPoints> {
                         constraints: BoxConstraints(maxWidth: 200),
                         child: Text(
                           'Congratulations! You have earned $current_points points',
-                          style: GoogleFonts.quando(fontSize: 22),
+                          style: GoogleFonts.delius(fontSize: 22),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -47,7 +47,7 @@ class _EarnPointsState extends State<EarnPoints> {
                         left: 95,
                         child: TextButton(
                           child: Text('Confirm',
-                              style: GoogleFonts.quando(
+                              style: GoogleFonts.delius(
                                   fontSize: 20, color: Colors.black)),
                           onPressed: () {
                             // change USER's number of points

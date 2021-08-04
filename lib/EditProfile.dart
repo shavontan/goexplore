@@ -46,7 +46,7 @@ class _EditProfileState extends State<EditProfile> {
             if (!snapshot.hasData) {
               return Scaffold(
                   appBar: AppBar(
-                    title: Text('Edit Profile', style: TextStyle(color: Colors.black)),
+                    title: Text('Edit Profile', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                     backgroundColor: Color(0xB6C4CAE8),
                     elevation: 0.0,
                     leading: IconButton(
@@ -99,22 +99,21 @@ class _EditProfileState extends State<EditProfile> {
                                 onPressed: () {
                                   // Navigator.pop(context);
                                   setState(() {
-                                    print("cc");
                                     leavingPage = true;
                                   });
                                 },
                               ),
                             ),
                           ]),
-                          Container(height: 70),
-                          Text(tempName == "" ? (snapshot.data as List)[0] : tempName, style: GoogleFonts.cabinSketch(fontSize: 30)),
-                          Container(height: 15),
-                          Text("Email: $email", style: GoogleFonts.notoSans()),
-                          Container(height: 20),
+                          Container(height: 65),
+                          Text(tempName == "" ? (snapshot.data as List)[0] : tempName, style: GoogleFonts.neucha(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                          Container(height: 5),
+                          Text("Email: $email", style: GoogleFonts.delius()),
+                          Container(height: 25),
                           AnimatedButton(
                             height: 58.0,
                             color: (Colors.deepPurple[100])!,
-                              child: Text("Edit Display Name", style: GoogleFonts.notoSans()),
+                              child: Text("Edit Display Name", style: GoogleFonts.delius(fontSize: 18)),
                               onPressed: () async {
                                 showDialog(context: context, builder: (context) {
                                   return AlertDialog(
@@ -152,7 +151,7 @@ class _EditProfileState extends State<EditProfile> {
                           AnimatedButton(
                               height: 58.0,
                               color: (Colors.deepPurple[100])!,
-                            child: Text("Change Profile Picture", style: GoogleFonts.notoSans()),
+                            child: Text("Change Profile Picture", style: GoogleFonts.delius(fontSize: 18)),
                             onPressed: () async {
 
                               showDialog(context: context, builder: (context) {
@@ -213,7 +212,7 @@ class _EditProfileState extends State<EditProfile> {
                           AnimatedButton(
                               height: 58.0,
                               color: (Colors.deepPurple[100])!,
-                              child: Text("Change Background Cover", style: GoogleFonts.notoSans()),
+                              child: Text("Change Background Cover", style: GoogleFonts.delius(fontSize: 16)),
                               onPressed: () async {
                                 showDialog(context: context, builder: (context) {
                                   return AlertDialog(
@@ -269,14 +268,14 @@ class _EditProfileState extends State<EditProfile> {
                           AnimatedButton(
                               height: 58.0,
                               color: (Colors.deepPurple[50])!,
-                              child: Text("Update Password", style: GoogleFonts.notoSans()),
+                              child: Text("Update Password", style: GoogleFonts.delius(fontSize: 18)),
                               onPressed: () async {
                                 Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => ChangePassword()));
                               }
                           ),
                           TextButton(
-                            child: Text("Confirm Changes", style: GoogleFonts.notoSans(fontWeight: FontWeight.w600)),
+                            child: Text("Confirm Changes", style: GoogleFonts.delius(fontWeight: FontWeight.w600, fontSize: 15,)),
                             onPressed: () async {
                               if (tempP.path != "") {
                                 String profileURL = await uploadProfilePic(tempP);
@@ -311,27 +310,27 @@ class _EditProfileState extends State<EditProfile> {
                                           Container(
                                               decoration: BoxDecoration(
                                                   color: Colors.white, 
-                                                  border: Border.all(color: Colors.red, width: 3),
+                                                  border: Border.all(color: Colors.red, width: 2.5),
                                               borderRadius: BorderRadius.circular(10))),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Container(height: 20),
-                                            Text("Are you sure you want to leave this page?", style: GoogleFonts.comingSoon(fontSize: 28, color: Colors.red, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                                            Text("Are you sure you want to leave this page?", style: GoogleFonts.neucha(fontSize: 34, color: Colors.red, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                                             Container(height:10),
-                                            Text("You may have some unsaved changes.", style: GoogleFonts.comingSoon(fontSize: 13)),
+                                            Text("You may have some unsaved changes.", style: GoogleFonts.delius(fontSize: 15)),
                                             Container(height:5),
-                                            Text("Click on 'Confirm Changes' to save your changes.", textAlign: TextAlign.center, style: GoogleFonts.comingSoon(fontSize: 13)),
+                                            Text("Click on 'Confirm Changes' to save your changes.", textAlign: TextAlign.center, style: GoogleFonts.delius(fontSize: 15)),
                                             Container(height: 20),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                TextButton(child: Text("Cancel", style: GoogleFonts.comingSoon(fontSize: 18, fontWeight: FontWeight.bold)), onPressed: () {
+                                                TextButton(child: Text("Cancel", style: GoogleFonts.delius(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black54)), onPressed: () {
                                                   setState(() {
                                                     leavingPage = false;
                                                   });
                                                 },),
-                                                TextButton(child: Text("Leave Page", style: GoogleFonts.comingSoon(fontSize: 18, fontWeight: FontWeight.bold)), onPressed: () {
+                                                TextButton(child: Text("Leave Page", style: GoogleFonts.delius(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)), onPressed: () {
                                                   Navigator.pop(context);
                                                 },)
                                               ]

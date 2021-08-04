@@ -18,7 +18,7 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Category:', style: TextStyle(color: Colors.black)),
+            title: Text('Category', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
             backgroundColor: Color(0xB6C4CAE8),
             elevation: 0.0,
             leading: IconButton(
@@ -61,15 +61,17 @@ class Categories extends StatelessWidget {
                                 child: ConstrainedBox(
                                   child: Text(
                                     "Food & Beverages", // BUY 1 GET 1 FREE
-                                    style: GoogleFonts.reenieBeanie(
-                                      fontSize: 60,
+                                    style: GoogleFonts.neucha(
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.3
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
                                   constraints:
                                   BoxConstraints(maxWidth: 300, maxHeight: 200),
                                 ),
-                                top: 60,
+                                top: 70,
                                 left: 5,
                               ),
                             ])))),
@@ -96,8 +98,10 @@ class Categories extends StatelessWidget {
                                 child: ConstrainedBox(
                                   child: Text(
                                     "Recreation", // BUY 1 GET 1 FREE
-                                    style: GoogleFonts.reenieBeanie(
-                                      fontSize: 60,
+                                    style: GoogleFonts.neucha(
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.3
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -105,7 +109,7 @@ class Categories extends StatelessWidget {
                                   BoxConstraints(maxWidth: 300, maxHeight: 200),
                                 ),
                                 top: 90,
-                                left: 40,
+                                left: 45,
                               ),
                             ])))),
               ],

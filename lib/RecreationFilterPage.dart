@@ -48,7 +48,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filter', style: TextStyle(color: Colors.black)),
+        title: Text('Filter', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
         backgroundColor: Color(0xB6C4CAE8),
         elevation: 0.0,
         leading: IconButton(
@@ -61,15 +61,15 @@ class _RecreationFilterState extends State<RecreationFilter> {
       body: Column(
         children: [
           Container(height: 20),
-          Text("Select the tags you want:", style: TextStyle(fontSize: 20),),
+          Text("Select the tags you want:", style: GoogleFonts.delius(fontSize: 20, fontWeight: FontWeight.w500),),
           Container(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[0], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[0], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateZero ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateZero ? Color(0xA9DBD0F6) : Colors.white,
@@ -91,8 +91,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[1], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[1], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateOne ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateOne ? Color(0xA9DBD0F6) : Colors.white,
@@ -114,8 +114,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[2], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[2], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateTwo ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateTwo ? Color(0xA9DBD0F6) : Colors.white,
@@ -140,8 +140,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[3], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[3], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateThree ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateThree ? Color(0xA9DBD0F6) : Colors.white,
@@ -163,8 +163,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[4], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[4], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateFour ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateFour ? Color(0xA9DBD0F6) : Colors.white,
@@ -186,8 +186,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[5], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[5], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateFive ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateFive ? Color(0xA9DBD0F6) : Colors.white,
@@ -212,8 +212,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
           InkWell(
               child: Card(
                 child: Padding(
-                    child: Opacity(child: Text(widget.recreationTags[6], style: GoogleFonts.neucha(
-                        fontSize: 30),),
+                    child: Opacity(child: Text(widget.recreationTags[6], style: GoogleFonts.delius(
+                        fontSize: 24),),
                         opacity: stateSix ? 1.0 : 0.4),
                     padding: EdgeInsets.all(7.0)),
                 color: stateSix ? Color(0xA9DBD0F6) : Colors.white,
@@ -235,8 +235,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
           InkWell(
               child: Card(
                 child: Padding(
-                    child: Opacity(child: Text(widget.recreationTags[7], style: GoogleFonts.neucha(
-                        fontSize: 30),),
+                    child: Opacity(child: Text(widget.recreationTags[7], style: GoogleFonts.delius(
+                        fontSize: 24),),
                         opacity: stateSeven ? 1.0 : 0.4),
                     padding: EdgeInsets.all(7.0)),
                 color: stateSeven ? Color(0xA9DBD0F6) : Colors.white,
@@ -261,8 +261,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[8], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[8], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateEight ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateEight ? Color(0xA9DBD0F6) : Colors.white,
@@ -284,8 +284,8 @@ class _RecreationFilterState extends State<RecreationFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.recreationTags[9], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.recreationTags[9], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateNine ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateNine ? Color(0xA9DBD0F6) : Colors.white,
@@ -307,7 +307,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
               ]),
 
           Container(height: 80),
-          Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),
+          Text("Price limit: \$${currentPriceLimit.floor()}", style: GoogleFonts.delius(fontSize: 20, fontWeight: FontWeight.w500),),
           Slider(
             value: currentPriceLimit,
             onChanged: (newValue) {
@@ -328,7 +328,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton(
-                child: Text("Simple List", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                child: Text("Simple List", style: GoogleFonts.delius(fontSize: 23, color: Colors.redAccent, fontWeight: FontWeight.bold)),
                 onPressed: () {
                   List<String> selectedTags = [];
                   for (int i = 0; i < selected.length; i++) {
@@ -345,7 +345,7 @@ class _RecreationFilterState extends State<RecreationFilter> {
                   // pass data to database + go to next page
                 },
               ),TextButton(
-                child: Text("Let's swipe!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                child: Text("Let's swipe!", style: GoogleFonts.delius(fontSize: 23, color: Colors.redAccent, fontWeight: FontWeight.bold)),
                 onPressed: () {
                   List<String> selectedTags = [];
                   for (int i = 0; i < selected.length; i++) {
