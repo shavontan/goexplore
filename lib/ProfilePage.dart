@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
           if (!snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text('Profile', style: TextStyle(color: Colors.black)),
+                  title: Text('Profile', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -78,8 +78,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ]),
-                  Container(height: 50),
-                  Text(trackProfile.username, style: GoogleFonts.cabinSketch(fontSize: 30)),
+                  Container(height: 40),
+                  Text(trackProfile.username, style: GoogleFonts.neucha(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
                   Container(height: 15),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('Edit Profile',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) =>
@@ -101,7 +101,7 @@ class ProfilePage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 5),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('Bookmarks',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () {
                               Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => BookmarkList())
@@ -121,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 5),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -132,7 +132,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('Your Current Adventures',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () {
                               Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => OnAdventure(),),);
@@ -140,7 +140,7 @@ class ProfilePage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 5),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -151,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('Manage your points',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () {
                               Navigator.push(context,
                               MaterialPageRoute(builder: (context) => PointsRedemptionPage()));
@@ -159,7 +159,7 @@ class ProfilePage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 5),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -170,7 +170,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('History',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => History(),),);
@@ -178,7 +178,7 @@ class ProfilePage extends StatelessWidget {
                           )),
                     ),
                   ),
-                  Container(height: 10),
+                  Container(height: 30),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: SizedBox(
@@ -189,7 +189,7 @@ class ProfilePage extends StatelessWidget {
                           child: TextButton(
                             child: Text('Log out',
                                 style:
-                                GoogleFonts.scada(fontSize: 15, color: Colors.black)),
+                                GoogleFonts.delius(fontSize: 20, color: Colors.black)),
                             onPressed: () async {
 
                               showDialog(context: context,

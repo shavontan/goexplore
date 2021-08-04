@@ -71,7 +71,7 @@ class _FnBFilterState extends State<FnBFilter> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Filter', style: TextStyle(color: Colors.black)),
+          title: Text('Filter', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
           backgroundColor: Color(0xB6C4CAE8),
           elevation: 0.0,
           leading: IconButton(
@@ -84,15 +84,15 @@ class _FnBFilterState extends State<FnBFilter> {
         body: SingleChildScrollView(child: Column(
           children: [
             Container(height: 20),
-            Text("Select the tags you want:", style: TextStyle(fontSize: 20,),),
-            Container(height: 20),
+            Text("Select the tags you want:", style: GoogleFonts.delius(fontSize: 20, fontWeight: FontWeight.w500),),
+            Container(height: 10),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[0], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[0], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateZero ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateZero ? Color(0xA9DBD0F6) : Colors.white,
@@ -114,8 +114,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[1], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[1], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateOne ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateOne ? Color(0xA9DBD0F6) : Colors.white,
@@ -137,8 +137,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[7], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[7], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateSeven ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateSeven ? Color(0xA9DBD0F6) : Colors.white,
@@ -163,8 +163,8 @@ class _FnBFilterState extends State<FnBFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.fnbTags[3], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.fnbTags[3], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateThree ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateThree ? Color(0xA9DBD0F6) : Colors.white,
@@ -186,8 +186,8 @@ class _FnBFilterState extends State<FnBFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.fnbTags[4], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.fnbTags[4], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateFour ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateFour ? Color(0xA9DBD0F6) : Colors.white,
@@ -209,8 +209,8 @@ class _FnBFilterState extends State<FnBFilter> {
                 InkWell(
                     child: Card(
                       child: Padding(
-                          child: Opacity(child: Text(widget.fnbTags[5], style: GoogleFonts.neucha(
-                              fontSize: 30),),
+                          child: Opacity(child: Text(widget.fnbTags[5], style: GoogleFonts.delius(
+                              fontSize: 24),),
                               opacity: stateFive ? 1.0 : 0.4),
                           padding: EdgeInsets.all(7.0)),
                       color: stateFive ? Color(0xA9DBD0F6) : Colors.white,
@@ -235,8 +235,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[6], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[6], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateSix ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateSix ? Color(0xA9DBD0F6) : Colors.white,
@@ -259,8 +259,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[2], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[2], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateTwo ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateTwo ? Color(0xA9DBD0F6) : Colors.white,
@@ -283,8 +283,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[8], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[8], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateEight ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateEight ? Color(0xA9DBD0F6) : Colors.white,
@@ -310,8 +310,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[9], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[9], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateNine ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateNine ? Color(0xA9DBD0F6) : Colors.white,
@@ -333,8 +333,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[10], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[10], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateTen ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateTen ? Color(0xA9DBD0F6) : Colors.white,
@@ -356,8 +356,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[11], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[11], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateEleven ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateEleven ? Color(0xA9DBD0F6) : Colors.white,
@@ -383,8 +383,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[12], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[12], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateTwelve ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateTwelve ? Color(0xA9DBD0F6) : Colors.white,
@@ -406,8 +406,8 @@ class _FnBFilterState extends State<FnBFilter> {
                   InkWell(
                       child: Card(
                         child: Padding(
-                            child: Opacity(child: Text(widget.fnbTags[13], style: GoogleFonts.neucha(
-                                fontSize: 30),),
+                            child: Opacity(child: Text(widget.fnbTags[13], style: GoogleFonts.delius(
+                                fontSize: 24),),
                                 opacity: stateThirteen ? 1.0 : 0.4),
                             padding: EdgeInsets.all(7.0)),
                         color: stateThirteen ? Color(0xA9DBD0F6) : Colors.white,
@@ -428,7 +428,7 @@ class _FnBFilterState extends State<FnBFilter> {
                       }),
                 ]),
             Container(height: 80),
-            Text("Price limit: \$${currentPriceLimit.floor()}", style: TextStyle(fontSize: 20),),
+            Text("Price limit: \$${currentPriceLimit.floor()}", style: GoogleFonts.delius(fontSize: 20, fontWeight: FontWeight.w500),),
             Slider(
               value: currentPriceLimit,
               onChanged: (newValue) {
@@ -449,7 +449,7 @@ class _FnBFilterState extends State<FnBFilter> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton(
-                  child: Text("Simple List", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                  child: Text("Simple List", style: GoogleFonts.delius(fontSize: 23, color: Colors.redAccent, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     List<String> selectedTags = [];
                     for (int i = 0; i < selected.length; i++) {
@@ -466,7 +466,7 @@ class _FnBFilterState extends State<FnBFilter> {
                     // pass data to database + go to next page
                   },
                 ),TextButton(
-                  child: Text("Let's swipe!", style: GoogleFonts.sriracha(fontSize: 20, color: Colors.redAccent)),
+                  child: Text("Let's swipe!", style: GoogleFonts.delius(fontSize: 23, color: Colors.redAccent, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     List<String> selectedTags = [];
                     for (int i = 0; i < selected.length; i++) {

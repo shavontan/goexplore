@@ -18,7 +18,7 @@ class _PointsRedemptionPageState extends State<PointsRedemptionPage> {
         backgroundColor: Color(0xFFEDEBF6),
         appBar: AppBar(
           title:
-          Text('Points redemption', style: TextStyle(color: Colors.black)),
+          Text('Points redemption', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
           backgroundColor: Color(0xB6C4CAE8),
           elevation: 0.0,
           leading: IconButton(
@@ -35,8 +35,8 @@ class _PointsRedemptionPageState extends State<PointsRedemptionPage> {
                 Container(height: 10),
                 Align(
                   child: Text(
-                    "  Food:",
-                    style: GoogleFonts.walterTurncoat(fontSize: 30,),
+                    "    Food:",
+                    style: GoogleFonts.delius(fontSize: 25, ),
                   ),
                   alignment: Alignment.centerLeft,
                 ),
@@ -89,8 +89,8 @@ class _PointsRedemptionPageState extends State<PointsRedemptionPage> {
                 Container(height: 30),
                 Align(
                   child: Text(
-                    "  Recreational: ",
-                    style: GoogleFonts.walterTurncoat(fontSize: 30,),
+                    "    Recreational: ",
+                    style: GoogleFonts.delius(fontSize: 25,),
                   ),
                   alignment: Alignment.centerLeft,
                 ),
@@ -127,8 +127,8 @@ class _PointsRedemptionPageState extends State<PointsRedemptionPage> {
                 Container(height: 30),
                 Align(
                   child: Text(
-                    "  Others:",
-                    style: GoogleFonts.walterTurncoat(fontSize: 30,),
+                    "    Others:",
+                    style: GoogleFonts.delius(fontSize: 25,),
                   ),
                   alignment: Alignment.centerLeft,
                 ),

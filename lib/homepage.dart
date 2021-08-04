@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:goexplore/flutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-                title: Text('HomePage', style: TextStyle(color: Colors.black)),
+                title: Text('HomePage', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                 backgroundColor: Color(0xB6C4CAE8),
                 elevation: 0.0,
                 // leading: IconButton(
@@ -142,14 +143,16 @@ class _HomePageState extends State<HomePage> {
                                     constraints: BoxConstraints(
                                         maxWidth: 300, maxHeight: 200),
                                   ),
-                                  opacity: 0.5,
+                                  opacity: 0.35,
                                 ),
                                 ConstrainedBox(
                                   child: Text(
                                     'Do you know what you want to do today?',
-                                    style: GoogleFonts.averiaLibre(
-                                      fontSize: 40,
+                                    style: GoogleFonts.neucha(
+                                      fontSize: 45,
                                       color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.3,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -166,8 +169,8 @@ class _HomePageState extends State<HomePage> {
                                   child: ConstrainedBox(
                                     child: Text(
                                       'Yes, I have an idea!',
-                                      style: GoogleFonts.averiaLibre(
-                                          fontSize: 20, color: Colors.black54),
+                                      style: GoogleFonts.delius(
+                                          fontSize: 19, color: Colors.black54, fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                     constraints: BoxConstraints(maxWidth: 130),
@@ -184,8 +187,8 @@ class _HomePageState extends State<HomePage> {
                                   child: ConstrainedBox(
                                     child: Text(
                                       'No, take me on an adventure!',
-                                      style: GoogleFonts.averiaLibre(
-                                          fontSize: 20, color: Colors.black54),
+                                      style: GoogleFonts.delius(
+                                          fontSize: 19, color: Colors.black54, fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                     constraints: BoxConstraints(maxWidth: 130),
@@ -203,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                           Container(height: 10),
                           TextButton(
                               child: Text("Just Browsing?",
-                                  style: GoogleFonts.averiaLibre(fontSize: 20, color: Colors.black87)),
+                                  style: GoogleFonts.delius(fontSize: 19, color: Colors.black87, fontWeight: FontWeight.bold)),
                               onPressed: (){
                                 Navigator.push(
                                     context,
@@ -221,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                           TextButton(
                             child: Text(
                               'Scan for points',
-                              style: GoogleFonts.jura(
+                              style: GoogleFonts.delius(
                                   fontSize: 20, color: Colors.amberAccent[700]),
                             ),
 
@@ -680,9 +683,10 @@ class _HomePageState extends State<HomePage> {
                                 TextButton(
                                   child: Text(
                                     "Close",
-                                    style: GoogleFonts.itim(
+                                    style: GoogleFonts.delius(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   onPressed: () {

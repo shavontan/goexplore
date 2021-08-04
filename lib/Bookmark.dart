@@ -33,7 +33,7 @@ class BookmarkState extends State<Bookmark> {
           if (!snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text(widget.bookmarkName, style: TextStyle(color: Colors.black)),
+                  title: Text(widget.bookmarkName, style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -49,7 +49,7 @@ class BookmarkState extends State<Bookmark> {
 
           return Scaffold(
               appBar: AppBar(
-                title: Text(this.bookmarkName, style: TextStyle(color: Colors.black)),
+                title: Text(this.bookmarkName, style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                 backgroundColor: Color(0xB6C4CAE8),
                 elevation: 0.0,
                 leading: IconButton(
@@ -202,9 +202,10 @@ class BookmarkState extends State<Bookmark> {
                           TextButton(
                             child: Text(
                               "Close",
-                              style: GoogleFonts.itim(
+                              style: GoogleFonts.delius(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             onPressed: () {

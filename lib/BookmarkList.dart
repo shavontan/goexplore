@@ -27,7 +27,7 @@ class _BookmarkListState extends State<BookmarkList> {
           if (!snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text('Bookmarks', style: TextStyle(color: Colors.black)),
+                  title: Text('Bookmarks', style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -45,7 +45,7 @@ class _BookmarkListState extends State<BookmarkList> {
           return new Scaffold(
               appBar: AppBar(
                   title: Text('Bookmarks',
-                      style: TextStyle(color: Colors.black)),
+                      style: GoogleFonts.delius(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23)),
                   backgroundColor: Color(0xB6C4CAE8),
                   elevation: 0.0,
                   leading: IconButton(
@@ -286,9 +286,10 @@ class _BookmarkListState extends State<BookmarkList> {
                             TextButton(
                               child: Text(
                                 "Close",
-                                style: GoogleFonts.itim(
+                                style: GoogleFonts.delius(
                                   color: Colors.black,
-                                  fontSize: 20,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               onPressed: () {
@@ -329,7 +330,7 @@ Widget buildCard(BuildContext context, String name) {
           child: TextButton(
             child: Text(name,
                 style:
-                    GoogleFonts.quicksand(fontSize: 30, color: Colors.black54)),
+                    GoogleFonts.delius(fontSize: 30, color: Colors.black54)),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Bookmark(name)));

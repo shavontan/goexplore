@@ -96,19 +96,19 @@ class AdventureTileState extends State<AdventureTile> {
                         ),
                     // Container(height: 30),
                     ExtraInfo(imgURLs: widget.imageURLs, name: widget.name, address: widget.address, description: widget.description,),
-                    // Container(height: 30),
+                    Container(height: 20),
                     Row(
                         children: [
-                          Container(width: 35),
+                          Container(width: 55),
                           InkWell(
-                            child: SizedBox(child: Text("No, Not Today", style: GoogleFonts.rancho(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.red)), height: 32, width: 150),
+                            child: SizedBox(child: Text("No, Not Today", style: GoogleFonts.neucha(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.red)), height: 32, width: 150),
                             onTap: () {
                               advKey.currentState!.nextCard();
                             },
                           ),
-                          Container(width: 40),
+                          Container(width: 30),
                           InkWell(
-                            child: SizedBox(child: Text("Let's Go!", style: GoogleFonts.rancho(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.green),), height: 32, width: 95),
+                            child: SizedBox(child: Text("Let's Go!", style: GoogleFonts.neucha(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),), height: 32, width: 95),
                             onTap: () {
                               showAnimatedDialog(
                                 context: context,

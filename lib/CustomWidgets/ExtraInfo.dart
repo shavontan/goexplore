@@ -33,7 +33,9 @@ class _ExtraInfoState extends State<ExtraInfo> {
     return SingleChildScrollView(
         child: Column(
         children: [
-          Text(widget.name, style: GoogleFonts.badScript(fontSize: 30, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+          Container(height: 10),
+          Text(widget.name, style: GoogleFonts.neucha(fontSize: 40, fontWeight: FontWeight.bold, ), textAlign: TextAlign.center,),
+          Container(height: 10),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(child: Row(children: images), constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.3)),

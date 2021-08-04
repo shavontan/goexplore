@@ -106,9 +106,9 @@ class _SwipingTileState extends State<SwipingTile> {
               ),
               Visibility(
                   child: Positioned(
-                      child: Icon(activate360 ? Icons.lock_open_outlined : Icons.lock, color: activate360 ? Colors.green : Colors.redAccent),
-                      top: 30,
-                      left: 40),
+                      child: Icon(Icons.threed_rotation, color: activate360 ? Colors.green : Colors.redAccent, size: 30,),
+                      top: 35,
+                      left: 45),
                   visible: !activateExtraInfo),
               Visibility(
                 child: Positioned(

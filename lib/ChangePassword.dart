@@ -168,6 +168,7 @@ class ChangePassword extends StatelessWidget {
 
                           },
                           child: Text('Done')),
+                      Container(height: 20),
                       Row(children: [
                         Text("Forgot your password?"),
                         TextButton(
